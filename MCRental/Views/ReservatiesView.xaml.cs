@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using MCRental_Models;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -20,10 +21,19 @@ namespace MCRental_Client.Views
     /// </summary>
     public partial class ReservatiesView : Page
     {
-        public ReservatiesView()
+        public ReservatiesView(MCRentalDBContext context)
         {
             InitializeComponent();
-            DataContext = new ViewModels.ReservatiesViewModel(new MCRental_Services.ReservatieService(new MCRental_Persistence.MCRentalDBContext()));
+            dgReservaties.ItemsSource = (from reservatie in context.Reservaties
+                                         select new MCRental_Models.Reservatie
+                                         {
+                                             Id = reservatie.Id,
+                                             KlantId = reservatie.KlantId,
+                                             AutoId = reservatie.AutoId,
+                                             StartDatum = reservatie.StartDatum,
+                                             EindDatum = reservatie.EindDatum
+                                         })
+                                         .ToList();
         }
     }
 }

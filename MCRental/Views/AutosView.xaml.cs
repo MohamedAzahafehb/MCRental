@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MCRental_Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,10 +21,22 @@ namespace MCRental_Client.Views
     /// </summary>
     public partial class AutosView : Page
     {
-        public AutosView()
+        public AutosView(MCRentalDBContext context)
         {
             InitializeComponent();
-            DataContext = new ViewModels.AutosViewModel(new MCRental_Services.AutoService(new MCRental_Persistence.MCRentalDBContext()));
+            dgAutos.ItemsSource = (from auto in context.Autos
+                                   select new MCRental_Models.Auto
+                                   {
+                                       Id = auto.Id,
+                                       Merk = auto.Merk,
+                                       Model = auto.Model,
+                                       Nummerplaat = auto.Nummerplaat,
+                                       DagPrijs = auto.DagPrijs,
+                                       Beschikbaar = auto.Beschikbaar,
+                                       type = auto.type,
+                                        FiliaalId = auto.FiliaalId
+                                   })
+                                   .ToList();
         }
     }
 }

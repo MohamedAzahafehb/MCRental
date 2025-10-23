@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using MCRental_Models;
+using Microsoft.EntityFrameworkCore;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -16,34 +18,37 @@ namespace MCRental_Client
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private readonly MCRentalDBContext _context;
+        public MainWindow(MCRentalDBContext context)
         {
+            _context = context;
             InitializeComponent();
         }
 
         private void Autos_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new Views.AutosView());
+            MainFrame.Navigate(new Views.AutosView(_context));
         }
 
         private void Filialen_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new Views.FilialenView());
+            MainFrame.Navigate(new Views.FilialenView(_context));
         }
 
         private void Steden_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new Views.StedenView());
+            MainFrame.Navigate(new Views.StedenView(_context));
+
         }
 
         private void Klanten_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new Views.KlantenView());
+            //MainFrame.Navigate(new Views.KlantenView(_context));
         }
 
         private void Reservaties_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new Views.ReservatiesView());
+            MainFrame.Navigate(new Views.ReservatiesView(_context));
         }
     }
 }

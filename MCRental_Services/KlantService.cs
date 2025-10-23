@@ -15,7 +15,7 @@ namespace MCRental_Services
         {
             _context = context;
         }
-        public List<Klant> getAllKlanten()
+        public List<Gebruiker> getAllKlanten()
         {
             return _context.Klanten.ToList();
         }

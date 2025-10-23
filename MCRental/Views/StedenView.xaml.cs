@@ -11,7 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using MCRental_Client.ViewModels;
+using MCRental_Models;
 
 namespace MCRental_Client.Views
 {
@@ -20,10 +20,17 @@ namespace MCRental_Client.Views
     /// </summary>
     public partial class StedenView : Page
     {
-        public StedenView()
+        public StedenView(MCRentalDBContext context)
         {
             InitializeComponent();
-            DataContext = new StedenViewModel(new MCRental_Services.StadService(new MCRental_Persistence.MCRentalDBContext()));
+            dgSteden.ItemsSource = (from stad in context.Steden
+                                    select new Stad
+                                    {
+                                        Id = stad.Id,
+                                        Naam = stad.Naam,
+                                        Postcode = stad.Postcode
+                                    })
+                                    .ToList();
         }
     }
 }

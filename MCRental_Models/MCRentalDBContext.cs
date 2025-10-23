@@ -1,22 +1,35 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using MCRental_Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-namespace MCRental_Persistence
+namespace MCRental_Models
 {
     public class MCRentalDBContext : DbContext
     {
         public DbSet<Stad> Steden { get; set; }
         public DbSet<Filiaal> Filialen { get; set; }
-        public DbSet<Gebruiker> Klanten { get; set; }
+        //public DbSet<Gebruiker> Gebruikers { get; set; }
         public DbSet<Auto> Autos { get; set; }
         public DbSet<Reservatie> Reservaties { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var connectionString = "Server=(localdb)\\mssqllocaldb; Database=MCRentalDB;Trusted_Connection=true;MultipleActiveResultSets=true;";
-            optionsBuilder.UseSqlServer(connectionString);
+            //var connectionString = "Server=(localdb)\\mssqllocaldb; Database=MCRentalDB;Trusted_Connection=true;MultipleActiveResultSets=true;";
+            //optionsBuilder.UseSqlServer(connectionString);
+
+            if(!optionsBuilder.IsConfigured)
+            {
+                    var config = new ConfigurationBuilder().SetBasePath(AppContext.BaseDirectory)
+                        .AddJsonFile("appsettings.json", optional: true)
+                        .AddUserSecrets<MCRentalDBContext>(optional: true)
+                        .Build();
+
+                    var connStr = config.GetConnectionString("DefaultConnection");
+                    optionsBuilder.UseSqlServer(connStr);
+            }
         }
 
-        internal static void seeder(MCRentalDBContext context)
+        public static void seeder(MCRentalDBContext context)
         {
             if (!context.Steden.Any())
             {
@@ -28,11 +41,7 @@ namespace MCRental_Persistence
                 context.Filialen.AddRange(Filiaal.seedingData());
                 context.SaveChanges();
             }
-            if (!context.Klanten.Any())
-            {
-                context.Klanten.AddRange(Gebruiker.seedingData());
-                context.SaveChanges();
-            }
+            //Gebruiker.seedingData(); // Ensure seeding data is generated
             if (!context.Autos.Any())
             {
                 context.Autos.AddRange(Auto.seedingData());
@@ -54,8 +63,8 @@ namespace MCRental_Persistence
             Console.WriteLine("Steden done");
             modelBuilder.Entity<Filiaal>().HasData(Filiaal.seedingData());
             Console.WriteLine("Filialen done");
-            modelBuilder.Entity<Gebruiker>().HasData(Gebruiker.seedingData());
-            Console.WriteLine("Klanten done");
+            //modelBuilder.Entity<Gebruiker>().HasData(Gebruiker.seedingData());
+            //Console.WriteLine("Klanten done");
             modelBuilder.Entity<Auto>().HasData(Auto.seedingData());
             Console.WriteLine("Autos done");
             modelBuilder.Entity<Reservatie>().HasData(Reservatie.seedingData());

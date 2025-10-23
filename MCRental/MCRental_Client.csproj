@@ -9,15 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.9">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\MCRental_Models\MCRental_Models.csproj" />
-    <ProjectReference Include="..\MCRental_Services\MCRental_Services.csproj" />
   </ItemGroup>
 
 </Project>

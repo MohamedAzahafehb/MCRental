@@ -4,20 +4,17 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MCRental_Client.Views"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="ReservatiesView">
+      mc:Ignorable="d"
+      Title="ReservatiesView" Height="403" Width="1124">
 
     <Grid>
-        <ListView ItemsSource="{Binding Steden}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="StartDatum" DisplayMemberBinding="{Binding StartDatum}" Width="100"/>
-                    <GridViewColumn Header="EindDatum" DisplayMemberBinding="{Binding EindDatum}" Width="200"/>
-                    <GridViewColumn Header="KlantId" DisplayMemberBinding="{Binding KlantId}" Width="200"/>
-                    <GridViewColumn Header="AutoId" DisplayMemberBinding="{Binding AutoId}" Width="200"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <DataGrid x:Name="dgReservaties" Height="388" Width="1110" VerticalAlignment="Top" HorizontalAlignment="Left" SelectionMode="Single">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="StartDatum" Binding="{Binding StartDatum}" Width="100"/>
+                <DataGridTextColumn Header="EindDatum" Binding="{Binding EindDatum}" Width="200"/>
+                <DataGridTextColumn Header="KlantId" Binding="{Binding KlantId}" Width="200"/>
+                <DataGridTextColumn Header="AutoId" Binding="{Binding AutoId}" Width="200"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Page>

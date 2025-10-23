@@ -1,15 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36518.9 d17.14
+VisualStudioVersion = 17.14.36518.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCRental_Client", "MCRental\MCRental_Client.csproj", "{04974C12-7C04-4277-BBAB-475B637C1EDD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCRental_Models", "MCRental_Models\MCRental_Models.csproj", "{4D4EC601-4183-4554-8BBF-227BAE9CFE77}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCRental_Persistence", "MCRental_Persistence\MCRental_Persistence.csproj", "{1E2C0EB9-1EB6-4635-AD20-D1AE34FDAA85}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCRental_Services", "MCRental_Services\MCRental_Services.csproj", "{DD51A08D-A9A8-4293-83B8-E0A664E14A56}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,14 +21,6 @@ Global
 		{4D4EC601-4183-4554-8BBF-227BAE9CFE77}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D4EC601-4183-4554-8BBF-227BAE9CFE77}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D4EC601-4183-4554-8BBF-227BAE9CFE77}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1E2C0EB9-1EB6-4635-AD20-D1AE34FDAA85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1E2C0EB9-1EB6-4635-AD20-D1AE34FDAA85}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1E2C0EB9-1EB6-4635-AD20-D1AE34FDAA85}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1E2C0EB9-1EB6-4635-AD20-D1AE34FDAA85}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DD51A08D-A9A8-4293-83B8-E0A664E14A56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DD51A08D-A9A8-4293-83B8-E0A664E14A56}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DD51A08D-A9A8-4293-83B8-E0A664E14A56}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DD51A08D-A9A8-4293-83B8-E0A664E14A56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -9,18 +9,16 @@
       Title="AutosView">
 
     <Grid>
-        <ListView ItemsSource="{Binding Steden}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Merk" DisplayMemberBinding="{Binding Merk}" Width="100"/>
-                    <GridViewColumn Header="Model" DisplayMemberBinding="{Binding Model}" Width="200"/>
-                    <GridViewColumn Header="Nummerplaat" DisplayMemberBinding="{Binding Nummerplaat}" Width="200"/>
-                    <GridViewColumn Header="DagPrijs" DisplayMemberBinding="{Binding DagPrijs}" Width="200"/>
-                    <GridViewColumn Header="Beschikbaar" DisplayMemberBinding="{Binding Beschikbaar}" Width="200"/>
-                    <GridViewColumn Header="type" DisplayMemberBinding="{Binding type}" Width="200"/>
-                    <GridViewColumn Header="FiliaalId" DisplayMemberBinding="{Binding FiliaalId}" Width="200"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <DataGrid x:Name="dgAutos" Height="400" Width="1110" VerticalAlignment="Top" HorizontalAlignment="Left" SelectionMode="Single">
+            <DataGrid.Columns>
+                    <DataGridTextColumn Header="Merk" Binding="{Binding Merk}" Width="100"/>
+                    <DataGridTextColumn Header="Model" Binding="{Binding Model}" Width="200"/>
+                    <DataGridTextColumn Header="Nummerplaat" Binding="{Binding Nummerplaat}" Width="200"/>
+                    <DataGridTextColumn Header="DagPrijs" Binding="{Binding DagPrijs}" Width="200"/>
+                    <DataGridTextColumn Header="Beschikbaar" Binding="{Binding Beschikbaar}" Width="200"/>
+                    <DataGridTextColumn Header="type" Binding="{Binding type}" Width="200"/>
+                    <DataGridTextColumn Header="FiliaalId" Binding="{Binding FiliaalId}" Width="200"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Page>

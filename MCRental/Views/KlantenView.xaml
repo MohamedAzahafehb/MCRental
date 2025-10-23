@@ -5,22 +5,20 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MCRental_Client.Views"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="KlantenView">
+      d:DesignHeight="450"
+      Title="KlantenView" Width="1101">
 
-    <Grid>
-        <ListView ItemsSource="{Binding Steden}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Voornaam" DisplayMemberBinding="{Binding Voornaam}" Width="100"/>
-                    <GridViewColumn Header="Achternaam" DisplayMemberBinding="{Binding Achternaam}" Width="200"/>
-                    <GridViewColumn Header="Telefoon" DisplayMemberBinding="{Binding Telefoon}" Width="200"/>
-                    <GridViewColumn Header="Email" DisplayMemberBinding="{Binding Email}" Width="200"/>
-                    <GridViewColumn Header="GeboorteDatum" DisplayMemberBinding="{Binding GeboorteDatum}" Width="200"/>
-                    <GridViewColumn Header="Adres" DisplayMemberBinding="{Binding Adres}" Width="200"/>
-                    <GridViewColumn Header="StadId" DisplayMemberBinding="{Binding StadId}" Width="200"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+    <Grid Margin="0,0,-434,26">
+        <DataGrid x:Name="dgGebruikers" Height="400" Width="1110" VerticalAlignment="Top" HorizontalAlignment="Left" SelectionMode="Single" Margin="-83,0,0,0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Voornaam" Binding="{Binding Voornaam}" Width="100"/>
+                <DataGridTextColumn Header="Achternaam" Binding="{Binding Achternaam}" Width="200"/>
+                <DataGridTextColumn Header="Telefoon" Binding="{Binding Telefoon}" Width="200"/>
+                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="200"/>
+                <DataGridTextColumn Header="GeboorteDatum" Binding="{Binding GeboorteDatum}" Width="200"/>
+                <DataGridTextColumn Header="Adres" Binding="{Binding Adres}" Width="200"/>
+                <DataGridTextColumn Header="StadId" Binding="{Binding StadId}" Width="200"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Page>

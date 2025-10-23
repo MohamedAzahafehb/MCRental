@@ -17,8 +17,8 @@ namespace MCRental_Models
         public DateTime EindDatum { get; set; }
         [ForeignKey("Klant")]
         public int KlantId { get; set; }
-        public Klant? Klant { get; set; }
-        [ForeignKey("Auto")]
+        //public Gebruiker? Klant { get; set; }
+        //[ForeignKey("Auto")]
         public int AutoId { get; set; }
         public Auto? Auto { get; set; }
 
@@ -40,7 +40,7 @@ namespace MCRental_Models
                     Id = 2,
                     StartDatum = new DateTime(2024, 8, 5),
                     EindDatum = new DateTime(2024, 8, 15),
-                    KlantId = 2,
+                    KlantId = 1,
                     AutoId = 1
                 },
                 new Reservatie

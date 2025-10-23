@@ -15,7 +15,7 @@ namespace MCRental_Models
         [Required]
         public string Postcode { get; set; }
         public ICollection<Filiaal>? Filialen { get; set; }
-        public ICollection<Klant>? Klanten { get; set; }
+        //public ICollection<Gebruiker>? Klanten { get; set; }
 
         public static List<Stad> seedingData()
         {

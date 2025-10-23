@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MCRental_Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,10 +21,20 @@ namespace MCRental_Client.Views
     /// </summary>
     public partial class FilialenView : Page
     {
-        public FilialenView()
+        public FilialenView(MCRentalDBContext context)
         {
             InitializeComponent();
-            DataContext = new ViewModels.FilialenViewModel(new MCRental_Services.FiliaalService(new MCRental_Persistence.MCRentalDBContext()));
+            dgFilialen.ItemsSource = (from filiaal in context.Filialen
+                                     select new MCRental_Models.Filiaal
+                                     {
+                                         Id = filiaal.Id,
+                                         Naam = filiaal.Naam,
+                                         Adres = filiaal.Adres,
+                                         Telefoon = filiaal.Telefoon,
+                                         Email = filiaal.Email,
+                                         StadId = filiaal.StadId
+                                     })
+                                     .ToList();
         }
     }
 }

@@ -1,14 +1,41 @@
-﻿using System.Configuration;
-using System.Data;
+﻿using MCRental_Models;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Windows;
 
 namespace MCRental_Client
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
-    }
+        static public ServiceProvider serviceProvider { get; private set; }
 
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            //    var services = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
+
+            //MCRentalDBContext context = new MCRentalDBContext();
+            //services.AddDbContext<MCRentalDBContext>();
+
+            //    services.AddLogging();
+
+            //    //services.AddIdentityCore<Gebruiker>(options =>
+            //    //{
+            //    //    options.Password.RequireDigit = false;
+            //    //    options.Password.RequireLowercase = false;
+            //    //    options.Password.RequireNonAlphanumeric = false;
+            //    //    options.Password.RequireUppercase = false;
+            //    //    options.Password.RequiredLength = 6;
+            //    //    options.User.RequireUniqueEmail = true;
+            //    //})
+            //    //.AddEntityFrameworkStores<MCRentalDBContext>();
+
+
+            //    serviceProvider = services.BuildServiceProvider();
+            //    MainWindow mainWindow = new MainWindow(App.serviceProvider.GetRequiredService<MCRentalDBContext>());
+            //mainWindow.Show();
+        }
+    }
 }

@@ -1,0 +1,8 @@
+﻿Control maken:
+ klasse maken inherites van Control
+ private Ractangle rect, popup en items
+
+ strings of all
+
+ search in db of in list
+	EF weet wat ie doet

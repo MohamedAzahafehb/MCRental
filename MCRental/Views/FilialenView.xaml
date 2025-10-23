@@ -9,16 +9,14 @@
       Title="FilialenView">
 
     <Grid>
-        <ListView ItemsSource="{Binding Steden}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Naam" DisplayMemberBinding="{Binding Naam}" Width="100"/>
-                    <GridViewColumn Header="Adres" DisplayMemberBinding="{Binding Adres}" Width="200"/>
-                    <GridViewColumn Header="Telefoon" DisplayMemberBinding="{Binding Telefoon}" Width="200"/>
-                    <GridViewColumn Header="Email" DisplayMemberBinding="{Binding Email}" Width="200"/>
-                    <GridViewColumn Header="StadId" DisplayMemberBinding="{Binding StadId}" Width="200"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <DataGrid x:Name="dgFilialen" Height="400" Width="1110" VerticalAlignment="Top" HorizontalAlignment="Left" SelectionMode="Single">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Naam" Binding="{Binding Naam}" Width="100"/>
+                <DataGridTextColumn Header="Adres" Binding="{Binding Adres}" Width="200"/>
+                <DataGridTextColumn Header="Telefoon" Binding="{Binding Telefoon}" Width="200"/>
+                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="200"/>
+                <DataGridTextColumn Header="StadId" Binding="{Binding StadId}" Width="200"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Page>
