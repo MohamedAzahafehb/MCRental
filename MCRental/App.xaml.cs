@@ -1,5 +1,6 @@
 ﻿using MCRental_Models;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Windows;
@@ -8,11 +9,27 @@ namespace MCRental_Client
 {
     public partial class App : Application
     {
-        static public ServiceProvider serviceProvider { get; private set; }
+        static public ServiceProvider ServiceProvider { get; private set; }
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            var services = new ServiceCollection();
+
+            services.AddDbContext<MCRentalDBContext>();
+
+            services.AddIdentityCore<Gebruiker>();
+
+            services.AddLogging();
+
+            ServiceProvider = services.BuildServiceProvider();
+
+            MCRentalDBContext context = new MCRentalDBContext();
+            MCRentalDBContext.seeder(context);
+
+            Windows.MainWindow mainWindow = new Windows.MainWindow(ServiceProvider.GetRequiredService<MCRentalDBContext>());
+            mainWindow.Show();
 
             //    var services = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
 

@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace MCRental_Models
 {
-    public class MCRentalDBContext : DbContext
+    public class MCRentalDBContext : IdentityDbContext<Gebruiker>
     {
         public DbSet<Stad> Steden { get; set; }
         public DbSet<Filiaal> Filialen { get; set; }
-        //public DbSet<Gebruiker> Gebruikers { get; set; }
+        public DbSet<Gebruiker> Gebruikers { get; set; }
         public DbSet<Auto> Autos { get; set; }
         public DbSet<Reservatie> Reservaties { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -41,7 +41,7 @@ namespace MCRental_Models
                 context.Filialen.AddRange(Filiaal.seedingData());
                 context.SaveChanges();
             }
-            //Gebruiker.seedingData(); // Ensure seeding data is generated
+            Gebruiker.Seeder(); // Ensure seeding data is generated
             if (!context.Autos.Any())
             {
                 context.Autos.AddRange(Auto.seedingData());

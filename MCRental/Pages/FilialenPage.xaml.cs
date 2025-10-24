@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MCRental_Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,27 @@ namespace MCRental_Client.Pages
     /// </summary>
     public partial class FilialenPage : Page
     {
-        public FilialenPage()
+        private readonly MCRentalDBContext _context;
+        public FilialenPage(MCRentalDBContext context)
         {
             InitializeComponent();
+            _context = context;
+            var filialen = (from filiaal in _context.Filialen
+                            select new Filiaal
+                            {
+                                Id = filiaal.Id,
+                                Naam = filiaal.Naam,
+                                Adres = filiaal.Adres,
+                                StadId = filiaal.StadId
+                            })
+                            .ToList();
+            dgFilialen.ItemsSource = filialen;
+        }
+
+        private void BewerkButton_Click(object sender, RoutedEventArgs e)
+        {
+            //implement
+
         }
     }
 }

@@ -21,11 +21,11 @@ namespace MCRental_Client.Windows
     /// </summary>
     public partial class MainWindow : Window
     {
-        MCRentalDBContext _context;
-        public MainWindow()
+        private readonly MCRentalDBContext _context;
+        public MainWindow(MCRentalDBContext context)
         {
             InitializeComponent();
-            _context = new MCRentalDBContext();
+            _context = context;
         }
 
         private void mniAuto_Click(object sender, RoutedEventArgs e)
@@ -40,7 +40,7 @@ namespace MCRental_Client.Windows
 
         private void mniAutobeheer_Click(object sender, RoutedEventArgs e)
         {
-            //frmMain.Navigate(new AutoBeheerPage(_context));
+            frmMain.Navigate(new AutoBeheerPage(_context));
         }
 
         private void mniReservatiebeheer_Click(object sender, RoutedEventArgs e)
@@ -50,7 +50,7 @@ namespace MCRental_Client.Windows
 
         private void mniGebruikers_Click(object sender, RoutedEventArgs e)
         {
-            //frmMain.Navigate(new ProfielPage(_context));
+            frmMain.Navigate(new GebruikersPage(_context));
         }
 
         private void mniFilialenbeheer_Click(object sender, RoutedEventArgs e)

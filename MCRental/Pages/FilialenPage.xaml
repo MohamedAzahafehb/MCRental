@@ -9,6 +9,58 @@
       Title="FilialenPage">
 
     <Grid>
-        <TextBlock Text="Filialen Page" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header: titel links, comboboxen gecentreerd -->
+        <Grid Grid.Row="0" Margin="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Filialen"
+           FontSize="20"
+           FontWeight="Bold"
+           VerticalAlignment="Center"
+           Grid.Column="0"/>
+
+            <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <ComboBox x:Name="cmbSort" Width="180" VerticalAlignment="Center">
+                    <ComboBoxItem Content="Prijs oplopend" />
+                    <ComboBoxItem Content="Prijs aflopend" />
+                </ComboBox>
+
+                <!-- Multi-select style: ComboBox with CheckBoxes in item template (checked state is independent) -->
+                <ComboBox x:Name="cmbTypes" Width="250" StaysOpenOnEdit="True" IsEditable="False" VerticalAlignment="Center" >
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox Content="{Binding}" Tag="{Binding}" />
+                            <!--Checked="TypeCheckBox_Changed" Unchecked="TypeCheckBox_Changed"/> -->
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
+        </Grid>
+
+        <DataGrid x:Name="dgFilialen" Grid.Row="1" Margin="8">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Naam" Binding="{Binding Naam}" Width="100"/>
+                <DataGridTextColumn Header="Adres" Binding="{Binding Adres}" Width="200"/>
+                <DataGridTextColumn Header="StadId" Binding="{Binding StadId}" Width="200"/>
+                <DataGridTextColumn Header="Telefoon" Binding="{Binding Telefoon}" Width="200"/>
+                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="200"/>
+                <DataGridTemplateColumn Header="Acties" Width="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Bewerk" Click="BewerkButton_Click"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Page>
