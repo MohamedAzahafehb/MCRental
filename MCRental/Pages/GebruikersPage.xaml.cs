@@ -30,7 +30,8 @@ namespace MCRental_Client.Pages
                           select new Gebruiker
                           {
                               Id = gebruiker.Id,
-                              Naam = gebruiker.Naam,
+                              Voornaam = gebruiker.Voornaam,
+                              Achternaam = gebruiker.Achternaam,
                               UserName = gebruiker.UserName,
                               Email = gebruiker.Email
                           })

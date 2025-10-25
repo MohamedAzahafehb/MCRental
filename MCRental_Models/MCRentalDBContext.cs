@@ -42,6 +42,7 @@ namespace MCRental_Models
                 context.SaveChanges();
             }
             Gebruiker.Seeder(); // Ensure seeding data is generated
+            context.SaveChanges();
             if (!context.Autos.Any())
             {
                 context.Autos.AddRange(Auto.seedingData());

@@ -1,5 +1,7 @@
 ﻿using MCRental_Client.Pages;
 using MCRental_Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,6 +63,16 @@ namespace MCRental_Client.Windows
         private void mniProfiel_Click(object sender, RoutedEventArgs e)
         {
             //frmMain.Navigate(new ProfielPage(_context));
+        }
+
+        private void btnLogin_Click(object sender, RoutedEventArgs e)
+        {
+            new LogIn(App.ServiceProvider.GetRequiredService<UserManager<Gebruiker>>()).ShowDialog();
+        }
+
+        private void btnRegistreer_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

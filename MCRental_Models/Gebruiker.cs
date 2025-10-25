@@ -15,15 +15,38 @@ namespace MCRental_Models
 {
     public class Gebruiker : IdentityUser
     {
-        public string Naam { get; set; } = string.Empty;
-        static Gebruiker dummy = new Gebruiker
+        [Required]
+        public string Voornaam { get; set; }
+        [Required]
+        public string Achternaam { get; set; }
+        [Required]
+        public DateTime GeboorteDatum { get; set; }
+        [Required]
+        public string Adres { get; set; }
+        [ForeignKey("Stad")]
+        public int StadId { get; set; }
+        public Stad? Stad { get; set; }
+        public ICollection<Reservatie>? Reservaties { get; set; }
+
+
+        public static Gebruiker dummy = new Gebruiker
         {
-            Naam = "-",
+            Voornaam = "Dummy",
+            Achternaam = "Dumpfries",
+            GeboorteDatum = new DateTime(1999, 1, 1),
+            Adres = "Dummystraat 1",
+            StadId = 1,
             UserName = "Dummy",
             NormalizedUserName = "DUMMY",
-            Email = "Dummy@Agenda.be"
+            Email = "Dummy@mcrental.be",
+            EmailConfirmed = true,
+            PhoneNumber = "0000000000"
         };
 
+        public override string ToString()
+        {
+            return $"{Voornaam} {Achternaam}";
+        }
 
         public static async Task Seeder()
         {
@@ -35,7 +58,7 @@ namespace MCRental_Models
                 context.Roles.AddRange(new List<IdentityRole>
                 {
                     new IdentityRole { Id = "Admin", Name = "Admin", NormalizedName = "ADMIN" },
-                    new IdentityRole { Id = "User", Name = "User", NormalizedName = "USER" }
+                    new IdentityRole { Id = "Klant", Name = "Klant", NormalizedName = "KLANT" }
                 });
                 context.SaveChanges();
             }
@@ -44,44 +67,78 @@ namespace MCRental_Models
             {
                 context.Add(dummy);
                 context.SaveChanges();
-                Gebruiker user = new Gebruiker { UserName = "user", Naam = "User", Email = "user.Test@Agenda.be", EmailConfirmed = true };
-                Gebruiker admin = new Gebruiker { UserName = "admin", Naam = "Admin", Email = "admin.Test@Agenda.be", EmailConfirmed = true };
-                Gebruiker systemAdmin = new Gebruiker { UserName = "systemA", Naam = "SystemA", Email = "systemA.Test@Agenda.be", EmailConfirmed = true };
-                Gebruiker UserAdmin = new Gebruiker { UserName = "userA", Naam = "UserA", Email = "userA.Test@Agenda.be", EmailConfirmed = true };
+                Gebruiker hans = new Gebruiker
+                {
+                    Voornaam = "Hans",
+                    Achternaam = "De Beer",
+                    GeboorteDatum = new DateTime(1990, 6, 15),
+                    Adres = "Berenstraat 5",
+                    StadId = 2,
+                    UserName = "hansb",
+                    Email = "hans.debeer@mcrental.be",
+                    EmailConfirmed = true,
+                    PhoneNumber = "0123456789"
+                };
+                Gebruiker admin = new Gebruiker
+                {
+                    Voornaam = "Admin",
+                    Achternaam = "Istrator",
+                    GeboorteDatum = new DateTime(1985, 3, 20),
+                    Adres = "Adminlaan 10",
+                    StadId = 1,
+                    UserName = "admin",
+                    Email = "admin@mcrental.be",
+                    EmailConfirmed = true,
+                    PhoneNumber = "0987654321"
+                };
+                Gebruiker grietje = new Gebruiker
+                {
+                    Voornaam = "Grietje",
+                    Achternaam = "Peeters",
+                    GeboorteDatum = new DateTime(1995, 11, 30),
+                    Adres = "Peeterstraat 8",
+                    StadId = 3,
+                    UserName = "grietjep",
+                    Email = "grietjep@hotmail.com",
+                    EmailConfirmed = true,
+                    PhoneNumber = "0112233445"
+                };
+                Gebruiker jans = new Gebruiker
+                {
+                    Voornaam = "JanS",
+                    Achternaam = "Smet",
+                    GeboorteDatum = new DateTime(1978, 9, 5),
+                    Adres = "Smetlaan 12",
+                    StadId = 2,
+                    UserName = "janss",
+                    Email = "janss@hotmail.com",
+                    EmailConfirmed = true,
+                    PhoneNumber = "0223344556"
+                };
+                
                 UserManager<Gebruiker> userManager = new UserManager<Gebruiker>(
                     new UserStore<Gebruiker>(context),
                     null, new PasswordHasher<Gebruiker>(),
                     null, null, null, null, null, null);
 
-                await userManager.CreateAsync(user, "12345678");
+                await userManager.CreateAsync(hans, "12345678");
                 await userManager.CreateAsync(admin, "12345678");
-                await userManager.CreateAsync(systemAdmin, "12345678");
-                await userManager.CreateAsync(UserAdmin, "12345678");
+                await userManager.CreateAsync(grietje, "12345678");
+                await userManager.CreateAsync(jans, "12345678");
 
-                while (context.Users.Count() < 5)
+                while (context.Users.Count() < 4)
                 {
                     await Task.Delay(100);
                 }
 
-                await userManager.AddToRoleAsync(user, "User");
+                await userManager.AddToRoleAsync(hans, "Klant");
                 await userManager.AddToRoleAsync(admin, "Admin");
-                await userManager.AddToRoleAsync(systemAdmin, "Admin");
-                await userManager.AddToRoleAsync(UserAdmin, "User");
+                await userManager.AddToRoleAsync(grietje, "Klant");
+                await userManager.AddToRoleAsync(jans, "Klant");
             }
 
             dummy = context.Users.First(u => u.UserName == "Dummy");
         }
-            //        public string Voornaam { get; set; }
-            //        [Required]
-            //        public string Achternaam { get; set; }
-            //        [Required]
-            //        public DateTime GeboorteDatum { get; set; }
-            //        [Required]
-            //        public string Adres { get; set; }
-            //        [ForeignKey("Stad")]
-            //        public int StadId { get; set; }
-            //        public Stad? Stad { get; set; }
-            //        public ICollection<Reservatie>? Reservaties { get; set; }
 
 
             //        public static async Task seedingData()

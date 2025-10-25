@@ -4,12 +4,15 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Windows;
+using MCRental_Client.Windows;
 
 namespace MCRental_Client
 {
     public partial class App : Application
     {
         static public ServiceProvider ServiceProvider { get; private set; }
+        static public Gebruiker Gebruiker { get; set; }
+        static public Windows.MainWindow MainWindow { get; set; }
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -19,7 +22,8 @@ namespace MCRental_Client
 
             services.AddDbContext<MCRentalDBContext>();
 
-            services.AddIdentityCore<Gebruiker>();
+            services.AddIdentityCore<Gebruiker>()
+                .AddEntityFrameworkStores<MCRentalDBContext>();
 
             services.AddLogging();
 
@@ -28,8 +32,10 @@ namespace MCRental_Client
             MCRentalDBContext context = new MCRentalDBContext();
             MCRentalDBContext.seeder(context);
 
-            Windows.MainWindow mainWindow = new Windows.MainWindow(ServiceProvider.GetRequiredService<MCRentalDBContext>());
-            mainWindow.Show();
+            App.Gebruiker = Gebruiker.dummy;
+
+            MainWindow = new Windows.MainWindow(ServiceProvider.GetRequiredService<MCRentalDBContext>());
+            MainWindow.Show();
 
             //    var services = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
 
