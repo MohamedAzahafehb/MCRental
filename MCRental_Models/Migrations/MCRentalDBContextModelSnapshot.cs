@@ -60,74 +60,6 @@ namespace MCRental_Models.Migrations
                     b.HasIndex("FiliaalId");
 
                     b.ToTable("Autos");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Beschikbaar = true,
-                            DagPrijs = 70.0,
-                            FiliaalId = 1,
-                            Merk = "Toyota",
-                            Model = "Corolla",
-                            Nummerplaat = "1-ABC-123",
-                            type = "Sedan"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Beschikbaar = true,
-                            DagPrijs = 65.0,
-                            FiliaalId = 2,
-                            Merk = "Ford",
-                            Model = "Focus",
-                            Nummerplaat = "1-DEF-456",
-                            type = "Hatchback"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Beschikbaar = false,
-                            DagPrijs = 95.0,
-                            FiliaalId = 3,
-                            Merk = "BMW",
-                            Model = "X3",
-                            Nummerplaat = "1-GHI-789",
-                            type = "SUV"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Beschikbaar = true,
-                            DagPrijs = 90.0,
-                            FiliaalId = 1,
-                            Merk = "Audi",
-                            Model = "A4",
-                            Nummerplaat = "1-JKL-012",
-                            type = "Sedan"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Beschikbaar = true,
-                            DagPrijs = 75.0,
-                            FiliaalId = 2,
-                            Merk = "Volkswagen",
-                            Model = "Golf",
-                            Nummerplaat = "1-MNO-345",
-                            type = "Hatchback"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Beschikbaar = false,
-                            DagPrijs = 100.0,
-                            FiliaalId = 3,
-                            Merk = "Mercedes",
-                            Model = "GLC",
-                            Nummerplaat = "1-PQR-678",
-                            type = "SUV"
-                        });
                 });
 
             modelBuilder.Entity("MCRental_Models.Filiaal", b =>
@@ -162,35 +94,6 @@ namespace MCRental_Models.Migrations
                     b.HasIndex("StadId");
 
                     b.ToTable("Filialen");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Adres = "Kerkstraat 1",
-                            Email = "info.antwerpen@mcrental.be",
-                            Naam = "Filiaal Antwerpen",
-                            StadId = 2,
-                            Telefoon = "03 123 45 67"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Adres = "Grote Markt 1",
-                            Email = "info.brussel@mcrental.be",
-                            Naam = "Filiaal Brussel",
-                            StadId = 1,
-                            Telefoon = "02 123 45 67"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Adres = "Bondgenotenlaan 1",
-                            Email = "info.leuven@mcrental.be",
-                            Naam = "Filiaal Leuven",
-                            StadId = 3,
-                            Telefoon = "016 123 45 67"
-                        });
                 });
 
             modelBuilder.Entity("MCRental_Models.Gebruiker", b =>
@@ -293,10 +196,8 @@ namespace MCRental_Models.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("GebruikerId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("KlantId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("StartDatum")
                         .HasColumnType("datetime2");
@@ -308,32 +209,6 @@ namespace MCRental_Models.Migrations
                     b.HasIndex("GebruikerId");
 
                     b.ToTable("Reservaties");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AutoId = 2,
-                            EindDatum = new DateTime(2024, 7, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            KlantId = 1,
-                            StartDatum = new DateTime(2024, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AutoId = 1,
-                            EindDatum = new DateTime(2024, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            KlantId = 1,
-                            StartDatum = new DateTime(2024, 8, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 3,
-                            AutoId = 5,
-                            EindDatum = new DateTime(2024, 9, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            KlantId = 3,
-                            StartDatum = new DateTime(2024, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
                 });
 
             modelBuilder.Entity("MCRental_Models.Stad", b =>
@@ -355,62 +230,6 @@ namespace MCRental_Models.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Steden");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Naam = "Brussel",
-                            Postcode = "1000"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Naam = "Antwerpen",
-                            Postcode = "2000"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Naam = "Leuven",
-                            Postcode = "3000"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Naam = "Luik",
-                            Postcode = "4000"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Naam = "Namen",
-                            Postcode = "5000"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Naam = "Charleroi",
-                            Postcode = "6000"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Naam = "Bergen",
-                            Postcode = "7000"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Naam = "Brugge",
-                            Postcode = "8000"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Naam = "Gent",
-                            Postcode = "9000"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -571,7 +390,7 @@ namespace MCRental_Models.Migrations
             modelBuilder.Entity("MCRental_Models.Gebruiker", b =>
                 {
                     b.HasOne("MCRental_Models.Stad", "Stad")
-                        .WithMany()
+                        .WithMany("Gebruikers")
                         .HasForeignKey("StadId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -589,7 +408,9 @@ namespace MCRental_Models.Migrations
 
                     b.HasOne("MCRental_Models.Gebruiker", null)
                         .WithMany("Reservaties")
-                        .HasForeignKey("GebruikerId");
+                        .HasForeignKey("GebruikerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Auto");
                 });
@@ -663,6 +484,8 @@ namespace MCRental_Models.Migrations
             modelBuilder.Entity("MCRental_Models.Stad", b =>
                 {
                     b.Navigation("Filialen");
+
+                    b.Navigation("Gebruikers");
                 });
 #pragma warning restore 612, 618
         }

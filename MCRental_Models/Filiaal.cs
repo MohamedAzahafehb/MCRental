@@ -26,7 +26,6 @@ namespace MCRental_Models
             {
                 new Filiaal
                 {
-                    Id = 1,
                     Naam = "Filiaal Antwerpen",
                     Adres = "Kerkstraat 1",
                     Telefoon = "03 123 45 67",
@@ -35,7 +34,6 @@ namespace MCRental_Models
                 },
                 new Filiaal
                 {
-                    Id = 2,
                     Naam = "Filiaal Brussel",
                     Adres = "Grote Markt 1",
                     Telefoon = "02 123 45 67",
@@ -44,7 +42,6 @@ namespace MCRental_Models
                 },
                 new Filiaal
                 {
-                    Id = 3,
                     Naam = "Filiaal Leuven",
                     Adres = "Bondgenotenlaan 1",
                     Telefoon = "016 123 45 67",

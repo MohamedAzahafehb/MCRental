@@ -15,6 +15,7 @@ namespace MCRental_Models
         [Required]
         public string Postcode { get; set; }
         public ICollection<Filiaal>? Filialen { get; set; }
+        public ICollection<Gebruiker>? Gebruikers { get; set; }
         //public ICollection<Gebruiker>? Klanten { get; set; }
 
         public static List<Stad> seedingData()
@@ -23,55 +24,46 @@ namespace MCRental_Models
             {
                 new Stad
                 {
-                    Id = 1,
                     Naam = "Brussel",
                     Postcode = "1000"
                 },
                 new Stad
                 {
-                    Id = 2,
                     Naam = "Antwerpen",
                     Postcode = "2000"
                 },
                 new Stad
                 {
-                    Id = 3,
                     Naam = "Leuven",
                     Postcode = "3000"
                 },
                 new Stad
                 {
-                    Id = 4,
                     Naam = "Luik",
                     Postcode = "4000"
                 },
                 new Stad
                 {
-                    Id = 5,
                     Naam = "Namen",
                     Postcode = "5000"
                 },
                 new Stad
                 {
-                    Id = 6,
                     Naam = "Charleroi",
                     Postcode = "6000"
                 },
                 new Stad
                 {
-                    Id = 7,
                     Naam = "Bergen",
                     Postcode = "7000"
                 },
                 new Stad
                 {
-                    Id = 8,
                     Naam = "Brugge",
                     Postcode = "8000"
                 },
                 new Stad
                 {
-                    Id = 9,
                     Naam = "Gent",
                     Postcode = "9000"
                 },

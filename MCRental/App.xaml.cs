@@ -22,7 +22,16 @@ namespace MCRental_Client
 
             services.AddDbContext<MCRentalDBContext>();
 
-            services.AddIdentityCore<Gebruiker>()
+            services.AddIdentityCore<Gebruiker>(
+                options =>
+                {
+                    options.Password.RequireDigit = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequiredLength = 6;
+                    options.User.RequireUniqueEmail = true;
+                })
                 .AddEntityFrameworkStores<MCRentalDBContext>();
 
             services.AddLogging();
@@ -36,29 +45,6 @@ namespace MCRental_Client
 
             MainWindow = new Windows.MainWindow(ServiceProvider.GetRequiredService<MCRentalDBContext>());
             MainWindow.Show();
-
-            //    var services = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
-
-            //MCRentalDBContext context = new MCRentalDBContext();
-            //services.AddDbContext<MCRentalDBContext>();
-
-            //    services.AddLogging();
-
-            //    //services.AddIdentityCore<Gebruiker>(options =>
-            //    //{
-            //    //    options.Password.RequireDigit = false;
-            //    //    options.Password.RequireLowercase = false;
-            //    //    options.Password.RequireNonAlphanumeric = false;
-            //    //    options.Password.RequireUppercase = false;
-            //    //    options.Password.RequiredLength = 6;
-            //    //    options.User.RequireUniqueEmail = true;
-            //    //})
-            //    //.AddEntityFrameworkStores<MCRentalDBContext>();
-
-
-            //    serviceProvider = services.BuildServiceProvider();
-            //    MainWindow mainWindow = new MainWindow(App.serviceProvider.GetRequiredService<MCRentalDBContext>());
-            //mainWindow.Show();
         }
     }
 }

@@ -55,22 +55,22 @@ namespace MCRental_Models
             }
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-            Console.WriteLine("OnModelCreating called - seeding data...");
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    base.OnModelCreating(modelBuilder);
+        //    Console.WriteLine("OnModelCreating called - seeding data...");
 
-            modelBuilder.Entity<Stad>().HasData(Stad.seedingData());
-            Console.WriteLine("Steden done");
-            modelBuilder.Entity<Filiaal>().HasData(Filiaal.seedingData());
-            Console.WriteLine("Filialen done");
-            //modelBuilder.Entity<Gebruiker>().HasData(Gebruiker.seedingData());
-            //Console.WriteLine("Klanten done");
-            modelBuilder.Entity<Auto>().HasData(Auto.seedingData());
-            Console.WriteLine("Autos done");
-            modelBuilder.Entity<Reservatie>().HasData(Reservatie.seedingData());
-            Console.WriteLine("Reservaties done");
+        //    modelBuilder.Entity<Stad>().HasData(Stad.seedingData());
+        //    Console.WriteLine("Steden done");
+        //    modelBuilder.Entity<Filiaal>().HasData(Filiaal.seedingData());
+        //    Console.WriteLine("Filialen done");
+        //    modelBuilder.Entity<Gebruiker>().HasData(Gebruiker.Seeder());
+        //    Console.WriteLine("Gebruikers done");
+        //    modelBuilder.Entity<Auto>().HasData(Auto.seedingData());
+        //    Console.WriteLine("Autos done");
+        //    modelBuilder.Entity<Reservatie>().HasData(Reservatie.seedingData());
+        //    Console.WriteLine("Reservaties done");
 
-        }
+        //}
     }
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MCRental_Models.Migrations
 {
     [DbContext(typeof(MCRentalDBContext))]
-    [Migration("20251024185004_IdentityUser")]
-    partial class IdentityUser
+    [Migration("20251025155118_reinitialization")]
+    partial class reinitialization
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -63,74 +63,6 @@ namespace MCRental_Models.Migrations
                     b.HasIndex("FiliaalId");
 
                     b.ToTable("Autos");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Beschikbaar = true,
-                            DagPrijs = 70.0,
-                            FiliaalId = 1,
-                            Merk = "Toyota",
-                            Model = "Corolla",
-                            Nummerplaat = "1-ABC-123",
-                            type = "Sedan"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Beschikbaar = true,
-                            DagPrijs = 65.0,
-                            FiliaalId = 2,
-                            Merk = "Ford",
-                            Model = "Focus",
-                            Nummerplaat = "1-DEF-456",
-                            type = "Hatchback"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Beschikbaar = false,
-                            DagPrijs = 95.0,
-                            FiliaalId = 3,
-                            Merk = "BMW",
-                            Model = "X3",
-                            Nummerplaat = "1-GHI-789",
-                            type = "SUV"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Beschikbaar = true,
-                            DagPrijs = 90.0,
-                            FiliaalId = 1,
-                            Merk = "Audi",
-                            Model = "A4",
-                            Nummerplaat = "1-JKL-012",
-                            type = "Sedan"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Beschikbaar = true,
-                            DagPrijs = 75.0,
-                            FiliaalId = 2,
-                            Merk = "Volkswagen",
-                            Model = "Golf",
-                            Nummerplaat = "1-MNO-345",
-                            type = "Hatchback"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Beschikbaar = false,
-                            DagPrijs = 100.0,
-                            FiliaalId = 3,
-                            Merk = "Mercedes",
-                            Model = "GLC",
-                            Nummerplaat = "1-PQR-678",
-                            type = "SUV"
-                        });
                 });
 
             modelBuilder.Entity("MCRental_Models.Filiaal", b =>
@@ -165,35 +97,6 @@ namespace MCRental_Models.Migrations
                     b.HasIndex("StadId");
 
                     b.ToTable("Filialen");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Adres = "Kerkstraat 1",
-                            Email = "info.antwerpen@mcrental.be",
-                            Naam = "Filiaal Antwerpen",
-                            StadId = 2,
-                            Telefoon = "03 123 45 67"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Adres = "Grote Markt 1",
-                            Email = "info.brussel@mcrental.be",
-                            Naam = "Filiaal Brussel",
-                            StadId = 1,
-                            Telefoon = "02 123 45 67"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Adres = "Bondgenotenlaan 1",
-                            Email = "info.leuven@mcrental.be",
-                            Naam = "Filiaal Leuven",
-                            StadId = 3,
-                            Telefoon = "016 123 45 67"
-                        });
                 });
 
             modelBuilder.Entity("MCRental_Models.Gebruiker", b =>
@@ -203,6 +106,14 @@ namespace MCRental_Models.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
+
+                    b.Property<string>("Achternaam")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Adres")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -215,15 +126,14 @@ namespace MCRental_Models.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime>("GeboorteDatum")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Naam")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -245,12 +155,19 @@ namespace MCRental_Models.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("StadId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("Voornaam")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -261,6 +178,8 @@ namespace MCRental_Models.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("StadId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -279,8 +198,9 @@ namespace MCRental_Models.Migrations
                     b.Property<DateTime>("EindDatum")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("KlantId")
-                        .HasColumnType("int");
+                    b.Property<string>("GebruikerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("StartDatum")
                         .HasColumnType("datetime2");
@@ -289,33 +209,9 @@ namespace MCRental_Models.Migrations
 
                     b.HasIndex("AutoId");
 
-                    b.ToTable("Reservaties");
+                    b.HasIndex("GebruikerId");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AutoId = 2,
-                            EindDatum = new DateTime(2024, 7, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            KlantId = 1,
-                            StartDatum = new DateTime(2024, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AutoId = 1,
-                            EindDatum = new DateTime(2024, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            KlantId = 1,
-                            StartDatum = new DateTime(2024, 8, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 3,
-                            AutoId = 5,
-                            EindDatum = new DateTime(2024, 9, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            KlantId = 3,
-                            StartDatum = new DateTime(2024, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
+                    b.ToTable("Reservaties");
                 });
 
             modelBuilder.Entity("MCRental_Models.Stad", b =>
@@ -337,62 +233,6 @@ namespace MCRental_Models.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Steden");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Naam = "Brussel",
-                            Postcode = "1000"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Naam = "Antwerpen",
-                            Postcode = "2000"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Naam = "Leuven",
-                            Postcode = "3000"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Naam = "Luik",
-                            Postcode = "4000"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Naam = "Namen",
-                            Postcode = "5000"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Naam = "Charleroi",
-                            Postcode = "6000"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Naam = "Bergen",
-                            Postcode = "7000"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Naam = "Brugge",
-                            Postcode = "8000"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Naam = "Gent",
-                            Postcode = "9000"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -550,11 +390,28 @@ namespace MCRental_Models.Migrations
                     b.Navigation("Stad");
                 });
 
+            modelBuilder.Entity("MCRental_Models.Gebruiker", b =>
+                {
+                    b.HasOne("MCRental_Models.Stad", "Stad")
+                        .WithMany("Gebruikers")
+                        .HasForeignKey("StadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Stad");
+                });
+
             modelBuilder.Entity("MCRental_Models.Reservatie", b =>
                 {
                     b.HasOne("MCRental_Models.Auto", "Auto")
                         .WithMany("Reservaties")
                         .HasForeignKey("AutoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MCRental_Models.Gebruiker", null)
+                        .WithMany("Reservaties")
+                        .HasForeignKey("GebruikerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -622,9 +479,16 @@ namespace MCRental_Models.Migrations
                     b.Navigation("Autos");
                 });
 
+            modelBuilder.Entity("MCRental_Models.Gebruiker", b =>
+                {
+                    b.Navigation("Reservaties");
+                });
+
             modelBuilder.Entity("MCRental_Models.Stad", b =>
                 {
                     b.Navigation("Filialen");
+
+                    b.Navigation("Gebruikers");
                 });
 #pragma warning restore 612, 618
         }

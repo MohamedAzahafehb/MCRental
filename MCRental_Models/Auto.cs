@@ -36,7 +36,6 @@ namespace MCRental_Models
             {
                 new Auto
                 {
-                    Id = 1,
                     Merk = "Toyota",
                     Model = "Corolla",
                     Nummerplaat = "1-ABC-123",
@@ -47,7 +46,6 @@ namespace MCRental_Models
                 },
                 new Auto
                 {
-                    Id = 2,
                     Merk = "Ford",
                     Model = "Focus",
                     Nummerplaat = "1-DEF-456",
@@ -58,7 +56,6 @@ namespace MCRental_Models
                 },
                 new Auto
                 {
-                    Id = 3,
                     Merk = "BMW",
                     Model = "X3",
                     Nummerplaat = "1-GHI-789",
@@ -69,7 +66,6 @@ namespace MCRental_Models
                 },
                 new Auto
                 {
-                    Id = 4,
                     Merk = "Audi",
                     Model = "A4",
                     Nummerplaat = "1-JKL-012",
@@ -80,7 +76,6 @@ namespace MCRental_Models
                 },
                 new Auto
                 {
-                    Id = 5,
                     Merk = "Volkswagen",
                     Model = "Golf",
                     Nummerplaat = "1-MNO-345",
@@ -91,7 +86,6 @@ namespace MCRental_Models
                 },
                 new Auto
                 {
-                    Id = 6,
                     Merk = "Mercedes",
                     Model = "GLC",
                     Nummerplaat = "1-PQR-678",

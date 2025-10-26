@@ -24,10 +24,12 @@ namespace MCRental_Client.Windows
     public partial class MainWindow : Window
     {
         private readonly MCRentalDBContext _context;
+        private UserManager<Gebruiker> _userManager;
         public MainWindow(MCRentalDBContext context)
         {
             InitializeComponent();
             _context = context;
+            _userManager = App.ServiceProvider.GetRequiredService<UserManager<Gebruiker>>();
         }
 
         private void mniAuto_Click(object sender, RoutedEventArgs e)
@@ -62,17 +64,17 @@ namespace MCRental_Client.Windows
 
         private void mniProfiel_Click(object sender, RoutedEventArgs e)
         {
-            //frmMain.Navigate(new ProfielPage(_context));
+            frmMain.Navigate(new ProfielPage(_userManager, _context));
         }
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            new LogIn(App.ServiceProvider.GetRequiredService<UserManager<Gebruiker>>()).ShowDialog();
+            new LogIn(_userManager).ShowDialog();
         }
 
         private void btnRegistreer_Click(object sender, RoutedEventArgs e)
         {
-
+            new Registreer(_userManager, _context).ShowDialog();
         }
     }
 }

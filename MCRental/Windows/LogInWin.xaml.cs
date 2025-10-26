@@ -41,7 +41,6 @@ namespace MCRental_Client.Windows
                     {
                         {
                             App.Gebruiker = user;
-                            App.MainWindow.lblGebruiker.Content = $"Ingelogd als: {user.Voornaam} {user.Achternaam}";
                             MessageBox.Show($"Welkom {user.Voornaam} {user.Achternaam}!", "Inloggen gelukt", MessageBoxButton.OK, MessageBoxImage.Information);
                             Close();
                         }

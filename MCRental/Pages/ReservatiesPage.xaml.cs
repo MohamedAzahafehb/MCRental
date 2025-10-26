@@ -30,7 +30,7 @@ namespace MCRental_Client.Pages
                            {
                                Id = reservatie.Id,
                                AutoId = reservatie.AutoId,
-                               KlantId = reservatie.KlantId,
+                               GebruikerId = reservatie.GebruikerId,
                                StartDatum = reservatie.StartDatum,
                                EindDatum = reservatie.EindDatum,
                            })

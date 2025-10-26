@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace MCRental_Models
 {
@@ -15,12 +16,18 @@ namespace MCRental_Models
         public DateTime StartDatum { get; set; }
         [Required]
         public DateTime EindDatum { get; set; }
-        [ForeignKey("Klant")]
-        public int KlantId { get; set; }
+        //[ForeignKey("Klant")]
+        //public int KlantId { get; set; }
+        [ForeignKey("Gebruiker")]
+        public string GebruikerId { get; set; }
         //public Gebruiker? Klant { get; set; }
         //[ForeignKey("Auto")]
+        [ForeignKey("Auto")]
         public int AutoId { get; set; }
         public Auto? Auto { get; set; }
+
+        //Hans: dfb77b1e-87df-4474-a679-763fe1a8af08
+        //Grietje: 9d5f0aa9-190b-407b-b4bc-c97b15503eb3
 
 
         public static List<Reservatie> seedingData()
@@ -29,26 +36,30 @@ namespace MCRental_Models
             {
                 new Reservatie
                 {
-                    Id = 1,
                     StartDatum = new DateTime(2024, 7, 1),
                     EindDatum = new DateTime(2024, 7, 10),
-                    KlantId = 1,
+                    GebruikerId = "6e22436b-285e-4a51-874d-1442e4f33a9d",
                     AutoId = 2
                 },
                 new Reservatie
                 {
-                    Id = 2,
                     StartDatum = new DateTime(2024, 8, 5),
                     EindDatum = new DateTime(2024, 8, 15),
-                    KlantId = 1,
+                    GebruikerId = "6e22436b-285e-4a51-874d-1442e4f33a9d",
                     AutoId = 1
                 },
                 new Reservatie
                 {
-                    Id = 3,
                     StartDatum = new DateTime(2024, 9, 10),
                     EindDatum = new DateTime(2024, 9, 20),
-                    KlantId = 3,
+                    GebruikerId = "6e22436b-285e-4a51-874d-1442e4f33a9d",
+                    AutoId = 5
+                },
+                new Reservatie
+                {
+                    StartDatum = new DateTime(2024, 10, 10),
+                    EindDatum = new DateTime(2024, 10, 20),
+                    GebruikerId = "6e22436b-285e-4a51-874d-1442e4f33a9d",
                     AutoId = 5
                 }
             };

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MCRental_Models;
+using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +21,61 @@ namespace MCRental_Client.Windows
     /// </summary>
     public partial class Registreer : Window
     {
-        public Registreer()
+        private readonly UserManager<Gebruiker> _userManager;
+        private readonly MCRentalDBContext _context;
+
+        public Registreer(UserManager<Gebruiker> userManager, MCRentalDBContext context)
         {
             InitializeComponent();
+            _userManager = userManager;
+            _context = context;
+
+            LaadSteden();
+        }
+
+        private void LaadSteden()
+        {
+            cmbStad.ItemsSource = _context.Steden.OrderBy(s => s.Naam).ToList();
+        }
+
+        private async void btnRegistreer_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var gebruiker = new Gebruiker
+                {
+                    Voornaam = txtVoornaam.Text,
+                    Achternaam = txtAchternaam.Text,
+                    GeboorteDatum = dpGeboortedatum.SelectedDate ?? DateTime.Now,
+                    Email = txtEmail.Text,
+                    Adres = txtAdres.Text,
+                    StadId = (int)cmbStad.SelectedValue,
+                    UserName = txtUserName.Text,
+                    PhoneNumber = txtPhoneNumber.Text
+                };
+
+                var result = await _userManager.CreateAsync(gebruiker, pwdWachtwoord.Password);
+
+                if (result.Succeeded)
+                {
+                    App.Gebruiker = gebruiker;
+                    MessageBox.Show("Registratie geslaagd!" + App.Gebruiker.UserName, "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show(string.Join("\n", result.Errors.Select(e => e.Description)), "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Er is een fout opgetreden: {ex.Message}");
+            }
+        }
+
+        private void btnAnnuleer_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

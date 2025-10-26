@@ -6,7 +6,75 @@
         xmlns:local="clr-namespace:MCRental_Client.Windows"
         mc:Ignorable="d"
         Title="Registreer" Height="450" Width="800">
-    <Grid>
-        
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Registratie" FontSize="22" FontWeight="Bold" Margin="0,0,0,15"/>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Voornaam -->
+            <TextBlock Text="Voornaam:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,5"/>
+            <TextBox x:Name="txtVoornaam" Grid.Row="0" Grid.Column="1" Margin="0,5"/>
+
+            <!-- Achternaam -->
+            <TextBlock Text="Achternaam:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,5"/>
+            <TextBox x:Name="txtAchternaam" Grid.Row="1" Grid.Column="1" Margin="0,5"/>
+
+            <!-- Geboortedatum -->
+            <TextBlock Text="Geboortedatum:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="0,5"/>
+            <DatePicker x:Name="dpGeboortedatum" Grid.Row="2" Grid.Column="1" Margin="0,5"/>
+
+            <!-- Email -->
+            <TextBlock Text="Email:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="0,5"/>
+            <TextBox x:Name="txtEmail" Grid.Row="3" Grid.Column="1" Margin="0,5"/>
+
+            <!-- Adres -->
+            <TextBlock Text="Adres:" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="0,5"/>
+            <TextBox x:Name="txtAdres" Grid.Row="4" Grid.Column="1" Margin="0,5"/>
+
+            <!-- Stad -->
+            <TextBlock Text="Stad:" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Margin="0,5"/>
+            <ComboBox x:Name="cmbStad" Grid.Row="5" Grid.Column="1" Margin="0,5"
+                      DisplayMemberPath="Naam" SelectedValuePath="Id"/>
+
+            <!-- Gebruikersnaam -->
+            <TextBlock Text="Gebruikersnaam:" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" Margin="0,5"/>
+            <TextBox x:Name="txtUserName" Grid.Row="6" Grid.Column="1" Margin="0,5"/>
+
+            <!-- Telefoonnummer -->
+            <TextBlock Text="Telefoonnummer:" Grid.Row="7" Grid.Column="0" VerticalAlignment="Center" Margin="0,5"/>
+            <TextBox x:Name="txtPhoneNumber" Grid.Row="7" Grid.Column="1" Margin="0,5"/>
+
+            <!-- Wachtwoord -->
+            <TextBlock Text="Wachtwoord:" Grid.Row="8" Grid.Column="0" VerticalAlignment="Center" Margin="0,5"/>
+            <PasswordBox x:Name="pwdWachtwoord" Grid.Row="8" Grid.Column="1" Margin="0,5"/>
+        </Grid>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+            <Button x:Name="btnAnnuleer" Content="Annuleer" Width="100" Margin="0,0,10,0" Click="btnAnnuleer_Click"/>
+            <Button x:Name="btnRegistreer" Content="Registreer" Width="100" Click="btnRegistreer_Click"/>
+        </StackPanel>
     </Grid>
 </Window>
