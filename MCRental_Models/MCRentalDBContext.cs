@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using MCRental_Models;
+﻿using MCRental_Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System.Buffers.Text;
+using System.Text.Json;
 
 namespace MCRental_Models
 {
@@ -31,10 +33,11 @@ namespace MCRental_Models
 
         public static void seeder(MCRentalDBContext context)
         {
-            if (!context.Steden.Any())
+            if (true)
             {
-                context.Steden.AddRange(Stad.seedingData());
-                context.SaveChanges();
+                //context.Steden.AddRange(Stad.seedingData());
+                //context.SaveChanges();
+                seedSteden(context);
             }
             if (!context.Filialen.Any())
             {
@@ -52,6 +55,55 @@ namespace MCRental_Models
             {
                 context.Reservaties.AddRange(Reservatie.seedingData());
                 context.SaveChanges();
+            }
+        }
+
+        private static async void seedSteden(MCRentalDBContext context)
+        {
+            var client = new HttpClient();
+            int limit = 100;
+            int offset = 0;
+            bool nogData = true;
+            List<Stad> steden = new List<Stad>();
+
+            while (nogData)
+            {
+                string url = $"https://www.odwb.be/api/explore/v2.1/catalog/datasets/postal-codes-belgium/records?select=post_code%2C%20sub_municipality_name_dutch%2C%20sub_municipality_name_french&where=sub_municipality_name_dutch%20is%20not%20null%20or%20sub_municipality_name_french%20is%20not%20null&order_by=post_code&limit={limit}&offset={offset}";
+
+                var response = await client.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+
+                var json = await response.Content.ReadAsStringAsync();
+                using JsonDocument doc = JsonDocument.Parse(json);
+                var records = doc.RootElement.GetProperty("results");
+
+                if (records.GetArrayLength() == 0)
+                {
+                    nogData = false;
+                    break;
+                }
+
+                foreach (var record in records.EnumerateArray())
+                {
+                    string dutch = record.GetProperty("sub_municipality_name_dutch").GetString();
+                    string french = record.GetProperty("sub_municipality_name_french").GetString();
+                    string postC = record.GetProperty("post_code").ToString();
+
+                    string cityName = !string.IsNullOrEmpty(dutch) ? dutch :
+                              !string.IsNullOrEmpty(french) ? french : null;
+
+                    if (!string.IsNullOrEmpty(cityName))
+                    {
+                        var stad = new Stad
+                        {
+                            Naam = cityName,
+                            Postcode = postC
+                        };
+                        context.Steden.Add(stad);
+                    }
+                }
+                context.SaveChanges();
+                offset += limit;
             }
         }
 

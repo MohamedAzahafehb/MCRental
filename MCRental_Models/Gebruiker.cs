@@ -116,7 +116,9 @@ namespace MCRental_Models
                     EmailConfirmed = true,
                     PhoneNumber = "0223344556"
                 };
-                
+
+                // Seeding halverwege mislukt, niet alle gebruikers aanwezig + geen rollen toegewezen
+
                 UserManager<Gebruiker> userManager = new UserManager<Gebruiker>(
                     new UserStore<Gebruiker>(context),
                     null, new PasswordHasher<Gebruiker>(),

@@ -30,36 +30,44 @@ namespace MCRental_Client.Windows
             InitializeComponent();
             _context = context;
             _userManager = App.ServiceProvider.GetRequiredService<UserManager<Gebruiker>>();
+            frmMain.Navigate(new AutoOverzichtPage(_context));
         }
 
         private void mniAuto_Click(object sender, RoutedEventArgs e)
         {
+            //initieel openbaar
+            // user nodig om te reserveren
             frmMain.Navigate(new AutoOverzichtPage(_context));
         }
 
         private void mniReservaties_Click(object sender, RoutedEventArgs e)
         {
+            //user nodig
             frmMain.Navigate(new ReservatiesPage(_context));
         }
 
         private void mniAutobeheer_Click(object sender, RoutedEventArgs e)
         {
+            // role = admin vereist
             frmMain.Navigate(new AutoBeheerPage(_context));
         }
 
         private void mniReservatiebeheer_Click(object sender, RoutedEventArgs e)
         {
-            //frmMain.Navigate(new ReservatiesPage(_context));
+            // role = admin vereist
+            frmMain.Navigate(new ReservatieBeheerPage(_context));
         }
 
         private void mniGebruikers_Click(object sender, RoutedEventArgs e)
         {
+            // role = admin vereist
             frmMain.Navigate(new GebruikersPage(_context));
         }
 
         private void mniFilialenbeheer_Click(object sender, RoutedEventArgs e)
         {
-            //frmMain.Navigate(new FilialenPage(_context));
+            // role = admin vereist
+            frmMain.Navigate(new FilialenPage(_context));
         }
 
         private void mniProfiel_Click(object sender, RoutedEventArgs e)
@@ -69,7 +77,7 @@ namespace MCRental_Client.Windows
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            new LogIn(_userManager).ShowDialog();
+            new LogIn(_userManager, _context).ShowDialog();
         }
 
         private void btnRegistreer_Click(object sender, RoutedEventArgs e)

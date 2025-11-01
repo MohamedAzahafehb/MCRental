@@ -23,8 +23,10 @@ namespace MCRental_Client.Windows
     public partial class LogIn : Window
     {
         private readonly UserManager<Gebruiker> _userManager;
-        public LogIn(UserManager<Gebruiker> userManager)
+        private readonly MCRentalDBContext _context;
+        public LogIn(UserManager<Gebruiker> userManager, MCRentalDBContext context)
         {
+            _context = context;
             _userManager = userManager;
             InitializeComponent();
         }
@@ -42,7 +44,31 @@ namespace MCRental_Client.Windows
                         {
                             App.Gebruiker = user;
                             MessageBox.Show($"Welkom {user.Voornaam} {user.Achternaam}!", "Inloggen gelukt", MessageBoxButton.OK, MessageBoxImage.Information);
+                            // visibility weg van login en register knop
+                            App.MainWindow.btnLogin.Visibility = Visibility.Collapsed;
+                            App.MainWindow.btnRegistreer.Visibility = Visibility.Collapsed;
+                            App.MainWindow.lblGebruiker.Content = $"{user.UserName}";
                             Close();
+                        }
+                        IdentityUserRole<string>? userRole = _context.UserRoles.FirstOrDefault(ur => ur.UserId == App.Gebruiker.Id);
+
+                        MessageBox.Show(userRole.RoleId);
+                        if (userRole != null)
+                        {
+                            if(userRole.RoleId == "Admin")
+                            {
+                                App.MainWindow.mniAutobeheer.Visibility = Visibility.Visible;
+                                App.MainWindow.mniReservatiebeheer.Visibility = Visibility.Visible;
+                                App.MainWindow.mniGebruikers.Visibility = Visibility.Visible;
+                                App.MainWindow.mniFilialenbeheer.Visibility = Visibility.Visible;
+                                App.MainWindow.mniProfiel.Visibility = Visibility.Visible;
+                            }
+                            else if (userRole.RoleId == "Klant")
+                            {
+                                App.MainWindow.mniAuto.Visibility = Visibility.Visible;
+                                App.MainWindow.mniReservaties.Visibility = Visibility.Visible;
+                                App.MainWindow.mniProfiel.Visibility = Visibility.Visible;
+                            }
                         }
                     }
                     tbError.Text = "Ongeldige username of wachtwoord.";

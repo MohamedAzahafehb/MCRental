@@ -35,7 +35,7 @@ namespace MCRental_Client.Windows
 
         private void LaadSteden()
         {
-            cmbStad.ItemsSource = _context.Steden.OrderBy(s => s.Naam).ToList();
+            cmbStad.ItemsSource = _context.Steden.OrderBy(s => s.Naam).Take(20).ToList();
         }
 
         private async void btnRegistreer_Click(object sender, RoutedEventArgs e)
@@ -60,6 +60,12 @@ namespace MCRental_Client.Windows
                 {
                     App.Gebruiker = gebruiker;
                     MessageBox.Show("Registratie geslaagd!" + App.Gebruiker.UserName, "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+                    _context.Add(new IdentityUserRole<string>
+                    {
+                        UserId = gebruiker.Id,
+                        RoleId = "Klant"
+                    });
+                    _context.SaveChanges();
                     this.Close();
                 }
                 else
