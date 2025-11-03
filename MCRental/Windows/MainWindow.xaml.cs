@@ -30,14 +30,14 @@ namespace MCRental_Client.Windows
             InitializeComponent();
             _context = context;
             _userManager = App.ServiceProvider.GetRequiredService<UserManager<Gebruiker>>();
-            frmMain.Navigate(new AutoOverzichtPage(_context));
+            frmMain.Navigate(new HomeKlantPage(_userManager, _context));
         }
 
         private void mniAuto_Click(object sender, RoutedEventArgs e)
         {
             //initieel openbaar
             // user nodig om te reserveren
-            frmMain.Navigate(new AutoOverzichtPage(_context));
+            frmMain.Navigate(new HomeKlantPage(_userManager, _context));
         }
 
         private void mniReservaties_Click(object sender, RoutedEventArgs e)
@@ -78,11 +78,6 @@ namespace MCRental_Client.Windows
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
             new LogIn(_userManager, _context).ShowDialog();
-        }
-
-        private void btnRegistreer_Click(object sender, RoutedEventArgs e)
-        {
-            new Registreer(_userManager, _context).ShowDialog();
         }
     }
 }

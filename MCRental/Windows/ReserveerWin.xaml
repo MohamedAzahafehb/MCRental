@@ -38,12 +38,12 @@
 
             <StackPanel Grid.Column="0" Margin="0,0,10,0">
                 <TextBlock Text="Begindatum:" FontWeight="Bold"/>
-                <DatePicker SelectedDate="{Binding StartDatum, Mode=TwoWay}" />
+                <Label x:Name="lblStartDatum" />
             </StackPanel>
 
             <StackPanel Grid.Column="1">
                 <TextBlock Text="Einddatum:" FontWeight="Bold"/>
-                <DatePicker SelectedDate="{Binding EindDatum, Mode=TwoWay}" />
+                <Label x:Name="lblEindDatum"/>
             </StackPanel>
         </Grid>
 
@@ -52,11 +52,16 @@
             <TextBlock Text="Dagprijs: " FontWeight="Bold"/>
             <TextBlock Text="{Binding DagPrijs, StringFormat=€{0:F2}}"/>
         </StackPanel>
-        
+
+        <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,0,0,20">
+            <TextBlock Text="Totaalprijs: " FontWeight="Bold"/>
+            <TextBlock x:Name="txtTotaalPrijs"/>
+        </StackPanel>
+
         <!-- Knoppen -->
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Content="Bevestig" Width="120" Height="35"/>
-            <Button Content="Annuleer" Width="120" Height="35"/>
+            <Button x:Name="btnBevestig" Content="Bevestig" Width="120" Height="35" Click="btnBevestig_Click"/>
+            <Button x:Name="btnAnnuleer" Content="Annuleer" Width="120" Height="35"/>
         </StackPanel>
 
     </Grid>

@@ -77,11 +77,13 @@ namespace MCRental_Client.Windows
                     }
                 }
 
-                //if (res.Klant != null)
-                //{
-                //    lblKlantNaam.Content = $"{res.Klant.Voornaam} {res.Klant.Achternaam}";
-                //    lblKlantEmail.Content = res.Klant.Email;
-                //}
+                var resGebruiker = _context.Gebruikers.Where(g => g.Id == res.GebruikerId).FirstOrDefault();
+
+                if (resGebruiker != null)
+                {
+                    lblKlantNaam.Content = $"{resGebruiker.Voornaam} {resGebruiker.Achternaam}";
+                    lblKlantEmail.Content = resGebruiker.Email;
+                }
             }
             catch (Exception ex)
             {

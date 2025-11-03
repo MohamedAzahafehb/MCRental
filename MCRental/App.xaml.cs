@@ -41,7 +41,7 @@ namespace MCRental_Client
             MCRentalDBContext context = new MCRentalDBContext();
             MCRentalDBContext.seeder(context);
 
-            App.Gebruiker = Gebruiker.dummy;
+            //App.Gebruiker = Gebruiker.dummy;
 
             MainWindow = new Windows.MainWindow(ServiceProvider.GetRequiredService<MCRentalDBContext>());
             MainWindow.Show();

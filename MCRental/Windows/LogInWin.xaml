@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MCRental_Client.Windows"
         mc:Ignorable="d"
-        Title="LogIn" Height="450" Width="800">
+        Title="LogIn" Height="285" Width="315">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -24,6 +24,7 @@
         <Label Content="Wachtwoord:" Grid.Column="0" Grid.Row="2" Style="{StaticResource LabelStyle}"/>
         <PasswordBox x:Name="tbPassword" Grid.Column="1" Grid.Row="2" Width="150" HorizontalAlignment="Right" Margin="0,0,0,5"  />
         <Button x:Name="btnLogin" Content="Inloggen" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Width="100" Height="30" HorizontalAlignment="Center" Margin="0,20,0,0" Click="btnLogin_Click"/>
+        <Button x:Name="btnRegister" Content="Nog geen account?" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Width="100" Height="30" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,5,0,0" Background="Transparent" BorderThickness="0" Click="btnRegister_Click"/>
         <TextBlock x:Name="tbError" Foreground="Red" FontSize="16" Margin="15,5,15,0" TextWrapping="Wrap" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2"/>
     </Grid>
 </Window>

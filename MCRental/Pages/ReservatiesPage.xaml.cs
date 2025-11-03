@@ -1,4 +1,7 @@
-﻿using System;
+﻿using MCRental_Client.Windows;
+using MCRental_Models;
+using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,19 +15,30 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using MCRental_Client.Windows;
-using MCRental_Models;
 
 namespace MCRental_Client.Pages
 {
     public partial class ReservatiesPage : Page
     {
+        //TODO:
+        //Reservaties:
+        //sorteren op Nieuwste of Oudste (startdatum) - todo
+        // filteren op aankomende, verlopen, geannuleerde - todo
+        // Details:
+        //reservatie annuleren - todo
+        // evt: data aanpassen, een beetje ingewikkeld, checken op ebschikbaarheid - todo
+        //Validatie
+        //annuleren kan enkel als startdatum in de toekomst ligt - todo
+        //aanpassen kan enkel als startdatum in de toekomst ligt - todo
+
         private List <Reservatie> reservaties = new List<Reservatie>();
         private readonly MCRentalDBContext _context;
+        private Gebruiker _gebruiker;
         public ReservatiesPage(MCRentalDBContext context)
         {
             InitializeComponent();
             _context = context;
+            _gebruiker = App.Gebruiker;
             reservaties = (from reservatie in context.Reservaties
                            select new Reservatie
                            {
@@ -34,6 +48,7 @@ namespace MCRental_Client.Pages
                                StartDatum = reservatie.StartDatum,
                                EindDatum = reservatie.EindDatum,
                            })
+                           .Where(r => r.GebruikerId == _gebruiker.Id)
                            .ToList();
 
             dgReservaties.ItemsSource = reservaties;
