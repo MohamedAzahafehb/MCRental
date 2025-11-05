@@ -122,9 +122,9 @@
         </StackPanel>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15,0,0">
-            <Button Content="Sluiten" Width="120" Height="35"/>
-            <Button Content="Opslaan" Width="120" Height="35"/>
-            <Button Content="Reservatie Annuleren" Width="150" Height="35"/>
+            <Button x:Name="btnSluiten" Content="Sluiten" Width="120" Height="35" Click="btnSluiten_Click"/>
+            <Button x:Name="btnOpslaan" Content="Opslaan" Width="120" Height="35" Visibility="Collapsed"/>
+            <Button x:Name="btnAnnuleer" Content="Reservatie Annuleren" Width="150" Height="35" Click="btnAnnuleer_Click"/>
         </StackPanel>
     </Grid>
 </Window>

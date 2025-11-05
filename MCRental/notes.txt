@@ -12,9 +12,10 @@
 
 vragen:
  - wat aan te passen aan een reservatie als Klant?
- - hoe correct refereren bij gebruik van AI of vanuit de les?
- - wat als je bij één classe iets nieuw gebruikt met behulp van AI en herbruikt in andere classes?
+ - hoe correct refereren bij gebruik van AI of voorbeeldproject uit de les?
+ - wat als je bij één classe iets nieuw gebruikt met behulp van AI en herbruikt in andere classes, moet dat stukje code dan telkens refereren naar AI?
  - kan ik heel die zoekmenu in 1 control steken? ik heb het twee keer nodig
- - is een combobox met checkboxes als zelf gemaakte control een goed idee?
+ - is een combobox met checkboxes als een zelf-ontworpen control een goed idee?
+ - ik gebruik een externe api om de tabel "Steden" te seeden en bij het ophalen van data in de rest van de applicatie haal ik op vanuit de DB, is dat genoeg als bonus?
 
 	

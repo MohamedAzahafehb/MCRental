@@ -25,6 +25,9 @@ namespace MCRental_Models
         [ForeignKey("Auto")]
         public int AutoId { get; set; }
         public Auto? Auto { get; set; }
+        [Required]
+        public DateTime Aanmaking { get; set; } = DateTime.Now;
+        public DateTime? Annulatie { get; set; }
 
         //Hans: dfb77b1e-87df-4474-a679-763fe1a8af08
         //Grietje: 9d5f0aa9-190b-407b-b4bc-c97b15503eb3

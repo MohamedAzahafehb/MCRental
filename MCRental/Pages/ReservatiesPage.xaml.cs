@@ -21,6 +21,7 @@ namespace MCRental_Client.Pages
     public partial class ReservatiesPage : Page
     {
         //TODO:
+        // extra velden in tabel: datum aanmaking, datum annulatie - done
         //Reservaties:
         //sorteren op Nieuwste of Oudste (startdatum) - todo
         // filteren op aankomende, verlopen, geannuleerde - todo
@@ -39,17 +40,22 @@ namespace MCRental_Client.Pages
             InitializeComponent();
             _context = context;
             _gebruiker = App.Gebruiker;
-            reservaties = (from reservatie in context.Reservaties
-                           select new Reservatie
-                           {
-                               Id = reservatie.Id,
-                               AutoId = reservatie.AutoId,
-                               GebruikerId = reservatie.GebruikerId,
-                               StartDatum = reservatie.StartDatum,
-                               EindDatum = reservatie.EindDatum,
-                           })
-                           .Where(r => r.GebruikerId == _gebruiker.Id)
-                           .ToList();
+            reservaties = _context.Reservaties
+                .Where(r => r.GebruikerId == _gebruiker.Id)
+                .OrderByDescending(r => r.StartDatum)
+                .ToList();
+            //(from reservatie in _context.Reservaties
+            //           select new Reservatie
+            //           {
+            //               Id = reservatie.Id,
+            //               AutoId = reservatie.AutoId,
+            //               GebruikerId = reservatie.GebruikerId,
+            //               StartDatum = reservatie.StartDatum,
+            //               EindDatum = reservatie.EindDatum,
+            //           })
+            //           .Where(r => r.GebruikerId == _gebruiker.Id)
+            //           .OrderByDescending(r => r.StartDatum)
+            //           .ToList();
 
             dgReservaties.ItemsSource = reservaties;
         }
@@ -60,5 +66,41 @@ namespace MCRental_Client.Pages
             new ReservatieDetailsWin(res, _context).ShowDialog();
         }
 
+        private void cmbSort_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string selectedSort = (cmbSort.SelectedItem as ComboBoxItem).Content as string;
+            switch (selectedSort)
+            {
+                case "Nieuwste":
+                    dgReservaties.ItemsSource = reservaties.OrderByDescending(r => r.StartDatum).ToList();
+                    break;
+                case "Oudste":
+                    dgReservaties.ItemsSource = reservaties.OrderBy(r => r.StartDatum).ToList();
+                    break;
+                default:
+                    dgReservaties.ItemsSource = reservaties;
+                    break;
+            }
+        }
+
+        private void cmbFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string selectedFilter = (cmbFilter.SelectedItem as ComboBoxItem).Content as string;
+            switch (selectedFilter)
+            {
+                case "Aankomend":
+                    dgReservaties.ItemsSource = reservaties.Where(r => r.StartDatum >= DateTime.Now && r.Annulatie == null).ToList();
+                    break;
+                case "Verlopen":
+                    dgReservaties.ItemsSource = reservaties.Where(r => r.EindDatum < DateTime.Now && r.Annulatie == null).ToList();
+                    break;
+                case "Geannuleerd":
+                    dgReservaties.ItemsSource = reservaties.Where(r => r.Annulatie != null).ToList();
+                    break;
+                default:
+                    dgReservaties.ItemsSource = reservaties;
+                    break;
+            }
+        }
     }
 }

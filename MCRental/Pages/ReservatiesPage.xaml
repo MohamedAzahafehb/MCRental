@@ -28,9 +28,14 @@
                Grid.Column="0"/>
 
             <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <ComboBox x:Name="cmbSort" Width="180" VerticalAlignment="Center">
+                <ComboBox x:Name="cmbSort" Width="180" Text="Sorteer op..." VerticalAlignment="Center" SelectionChanged="cmbSort_SelectionChanged">
                     <ComboBoxItem Content="Nieuwste" />
                     <ComboBoxItem Content="Oudste" />
+                </ComboBox>
+                <ComboBox x:Name="cmbFilter" Width="180" Text="Filter op..." VerticalAlignment="Center" SelectionChanged="cmbFilter_SelectionChanged">
+                    <ComboBoxItem Content="Aankomend" />
+                    <ComboBoxItem Content="Verlopen" />
+                    <ComboBoxItem Content="Geannuleerd" />
                 </ComboBox>
             </StackPanel>
         </Grid>

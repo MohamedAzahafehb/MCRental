@@ -40,7 +40,6 @@ namespace MCRental_Client.Windows
                     .Include(r => r.Auto)
                         .ThenInclude(a => a.Filiaal)
                             .ThenInclude(f => f.Stad)
-                    //.Include(r => r.Klant)
                     .FirstOrDefault(r => r.Id == _reservatie.Id);
 
                 if (res == null)
@@ -89,6 +88,24 @@ namespace MCRental_Client.Windows
             {
                 MessageBox.Show($" fout bij het opladen van de details:\n{ex.Message}", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void btnSluiten_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btnAnnuleer_Click(object sender, RoutedEventArgs e)
+        {
+            var resultaat = MessageBox.Show("Weet u zeker dat u deze reservatie wilt annuleren? \n Deze actie kan niet ongedaan gemaakt worden!", "Bevestig annuleren", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (resultaat == MessageBoxResult.Yes)
+            {
+                _reservatie.Annulatie = DateTime.Now;
+                _context.Update(_reservatie);
+                _context.SaveChanges();
+                MessageBox.Show("Reservatie succesvol geannuleerd.", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            this.Close();
         }
     }
 }

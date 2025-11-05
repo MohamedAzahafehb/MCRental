@@ -31,11 +31,6 @@ namespace MCRental_Client.Pages
         private readonly MCRentalDBContext _context;
         private readonly UserManager<Gebruiker> _userManager;
         // TODO:
-        //eerst datums geven en filiaal (meerdere filialen mogelijk) - todo
-        //filter: enkel beschikbare auto's tonen - todo
-        // auto's die nog niet gereserveerd zijn - todo
-        // sorteren eerst op prijs dan standaard op merk en model - todo
-        // als bezoeker op btnReserveer klikken => vraagt op in te loggen of registreren dan opent correcte window - todo
         // omdat datum in Page al wordt ingegeven en niet meer in Window kan de totaalprijs berkend worden al - todo
 
         //Validatie:
