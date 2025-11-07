@@ -89,5 +89,22 @@ namespace MCRental_Client.Pages
             new VoegAutoToe(_context).ShowDialog();
             RefreshAutos();
         }
+
+        private void cmbSort_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
+        {
+            string selectedSort = (cmbSort.SelectedItem as ComboBoxItem).Content as string;
+            switch (selectedSort)
+            {
+                case "Prijs oplopend":
+                    dgAutos.ItemsSource = autos.OrderBy(a => a.DagPrijs).ThenBy(a => a.Merk).ThenBy(a => a.Model).ToList();
+                    break;
+                case "Prijs aflopend":
+                    dgAutos.ItemsSource = autos.OrderByDescending(a => a.DagPrijs).ThenBy(a => a.Merk).ThenBy(a => a.Model).ToList();
+                    break;
+                default:
+                    dgAutos.ItemsSource = autos;
+                    break;
+            }
+        }
     }
 }

@@ -83,7 +83,6 @@
                        Grid.Row="0"
                         />
                 <Label Grid.Row="1" Content="Gelieve deze te koppelen aan een andere auto vooraleer deze gedeactiveerd wordt."/>
-                <Button x:Name="btnSaveKoppeling" Content="Nieuwe Koppeling Opslaan" Width="170" Margin="10" IsEnabled="False" Click="btnSaveKoppeling_Click" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"/>
             </Grid>
 
             <DataGrid x:Name="dgReservaties" Margin="10,0,10,10">
@@ -106,30 +105,7 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <!--
-                <DataGridTemplateColumn Header="Auto" Width="200">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ComboBox
-                                ItemsSource="{Binding OnbeschikbareAutos}"
-                                SelectedValuePath="Id"
-                                >
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding Merk}"/>
-                                            <TextBlock Text=" "/>
-                                            <TextBlock Text="{Binding Model}"/>
-                                            <TextBlock Text=" "/>
-                                            <TextBlock Text="{Binding Nummerplaat}"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                -->
+                    
                 </DataGrid.Columns>
             </DataGrid>
         </StackPanel>

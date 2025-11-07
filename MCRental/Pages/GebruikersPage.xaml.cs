@@ -44,5 +44,22 @@ namespace MCRental_Client.Pages
             Gebruiker gebruiker = (sender as Button).DataContext as Gebruiker;
             new GebruikerDetaliWin(gebruiker, _context, _userManager).ShowDialog();
         }
+
+        private void cmbSort_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string selectedSort = (cmbSort.SelectedItem as ComboBoxItem).Content as string;
+            switch (selectedSort)
+            {
+                case "Naam oplopend":
+                    dgGebruikers.ItemsSource = gebruikers.OrderBy(g => g.Achternaam).ThenBy(g => g.Voornaam).ToList();
+                    break;
+                case "Naam aflopend":
+                    dgGebruikers.ItemsSource = gebruikers.OrderByDescending(g => g.Achternaam).ThenBy(g => g.Voornaam).ToList();
+                    break;
+                default:
+                    dgGebruikers.ItemsSource = gebruikers;
+                    break;
+            }
+        }
     }
 }

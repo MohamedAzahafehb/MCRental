@@ -34,52 +34,59 @@ namespace MCRental_Client.Windows
 
         private async void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            if (!tbPassword.Password.IsNullOrEmpty() && !tbUsername.Text.IsNullOrEmpty())
+            try
             {
-                Gebruiker? user = await _userManager.FindByNameAsync(tbUsername.Text);
-                if (user != null)
+                if (!tbPassword.Password.IsNullOrEmpty() && !tbUsername.Text.IsNullOrEmpty())
                 {
-                    bool succeeded = await _userManager.CheckPasswordAsync(user, tbPassword.Password);
-                    if (succeeded)
+                    Gebruiker? user = await _userManager.FindByNameAsync(tbUsername.Text);
+                    if (user != null)
                     {
+                        bool succeeded = await _userManager.CheckPasswordAsync(user, tbPassword.Password);
+                        if (succeeded)
                         {
-                            App.Gebruiker = user;
-                            MessageBox.Show($"Welkom {user.Voornaam} {user.Achternaam}!", "Inloggen gelukt", MessageBoxButton.OK, MessageBoxImage.Information);
-                            // visibility weg van login en register knop
-                            App.MainWindow.btnLogin.Visibility = Visibility.Collapsed;
-                            Close();
-                        }
-                        IdentityUserRole<string>? userRole = _context.UserRoles.FirstOrDefault(ur => ur.UserId == App.Gebruiker.Id);
+                            {
+                                App.Gebruiker = user;
+                                MessageBox.Show($"Welkom {user.Voornaam} {user.Achternaam}!", "Inloggen gelukt", MessageBoxButton.OK, MessageBoxImage.Information);
+                                // visibility weg van login en register knop
+                                App.MainWindow.btnLogin.Visibility = Visibility.Collapsed;
+                                Close();
+                            }
+                            IdentityUserRole<string>? userRole = _context.UserRoles.FirstOrDefault(ur => ur.UserId == App.Gebruiker.Id);
 
-                        MessageBox.Show(userRole.RoleId);
-                        if (userRole != null)
-                        {
-                            if(userRole.RoleId == "Admin")
+                            MessageBox.Show(userRole.RoleId);
+                            if (userRole != null)
                             {
-                                App.MainWindow.frmMain.Navigate(new AutoBeheerPage(_context));
-                                App.MainWindow.mniAutobeheer.Visibility = Visibility.Visible;
-                                App.MainWindow.mniReservatiebeheer.Visibility = Visibility.Visible;
-                                App.MainWindow.mniGebruikers.Visibility = Visibility.Visible;
-                                App.MainWindow.mniFilialenbeheer.Visibility = Visibility.Visible;
+                                if (userRole.RoleId == "Admin")
+                                {
+                                    App.MainWindow.frmMain.Navigate(new AutoBeheerPage(_context));
+                                    App.MainWindow.mniAutobeheer.Visibility = Visibility.Visible;
+                                    App.MainWindow.mniReservatiebeheer.Visibility = Visibility.Visible;
+                                    App.MainWindow.mniGebruikers.Visibility = Visibility.Visible;
+                                    App.MainWindow.mniFilialenbeheer.Visibility = Visibility.Visible;
+                                }
+                                else if (userRole.RoleId == "Klant")
+                                {
+                                    App.MainWindow.mniAuto.Visibility = Visibility.Visible;
+                                    App.MainWindow.mniReservaties.Visibility = Visibility.Visible;
+                                }
+                                App.MainWindow.btnLogout.Visibility = Visibility.Visible;
+                                App.MainWindow.mniProfiel.Visibility = Visibility.Visible;
                             }
-                            else if (userRole.RoleId == "Klant")
-                            {
-                                App.MainWindow.mniAuto.Visibility = Visibility.Visible;
-                                App.MainWindow.mniReservaties.Visibility = Visibility.Visible;
-                            }
-                            App.MainWindow.btnLogout.Visibility = Visibility.Visible;
-                            App.MainWindow.mniProfiel.Visibility = Visibility.Visible;
                         }
+                        tbError.Text = "Ongeldige username of wachtwoord.";
                     }
-                    tbError.Text = "Ongeldige username of wachtwoord.";
-                }
-                else
-                {
-                    tbError.Text = "Je moet een username en wachtwoord invullen.";
+                    else
+                    {
+                        tbError.Text = "Je moet een username en wachtwoord invullen.";
 
+                    }
                 }
             }
-        }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Fout bij inloggen", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            }
 
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {

@@ -26,6 +26,7 @@ namespace MCRental_Client.Pages
         // rol == Admin? alle velden kunnen aangepast worden en opgeslagen
         // rol != Admin? alleen details bekijken
         private readonly MCRentalDBContext _context;
+        private List<Filiaal> filialen;
         public FilialenPage(MCRentalDBContext context)
         {
             InitializeComponent();
@@ -35,7 +36,7 @@ namespace MCRental_Client.Pages
 
         public void RefreshFilialen()
         {
-            var filialen = _context.Filialen
+            filialen = _context.Filialen
                             .ToList();
             dgFilialen.ItemsSource = filialen;
         }
@@ -51,6 +52,23 @@ namespace MCRental_Client.Pages
         {
             new FilaalDetailWin(_context).ShowDialog();
             RefreshFilialen();
+        }
+
+        private void cmbSort_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string selectedSort = (cmbSort.SelectedItem as ComboBoxItem).Content as string;
+            switch (selectedSort)
+            {
+                case "Naam oplopend":
+                    dgFilialen.ItemsSource = filialen.OrderBy(a => a.Naam).ToList();
+                    break;
+                case "Naam aflopend":
+                    dgFilialen.ItemsSource = filialen.OrderByDescending(a => a.Naam).ToList();
+                    break;
+                default:
+                    dgFilialen.ItemsSource = filialen;
+                    break;
+            }
         }
     }
 }

@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MCRental_Client.Windows"
         mc:Ignorable="d"
-        Background="Gray"
         Title="MainWindow" Height="700" Width="1500">
     <Grid>
         <Grid.RowDefinitions>

@@ -16,6 +16,4 @@ self-made controls:
 vragen:
 - Autobeheer automatsch updaten na wijziging in de database. ik gebruik nu een hulpmethode refresh()
 	-> Auto : InotifyPropertyChanged implementeren
-- kan ik heel die zoekmenu in 1 control steken? ik heb het twee keer nodig
- 
 	

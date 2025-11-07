@@ -80,13 +80,11 @@ namespace MCRental_Client.Pages
             }
 
             var typesDistinct = autos.Select(a => a.type).Distinct().ToList();
-            //var filialen = _context.Filialen.ToList();
 
             cmbTypes.ItemsSource = typesDistinct;
             lblStartdt.Content = this.startDatum;
             lblEinddt.Content = this.eindDatum;
             lblFiliaal.Content = this.filiaal.Naam;
-            //cmbFilialen.SelectedItem = filialen.FirstOrDefault(f => f.Id == this.filiaal.Id);
         }
 
         private void ReserveerButton_Click(object sender, RoutedEventArgs e)

@@ -19,18 +19,16 @@ namespace MCRental_Client.Windows
     /// Interaction logic for AutoDetailWin.xaml
     /// </summary>
     public partial class AutoDetailWin : Window
-    {
-        /*
-         * prijs aanpassen, merk, model, nummerplaat, type. zonder problemen
-        maar wanneer beschikbaarheid op false wordt gezet wordt er eerst alle reservaties die aan de auto gekoppeld zijn weergegeven,
-        moeten die reservaties aan andere autos gekoppeld worden die op die datum beschikbaarzijn(datum).
-        dan pas kan de auto gedeactiveerd worden
-        */
-        
+    {        
         public AutoDetailWin(Auto auto, MCRentalDBContext context)
         {
             InitializeComponent();
             frmMain.Navigate(new Pages.AutoDetailPage(auto, context));
+        }
+
+        public AutoDetailWin()
+        {
+            InitializeComponent();
         }
 
     }

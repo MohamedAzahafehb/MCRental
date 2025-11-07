@@ -10,8 +10,8 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="400"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -21,7 +21,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="10">
-            <Button x:Name="btnTerug" Content="&#x2190; Terug" Width="100" Click="btnTerug_Click" Margin="0,0,20,0"/>
+            <Button x:Name="btnTerug" Content="&#x2190; Terug" Width="100" Click="btnTerug_Click"  Margin="0,0,20,0"/>
             <TextBlock Text="Koppel een andere auto aan deze reservatie"
                    FontSize="22"
                    FontWeight="Bold"
@@ -51,8 +51,10 @@
                 <TextBlock x:Name="txtKlant"/>
             </StackPanel>
 
+            <Button x:Name="btnKoppel" Content="Koppel geselecteerde auto" Width="200" Height="30" Margin="0,20,0,0" Click="btnKoppel_Click"/>
+
         </StackPanel>
-        <ComboBox x:Name="cmbAutos" Grid.Column="1" Height="20" VerticalAlignment="Top" Grid.Row="2">
+        <ComboBox x:Name="cmbAutos" Grid.Column="1" Height="20" VerticalAlignment="Top" Grid.Row="2" Margin="30" SelectionChanged="cmbAutos_SelectionChanged">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
@@ -61,6 +63,8 @@
                         <TextBlock Text="{Binding Model}" />
                         <TextBlock Text=" " />
                         <TextBlock Text="{Binding Nummerplaat}" />
+                        <TextBlock Text=" " />
+                        <TextBlock Text="{Binding Filiaal.Naam}" />
                     </StackPanel>
                 </DataTemplate>
             </ComboBox.ItemTemplate>

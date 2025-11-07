@@ -57,13 +57,19 @@ namespace MCRental_Client.Windows
 
         private async void lbRollen_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            foreach (ListBoxItem item in lbRollen.Items)
+            try
             {
-                string role = item.Content.ToString();
-                if (lbRollen.SelectedItems.Contains(item))
-                    await _userManager.AddToRoleAsync(_gebruiker, role);
-                else
-                    await _userManager.RemoveFromRoleAsync(_gebruiker, role);
+                foreach (ListBoxItem item in lbRollen.Items)
+                {
+                    string role = item.Content.ToString();
+                    if (lbRollen.SelectedItems.Contains(item))
+                        await _userManager.AddToRoleAsync(_gebruiker, role);
+                    else
+                        await _userManager.RemoveFromRoleAsync(_gebruiker, role);
+                }
+            } catch(Exception ex)
+            {
+                MessageBox.Show($"Er is een fout opgetreden bij het bijwerken van de rollen: {ex.Message}", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

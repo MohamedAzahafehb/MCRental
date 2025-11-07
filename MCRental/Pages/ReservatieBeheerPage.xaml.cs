@@ -1,4 +1,5 @@
-﻿using MCRental_Models;
+﻿using MCRental_Client.Windows;
+using MCRental_Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -31,21 +32,42 @@ namespace MCRental_Client.Pages
         {
             InitializeComponent();
             _context = context;
-            reservaties = (from reservatie in context.Reservaties
-                           select new Reservatie
-                           {
-                               Id = reservatie.Id,
-                               AutoId = reservatie.AutoId,
-                               Auto = reservatie.Auto,
-                               GebruikerId = reservatie.GebruikerId,
-                               Gebruiker = reservatie.Gebruiker,
-                               StartDatum = reservatie.StartDatum,
-                               EindDatum = reservatie.EindDatum,
-                           })
+
+            RefreshReservaties();
+        }
+
+        private void RefreshReservaties()
+        {
+            reservaties = _context.Reservaties
                            .ToList();
 
             dgReservaties.ItemsSource = reservaties;
+        }
 
+        public void btnKoppel_Click(object sender, RoutedEventArgs e)
+        {
+            var reservatie = (sender as Button).DataContext as Reservatie;
+            var window = new AutoDetailWin();
+            window.Show();
+            window.frmMain.Navigate(new AutoReservatiePage(reservatie.Auto, _context, reservatie, this));
+            RefreshReservaties();
+        }
+
+        private void cmbSort_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string selectedSort = (cmbSort.SelectedItem as ComboBoxItem).Content as string;
+            switch (selectedSort)
+            {
+                case "Nieuwste":
+                    dgReservaties.ItemsSource = reservaties.OrderByDescending(r => r.StartDatum).ToList();
+                    break;
+                case "Oudste":
+                    dgReservaties.ItemsSource = reservaties.OrderBy(r => r.StartDatum).ToList();
+                    break;
+                default:
+                    dgReservaties.ItemsSource = reservaties;
+                    break;
+            }
         }
     }
 }

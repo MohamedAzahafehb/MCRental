@@ -23,43 +23,24 @@ namespace MCRental_Client.Pages
     /// </summary>
     public partial class AutoReservatiePage : Page
     {
-        private readonly Auto _auto;
+        private Auto _auto;
+        private Page _page;
         private readonly MCRentalDBContext _context;
         private readonly Reservatie _reservatie;
-        public AutoReservatiePage(Auto auto, MCRentalDBContext context, Reservatie reservatie)
+        public AutoReservatiePage(Auto auto, MCRentalDBContext context, Reservatie reservatie, Page page)
         {
             Debug.WriteLine("Navigated to AutoReservatiePage");
             InitializeComponent();
             _context = context;
             _auto = auto;
             _reservatie = reservatie;
+            _page = page;
+
+            Gebruiker klant = _context.Gebruikers.FirstOrDefault(g => g.Id == _reservatie.GebruikerId);
 
             txtStartdatum.Text = _reservatie.StartDatum.ToShortDateString();
             txtEinddatum.Text = _reservatie.EindDatum.ToShortDateString();
-            //txtKlant.Text = $"{_reservatie.Gebruiker.Achternaam} {_reservatie.Gebruiker.Voornaam}";
-
-            // beschikbareAutos zijn alle autos die tussen _reservatie.Startdatum en _reservatie.Einddatum niet gereserveerd zijn
-            // (dus gekoppeld met andere reservaties in deze periode) en ze moeten beschikbaar zijn
-            //List<Auto> beschikbareAutos = _context.Autos
-            //    .Where(a => a.Beschikbaar &&
-            //            !_context.Reservaties.Any(r =>
-            //            r.AutoId == a.Id &&
-            //            r.Id != _reservatie.Id && // zodat de huidige reservatie genegeerd wordt
-            //            r.StartDatum < _reservatie.EindDatum &&
-            //            r.EindDatum > _reservatie.StartDatum))
-            //    .ToList();
-            //var test = _context.Reservaties
-            //    .Where(r =>
-            //        r.StartDatum < _reservatie.EindDatum &&
-            //        r.EindDatum > _reservatie.StartDatum)
-            //    .Select(r => new { r.Id, r.AutoId, r.StartDatum, r.EindDatum })
-            //    .ToList();
-
-
-            //foreach (var res in test)
-            //{
-            //    Debug.WriteLine($"Conflict: Auto {res.AutoId} - {res.StartDatum:d} to {res.EindDatum:d}");
-            //}
+            txtKlant.Text = $" {klant.Achternaam} {klant.Voornaam}";
 
             var autos = _context.Autos.ToList();
             cmbAutos.ItemsSource = autos;
@@ -67,7 +48,42 @@ namespace MCRental_Client.Pages
 
         private void btnTerug_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.GoBack();
+            if (_page.GetType().Name == "AutoDetailPage")
+            {
+                NavigationService.GoBack();
+            }
+            else if (_page.GetType().Name == "ReservatieBeheerPage")
+            {
+                Window.GetWindow(this).Close();
+            }
+        }
+
+        private void btnKoppel_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                _reservatie.AutoId = _auto.Id;
+                _context.Reservaties.Update(_reservatie);
+                _context.SaveChanges();
+                MessageBox.Show("De reservatie is succesvol gekoppeld aan de nieuwe auto.", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+                if (_page.GetType().Name == "AutoDetailPage")
+                {
+                    NavigationService.GoBack();
+                }
+                else if (_page.GetType().Name == "ReservatieBeheerPage")
+                {
+                    Window.GetWindow(this).Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Er is een fout opgetreden: {ex.Message}", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void cmbAutos_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            _auto = (Auto)cmbAutos.SelectedItem;
         }
     }
 }

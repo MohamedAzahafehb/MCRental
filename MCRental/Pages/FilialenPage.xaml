@@ -14,7 +14,6 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Header: titel links, comboboxen gecentreerd -->
         <Grid Grid.Row="0" Margin="8">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -29,19 +28,9 @@
            Grid.Column="0"/>
 
             <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <ComboBox x:Name="cmbSort" Width="180" VerticalAlignment="Center">
-                    <ComboBoxItem Content="Prijs oplopend" />
-                    <ComboBoxItem Content="Prijs aflopend" />
-                </ComboBox>
-
-                <!-- Multi-select style: ComboBox with CheckBoxes in item template (checked state is independent) -->
-                <ComboBox x:Name="cmbTypes" Width="250" StaysOpenOnEdit="True" IsEditable="False" VerticalAlignment="Center" >
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <CheckBox Content="{Binding}" Tag="{Binding}" />
-                            <!--Checked="TypeCheckBox_Changed" Unchecked="TypeCheckBox_Changed"/> -->
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
+                <ComboBox x:Name="cmbSort" Width="180" VerticalAlignment="Center" SelectionChanged="cmbSort_SelectionChanged">
+                    <ComboBoxItem Content="Naam oplopend" />
+                    <ComboBoxItem Content="Naam aflopend" />
                 </ComboBox>
             </StackPanel>
 

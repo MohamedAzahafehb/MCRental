@@ -18,33 +18,41 @@ namespace MCRental_Client
         {
             base.OnStartup(e);
 
-            var services = new ServiceCollection();
+            try
+            {
+                var services = new ServiceCollection();
 
-            services.AddDbContext<MCRentalDBContext>();
+                services.AddDbContext<MCRentalDBContext>();
 
-            services.AddIdentityCore<Gebruiker>(
-                options =>
-                {
-                    options.Password.RequireDigit = false;
-                    options.Password.RequireLowercase = false;
-                    options.Password.RequireNonAlphanumeric = false;
-                    options.Password.RequireUppercase = false;
-                    options.Password.RequiredLength = 6;
-                    options.User.RequireUniqueEmail = true;
-                })
-                .AddEntityFrameworkStores<MCRentalDBContext>();
+                services.AddIdentityCore<Gebruiker>(
+                    options =>
+                    {
+                        options.Password.RequireDigit = false;
+                        options.Password.RequireLowercase = false;
+                        options.Password.RequireNonAlphanumeric = false;
+                        options.Password.RequireUppercase = false;
+                        options.Password.RequiredLength = 6;
+                        options.User.RequireUniqueEmail = true;
+                    })
+                    .AddEntityFrameworkStores<MCRentalDBContext>();
 
-            services.AddLogging();
+                services.AddLogging();
 
-            ServiceProvider = services.BuildServiceProvider();
+                ServiceProvider = services.BuildServiceProvider();
 
-            MCRentalDBContext context = new MCRentalDBContext();
-            MCRentalDBContext.seeder(context);
+                MCRentalDBContext context = new MCRentalDBContext();
+                MCRentalDBContext.seeder(context);
 
-            //App.Gebruiker = Gebruiker.dummy;
+                //App.Gebruiker = Gebruiker.dummy;
 
-            MainWindow = new Windows.MainWindow(ServiceProvider.GetRequiredService<MCRentalDBContext>());
-            MainWindow.Show();
+                MainWindow = new Windows.MainWindow(ServiceProvider.GetRequiredService<MCRentalDBContext>());
+                MainWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Fout bij opstarten applicatie", MessageBoxButton.OK, MessageBoxImage.Error);
+                Current.Shutdown();
+            }
         }
     }
 }

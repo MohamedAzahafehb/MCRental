@@ -19,8 +19,6 @@
            FontSize="22"
            FontWeight="Bold"
            Margin="0,0,0,15"/>
-
-            <Button x:Name="btnBewerk" Content="Bewerk" Width="100" HorizontalAlignment="Right" Margin="10" />
         </StackPanel>
 
         <StackPanel Grid.Row="1" Orientation="Vertical" VerticalAlignment="Top">

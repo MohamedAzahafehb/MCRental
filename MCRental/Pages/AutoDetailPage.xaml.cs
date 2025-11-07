@@ -66,24 +66,41 @@ namespace MCRental_Client.Pages
 
         private void btnOpslaan_Click(object sender, RoutedEventArgs e)
         {
-            _auto.Merk = txtMerk.Text;
-            _auto.Model = txtModel.Text;
-            _auto.Nummerplaat = txtNummerplaat.Text;
-            if (double.TryParse(txtDagprijs.Text, out double dagprijs))
+            try
             {
-                _auto.DagPrijs = dagprijs;
-            }
-            else
-            {
-                MessageBox.Show("Ongeldige dagprijs. Voer een geldig getal in.", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            _auto.type = txtType.Text;
+                if (string.IsNullOrWhiteSpace(txtMerk.Text) ||
+                    string.IsNullOrWhiteSpace(txtModel.Text) ||
+                    string.IsNullOrWhiteSpace(txtNummerplaat.Text) ||
+                    string.IsNullOrWhiteSpace(txtDagprijs.Text) ||
+                    string.IsNullOrWhiteSpace(txtType.Text))
+                {
+                    throw new Exception("Vul alle verplichte velden in.");
+                }
 
-            _context.Autos.Update(_auto);
-            _context.SaveChanges();
-            Window.GetWindow(this).Close();
-        }
+                _auto.Merk = txtMerk.Text;
+                _auto.Model = txtModel.Text;
+                _auto.Nummerplaat = txtNummerplaat.Text;
+
+                if (double.TryParse(txtDagprijs.Text, out double dagprijs))
+                {
+                    _auto.DagPrijs = dagprijs;
+                }
+                else
+                {
+                    throw new Exception("Ongeldige dagprijs. Voer een geldig getal in.");
+                }
+
+                _auto.type = txtType.Text;
+
+                _context.Autos.Update(_auto);
+                _context.SaveChanges();
+                Window.GetWindow(this).Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Fout bij het opslaan van de auto: " + ex.Message, "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            }
 
         private void btnAnnuleer_Click(object sender, RoutedEventArgs e)
         {
@@ -98,7 +115,6 @@ namespace MCRental_Client.Pages
             {
                 spNieuweKoppeling.Visibility = Visibility.Visible;
                 btnDeactiveer.IsEnabled = false;
-                btnSaveKoppeling.IsEnabled = true;
                 dgReservaties.DataContext = this;
                 dgReservaties.ItemsSource = Reservaties;
                 Reservatie eersteReservatie = Reservaties.First();
@@ -114,16 +130,17 @@ namespace MCRental_Client.Pages
             }
         }
 
+        public void refreshReservaties()
+        {
+            Reservaties = _context.Reservaties.Where(r => r.AutoId == _auto.Id).ToList();
+            dgReservaties.ItemsSource = Reservaties;
+        }
+
         private void btnKoppel_Click(object sender, RoutedEventArgs e)
         {
             var reservatie = (sender as Button).DataContext as Reservatie;
-            NavigationService.Navigate(new AutoReservatiePage(_auto, _context, reservatie));
-        }
-
-        private void btnSaveKoppeling_Click(object sender, RoutedEventArgs e)
-        {
-            _context.SaveChanges();
-            MessageBox.Show("reservaties zijn bijgewerkt.", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+            NavigationService.Navigate(new AutoReservatiePage(_auto, _context, reservatie, this));
+            refreshReservaties();
         }
     }
 }

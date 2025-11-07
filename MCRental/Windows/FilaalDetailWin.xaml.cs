@@ -71,21 +71,38 @@ namespace MCRental_Client.Windows
 
         private void btnOpslaan_Click(object sender, RoutedEventArgs e)
         {
-            _filiaal.Naam = txtNaam.Text;
-            _filiaal.Adres = txtAdres.Text;
-            _filiaal.Telefoon = txtTelefoon.Text;
-            _filiaal.Email = txtEmail.Text;
-            _filiaal.StadId = (int)cmbPlaats.SelectedValue;
-            if (aanHetBewerken)
+            try
             {
-                _context.Filialen.Update(_filiaal);
-            } else
-            {
-                _context.Filialen.Add(_filiaal);
+                if (string.IsNullOrWhiteSpace(txtNaam.Text) ||
+                string.IsNullOrWhiteSpace(txtAdres.Text) ||
+                string.IsNullOrWhiteSpace(txtTelefoon.Text) ||
+                string.IsNullOrWhiteSpace(txtEmail.Text) ||
+                cmbPlaats.SelectedItem == null)
+                {
+                    throw new Exception("Vul alle verplichte velden in.");
+                }
+
+                _filiaal.Naam = txtNaam.Text;
+                _filiaal.Adres = txtAdres.Text;
+                _filiaal.Telefoon = txtTelefoon.Text;
+                _filiaal.Email = txtEmail.Text;
+                _filiaal.StadId = (int)cmbPlaats.SelectedValue;
+                if (aanHetBewerken)
+                {
+                    _context.Filialen.Update(_filiaal);
+                }
+                else
+                {
+                    _context.Filialen.Add(_filiaal);
+                }
+                _context.SaveChanges();
+                this.Close();
             }
-            _context.SaveChanges();
-            this.Close();
-        }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Fout bij het opslaan van het filiaal: " + ex.Message, "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            }
 
         private void btnAnnuleren_Click(object sender, RoutedEventArgs e)
         {
