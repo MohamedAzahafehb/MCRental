@@ -31,6 +31,7 @@ namespace MCRental_Models
 
         public static Gebruiker dummy = new Gebruiker
         {
+            Id = "1",
             Voornaam = "Dummy",
             Achternaam = "Dumpfries",
             GeboorteDatum = new DateTime(1999, 1, 1),
@@ -86,7 +87,7 @@ namespace MCRental_Models
                     Achternaam = "Istrator",
                     GeboorteDatum = new DateTime(1985, 3, 20),
                     Adres = "Adminlaan 10",
-                    StadId = 1,
+                    StadId = 4,
                     UserName = "admin",
                     Email = "admin@mcrental.be",
                     EmailConfirmed = true,

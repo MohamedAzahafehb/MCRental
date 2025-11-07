@@ -66,6 +66,14 @@ namespace MCRental_Client.Windows
                         RoleId = "Klant"
                     });
                     _context.SaveChanges();
+
+                    App.MainWindow.btnLogin.Visibility = Visibility.Collapsed;
+                    App.MainWindow.btnRegistreer.Visibility = Visibility.Collapsed;
+                    App.MainWindow.mniAuto.Visibility = Visibility.Visible;
+                    App.MainWindow.mniReservaties.Visibility = Visibility.Visible;
+                    App.MainWindow.btnLogout.Visibility = Visibility.Visible;
+                    App.MainWindow.mniProfiel.Visibility = Visibility.Visible;
+
                     this.Close();
                 }
                 else

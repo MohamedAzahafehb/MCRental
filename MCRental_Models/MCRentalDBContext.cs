@@ -24,7 +24,7 @@ namespace MCRental_Models
                         .AddUserSecrets<MCRentalDBContext>(optional: true)
                         .Build();
 
-                    var connStr = config.GetConnectionString("DefaultConnection");
+                    var connStr = config.GetConnectionString("TestConnection");
                 try
                 {
                     optionsBuilder.UseSqlServer(connStr);
@@ -44,8 +44,8 @@ namespace MCRental_Models
             {
                 if (true)
                 {
-                    //context.Steden.AddRange(Stad.seedingData());
-                    //context.SaveChanges();
+                    context.Steden.AddRange(Stad.seedingData());
+                    context.SaveChanges();
                     seedSteden(context);
                 }
                 if (!context.Filialen.Any())

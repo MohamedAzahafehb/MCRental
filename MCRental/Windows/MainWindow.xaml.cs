@@ -31,6 +31,10 @@ namespace MCRental_Client.Windows
             _context = context;
             _userManager = App.ServiceProvider.GetRequiredService<UserManager<Gebruiker>>();
             frmMain.Navigate(new HomeKlantPage(_userManager, _context));
+
+            // deze twee buttons zijn enkel om het testen vlot te laten verlopen
+            btnAdmin.Visibility = Visibility.Collapsed;
+            btnKlant.Visibility = Visibility.Collapsed;
         }
 
         private void mniAuto_Click(object sender, RoutedEventArgs e)
@@ -80,9 +84,19 @@ namespace MCRental_Client.Windows
             new LogIn(_userManager, _context).ShowDialog();
         }
 
+        private void btnRegistreer_Click(object sender, RoutedEventArgs e)
+        {
+            new Registreer(_userManager, _context).ShowDialog();
+        }
+
+        
+
         private void btnLogout_Click(object sender, RoutedEventArgs e)
         {
             App.Gebruiker = null;
+            btnLogout.Visibility = Visibility.Collapsed;
+            btnLogin.Visibility = Visibility.Visible;
+            btnRegistreer.Visibility = Visibility.Visible;
             frmMain.Navigate(new HomeKlantPage(_userManager, _context));
             App.MainWindow.mniAuto.Visibility = Visibility.Collapsed;
             App.MainWindow.mniReservaties.Visibility = Visibility.Collapsed;

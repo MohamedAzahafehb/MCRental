@@ -31,8 +31,7 @@ namespace MCRental_Models
         [NotMapped]
         public List<Auto> OnbeschikbareAutos { get; set; } = new List<Auto>();
 
-        //Hans: dfb77b1e-87df-4474-a679-763fe1a8af08
-        //Grietje: 9d5f0aa9-190b-407b-b4bc-c97b15503eb3
+        // ik kan geen seeddata voorzien voor reservaties want de ID van de gebruiker wordt gegenereerd door IF en ik ken die niet op voorhand
 
 
         public static List<Reservatie> seedingData()
@@ -43,28 +42,28 @@ namespace MCRental_Models
                 {
                     StartDatum = new DateTime(2024, 7, 1),
                     EindDatum = new DateTime(2024, 7, 10),
-                    GebruikerId = "6e22436b-285e-4a51-874d-1442e4f33a9d",
+                    GebruikerId = "1",
                     AutoId = 2
                 },
                 new Reservatie
                 {
                     StartDatum = new DateTime(2024, 8, 5),
                     EindDatum = new DateTime(2024, 8, 15),
-                    GebruikerId = "6e22436b-285e-4a51-874d-1442e4f33a9d",
-                    AutoId = 1
+                    GebruikerId = "1",
+                    AutoId = 4
                 },
                 new Reservatie
                 {
                     StartDatum = new DateTime(2024, 9, 10),
                     EindDatum = new DateTime(2024, 9, 20),
-                    GebruikerId = "6e22436b-285e-4a51-874d-1442e4f33a9d",
+                    GebruikerId = "1",
                     AutoId = 5
                 },
                 new Reservatie
                 {
                     StartDatum = new DateTime(2024, 10, 10),
                     EindDatum = new DateTime(2024, 10, 20),
-                    GebruikerId = "6e22436b-285e-4a51-874d-1442e4f33a9d",
+                    GebruikerId = "1",
                     AutoId = 5
                 }
             };

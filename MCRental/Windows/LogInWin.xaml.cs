@@ -46,7 +46,6 @@ namespace MCRental_Client.Windows
                         {
                             {
                                 App.Gebruiker = user;
-                                MessageBox.Show($"Welkom {user.Voornaam} {user.Achternaam}!", "Inloggen gelukt", MessageBoxButton.OK, MessageBoxImage.Information);
                                 // visibility weg van login en register knop
                                 App.MainWindow.btnLogin.Visibility = Visibility.Collapsed;
                                 Close();
@@ -88,9 +87,5 @@ namespace MCRental_Client.Windows
             }
             }
 
-        private void btnRegister_Click(object sender, RoutedEventArgs e)
-        {
-            new Registreer(_userManager, _context).ShowDialog();
-        }
     }
 }

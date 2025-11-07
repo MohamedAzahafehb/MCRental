@@ -39,13 +39,23 @@ namespace MCRental_Models
             {
                 new Auto
                 {
+                    Merk = "Dumcar",
+                    Model = "Dummola",
+                    Nummerplaat = "1-ABC-123",
+                    DagPrijs = 100.0,
+                    Beschikbaar = true,
+                    type = "Sedan",
+                    FiliaalId = 1
+                },
+                new Auto
+                {
                     Merk = "Toyota",
                     Model = "Corolla",
                     Nummerplaat = "1-ABC-123",
                     DagPrijs = 70.0,
                     Beschikbaar = true,
                     type = "Sedan",
-                    FiliaalId = 1
+                    FiliaalId = 2
                 },
                 new Auto
                 {
@@ -55,7 +65,7 @@ namespace MCRental_Models
                     DagPrijs = 65.0,
                     Beschikbaar = true,
                     type = "Hatchback",
-                    FiliaalId = 2
+                    FiliaalId = 3
                 },
                 new Auto
                 {
@@ -65,7 +75,7 @@ namespace MCRental_Models
                     DagPrijs = 95.0,
                     Beschikbaar = false,
                     type = "SUV",
-                    FiliaalId = 3
+                    FiliaalId = 4
                 },
                 new Auto
                 {
@@ -75,7 +85,7 @@ namespace MCRental_Models
                     DagPrijs = 90.0,
                     Beschikbaar = true,
                     type = "Sedan",
-                    FiliaalId = 1
+                    FiliaalId = 2
                 },
                 new Auto
                 {
@@ -85,7 +95,7 @@ namespace MCRental_Models
                     DagPrijs = 75.0,
                     Beschikbaar = true,
                     type = "Hatchback",
-                    FiliaalId = 2
+                    FiliaalId = 3
                 },
                 new Auto
                 {
@@ -95,7 +105,7 @@ namespace MCRental_Models
                     DagPrijs = 100.0,
                     Beschikbaar = false,
                     type = "SUV",
-                    FiliaalId = 3
+                    FiliaalId = 4
                 }
             };
             return list;

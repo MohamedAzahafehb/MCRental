@@ -26,6 +26,14 @@ namespace MCRental_Models
             {
                 new Filiaal
                 {
+                    Naam = "Filiaal Dummy",
+                    Adres = "Dumstraat 1",
+                    Telefoon = "03 123 123 23",
+                    Email = "dum.dummy@mcrental.be",
+                    StadId = 1
+                },
+                new Filiaal
+                {
                     Naam = "Filiaal Antwerpen",
                     Adres = "Kerkstraat 1",
                     Telefoon = "03 123 45 67",
@@ -38,7 +46,7 @@ namespace MCRental_Models
                     Adres = "Grote Markt 1",
                     Telefoon = "02 123 45 67",
                     Email = "info.brussel@mcrental.be",
-                    StadId = 1
+                    StadId = 4
                 },
                 new Filiaal
                 {

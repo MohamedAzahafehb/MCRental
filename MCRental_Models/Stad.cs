@@ -24,6 +24,11 @@ namespace MCRental_Models
             {
                 new Stad
                 {
+                    Naam = "DumStad",
+                    Postcode = "0000"
+                },
+                new Stad
+                {
                     Naam = "Brussel",
                     Postcode = "1000"
                 },
