@@ -61,14 +61,14 @@ namespace MCRental_Client.Windows
                                 App.MainWindow.mniReservatiebeheer.Visibility = Visibility.Visible;
                                 App.MainWindow.mniGebruikers.Visibility = Visibility.Visible;
                                 App.MainWindow.mniFilialenbeheer.Visibility = Visibility.Visible;
-                                App.MainWindow.mniProfiel.Visibility = Visibility.Visible;
                             }
                             else if (userRole.RoleId == "Klant")
                             {
                                 App.MainWindow.mniAuto.Visibility = Visibility.Visible;
                                 App.MainWindow.mniReservaties.Visibility = Visibility.Visible;
-                                App.MainWindow.mniProfiel.Visibility = Visibility.Visible;
                             }
+                            App.MainWindow.btnLogout.Visibility = Visibility.Visible;
+                            App.MainWindow.mniProfiel.Visibility = Visibility.Visible;
                         }
                     }
                     tbError.Text = "Ongeldige username of wachtwoord.";

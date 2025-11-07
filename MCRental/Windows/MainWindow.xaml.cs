@@ -80,11 +80,26 @@ namespace MCRental_Client.Windows
             new LogIn(_userManager, _context).ShowDialog();
         }
 
+        private void btnLogout_Click(object sender, RoutedEventArgs e)
+        {
+            App.Gebruiker = null;
+            frmMain.Navigate(new HomeKlantPage(_userManager, _context));
+            App.MainWindow.mniAuto.Visibility = Visibility.Collapsed;
+            App.MainWindow.mniReservaties.Visibility = Visibility.Collapsed;
+            App.MainWindow.mniProfiel.Visibility = Visibility.Collapsed;
+            App.MainWindow.mniAutobeheer.Visibility = Visibility.Collapsed;
+            App.MainWindow.mniReservatiebeheer.Visibility = Visibility.Collapsed;
+            App.MainWindow.mniGebruikers.Visibility = Visibility.Collapsed;
+            App.MainWindow.mniFilialenbeheer.Visibility = Visibility.Collapsed;
+        }
+
         private async void btnAdmin_Click(object sender, RoutedEventArgs e)
         {
             Gebruiker user = await _userManager.FindByNameAsync("mocromed");
             App.Gebruiker = user;
 
+            App.MainWindow.mniAuto.Visibility = Visibility.Collapsed;
+            App.MainWindow.mniReservaties.Visibility = Visibility.Collapsed;
             App.MainWindow.frmMain.Navigate(new AutoBeheerPage(_context));
             App.MainWindow.mniAutobeheer.Visibility = Visibility.Visible;
             App.MainWindow.mniReservatiebeheer.Visibility = Visibility.Visible;
@@ -101,6 +116,10 @@ namespace MCRental_Client.Windows
             App.MainWindow.mniAuto.Visibility = Visibility.Visible;
             App.MainWindow.mniReservaties.Visibility = Visibility.Visible;
             App.MainWindow.mniProfiel.Visibility = Visibility.Visible;
+            App.MainWindow.mniAutobeheer.Visibility = Visibility.Collapsed;
+            App.MainWindow.mniReservatiebeheer.Visibility = Visibility.Collapsed;
+            App.MainWindow.mniGebruikers.Visibility = Visibility.Collapsed;
+            App.MainWindow.mniFilialenbeheer.Visibility = Visibility.Collapsed;
 
         }
     }

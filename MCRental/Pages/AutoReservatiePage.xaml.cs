@@ -1,6 +1,7 @@
 ﻿using MCRental_Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace MCRental_Client.Pages
 {
@@ -26,6 +28,7 @@ namespace MCRental_Client.Pages
         private readonly Reservatie _reservatie;
         public AutoReservatiePage(Auto auto, MCRentalDBContext context, Reservatie reservatie)
         {
+            Debug.WriteLine("Navigated to AutoReservatiePage");
             InitializeComponent();
             _context = context;
             _auto = auto;
@@ -37,16 +40,29 @@ namespace MCRental_Client.Pages
 
             // beschikbareAutos zijn alle autos die tussen _reservatie.Startdatum en _reservatie.Einddatum niet gereserveerd zijn
             // (dus gekoppeld met andere reservaties in deze periode) en ze moeten beschikbaar zijn
-            List<Auto> beschikbareAutos = _context.Autos
-                .Where(a => a.Beschikbaar
-                    && !_context.Reservaties.Any(r =>
-                        r.AutoId == a.Id &&
-                        r.Id != _reservatie.Id && // zodat de huidige reservatie genegeerd wordt
-                        r.StartDatum < _reservatie.EindDatum &&
-                        r.EindDatum > _reservatie.StartDatum))
-                .ToList();
+            //List<Auto> beschikbareAutos = _context.Autos
+            //    .Where(a => a.Beschikbaar &&
+            //            !_context.Reservaties.Any(r =>
+            //            r.AutoId == a.Id &&
+            //            r.Id != _reservatie.Id && // zodat de huidige reservatie genegeerd wordt
+            //            r.StartDatum < _reservatie.EindDatum &&
+            //            r.EindDatum > _reservatie.StartDatum))
+            //    .ToList();
+            //var test = _context.Reservaties
+            //    .Where(r =>
+            //        r.StartDatum < _reservatie.EindDatum &&
+            //        r.EindDatum > _reservatie.StartDatum)
+            //    .Select(r => new { r.Id, r.AutoId, r.StartDatum, r.EindDatum })
+            //    .ToList();
 
-            cmbAutos.ItemsSource = beschikbareAutos;
+
+            //foreach (var res in test)
+            //{
+            //    Debug.WriteLine($"Conflict: Auto {res.AutoId} - {res.StartDatum:d} to {res.EindDatum:d}");
+            //}
+
+            var autos = _context.Autos.ToList();
+            cmbAutos.ItemsSource = autos;
         }
 
         private void btnTerug_Click(object sender, RoutedEventArgs e)

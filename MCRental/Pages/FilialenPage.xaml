@@ -44,13 +44,25 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
             </StackPanel>
+
+            <Button x:Name="btnNieuw" Content="Voeg Filiaal Toe" Width="100" Grid.Column="2" Click="btnNieuw_Click"/>
         </Grid>
 
-        <DataGrid x:Name="dgFilialen" Grid.Row="1" Margin="8">
+        <DataGrid x:Name="dgFilialen" Grid.Row="1" Margin="8" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Naam" Binding="{Binding Naam}" Width="100"/>
                 <DataGridTextColumn Header="Adres" Binding="{Binding Adres}" Width="200"/>
-                <DataGridTextColumn Header="StadId" Binding="{Binding StadId}" Width="200"/>
+                <DataGridTemplateColumn Header="Plaats" Width="150">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Stad.Postcode}"/>
+                                <TextBlock Text=" "/>
+                                <TextBlock Text="{Binding Stad.Naam}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTextColumn Header="Telefoon" Binding="{Binding Telefoon}" Width="200"/>
                 <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="200"/>
                 <DataGridTemplateColumn Header="Acties" Width="100">

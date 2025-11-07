@@ -1,4 +1,5 @@
-﻿using MCRental_Models;
+﻿using MCRental_Client.Windows;
+using MCRental_Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,22 +30,27 @@ namespace MCRental_Client.Pages
         {
             InitializeComponent();
             _context = context;
-            var filialen = (from filiaal in _context.Filialen
-                            select new Filiaal
-                            {
-                                Id = filiaal.Id,
-                                Naam = filiaal.Naam,
-                                Adres = filiaal.Adres,
-                                StadId = filiaal.StadId
-                            })
+            RefreshFilialen();
+        }
+
+        public void RefreshFilialen()
+        {
+            var filialen = _context.Filialen
                             .ToList();
             dgFilialen.ItemsSource = filialen;
         }
 
         private void BewerkButton_Click(object sender, RoutedEventArgs e)
         {
-            //implement
+            Filiaal filiaal = (sender as Button).DataContext as Filiaal;
+            new FilaalDetailWin(filiaal, _context).ShowDialog();
+            RefreshFilialen();
+        }
 
+        private void btnNieuw_Click(object sender, RoutedEventArgs e)
+        {
+            new FilaalDetailWin(_context).ShowDialog();
+            RefreshFilialen();
         }
     }
 }

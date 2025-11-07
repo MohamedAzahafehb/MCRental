@@ -86,7 +86,8 @@ namespace MCRental_Client.Pages
         }
         private void btnToevoegen_Click(object sender, RoutedEventArgs e)
         {
-
+            new VoegAutoToe(_context).ShowDialog();
+            RefreshAutos();
         }
     }
 }

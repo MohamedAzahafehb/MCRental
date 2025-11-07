@@ -91,7 +91,6 @@
                     <DataGridTextColumn Header="ReservatieId" Binding="{Binding Id}" Width="100"/>
                     <DataGridTextColumn Header="StartDatum" Binding="{Binding StartDatum}" Width="150"/>
                     <DataGridTextColumn Header="EindDatum" Binding="{Binding EindDatum}" Width="150"/>
-                    <DataGridTextColumn Header="KlantId" Binding="{Binding KlantId}" Width="100"/>
                     <DataGridTemplateColumn Header="Auto" Width="200">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

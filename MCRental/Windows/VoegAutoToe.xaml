@@ -15,12 +15,12 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" Grid.Row="0">
-            <TextBlock Text="Reservatie Details"
+            <TextBlock Text="Auto Toevoegen"
            FontSize="22"
            FontWeight="Bold"
            Margin="0,0,0,15"/>
 
-            <Button x:Name="btnBewerk" Content="Bewerk" Width="100" HorizontalAlignment="Right" Margin="10" Click="btnBewerk_Click"/>
+            <Button x:Name="btnBewerk" Content="Bewerk" Width="100" HorizontalAlignment="Right" Margin="10" />
         </StackPanel>
 
         <StackPanel Grid.Row="1" Orientation="Vertical" VerticalAlignment="Top">
@@ -48,11 +48,11 @@
                 <Label Content="Type:" Grid.Row="2" Grid.Column="0" Margin="3"/>
                 <TextBox x:Name="txtType" Grid.Row="2" Grid.Column="1" Margin="3"/>
                 <Label Content="Filiaal:" Grid.Row="2" Grid.Column="2" Margin="3"/>
-                <ComboBox x:Name="cmbFiliaal" Grid.Row="2" Grid.Column="3" Margin="3"/>
+                <ComboBox x:Name="cmbFiliaal" Grid.Row="2" Grid.Column="3" Margin="3" DisplayMemberPath="Naam" SelectedValuePath="Id" />
                 <Label Content="status:" Grid.Row="3" Grid.Column="0" Margin="3"/>
                 <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" Margin="3">
-                    <RadioButton x:Name="rbBeschikbaar" Content="Beschikbaar" Grid.Row="3" Grid.Column="1" Margin="3"/>
-                    <RadioButton x:Name="rbNietBeschikbaar" Content="Niet Beschikbaar" Grid.Row="3" Grid.Column="1" Margin="3"/>
+                    <RadioButton x:Name="rbnBeschikbaar" Content="Beschikbaar" Grid.Row="3" Grid.Column="1" Margin="3"/>
+                    <RadioButton x:Name="rbnNietBeschikbaar" Content="Niet Beschikbaar" IsChecked="True" Grid.Row="3" Grid.Column="1" Margin="3"/>
                 </StackPanel>
 
             </Grid>

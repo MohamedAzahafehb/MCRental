@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MCRental_Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,19 +20,35 @@ namespace MCRental_Client.Windows
     /// </summary>
     public partial class VoegAutoToe : Window
     {
-        public VoegAutoToe()
+        private readonly MCRentalDBContext _context;
+        public VoegAutoToe(MCRentalDBContext context)
         {
             InitializeComponent();
+            _context = context;
+
+            cmbFiliaal.ItemsSource = _context.Filialen.ToList();
         }
 
         private void btnOpslaan_Click(object sender, RoutedEventArgs e)
         {
-
+            _context.Autos.Add(new Auto
+            {
+                Merk = txtMerk.Text,
+                Model = txtModel.Text,
+                Nummerplaat = txtNummerplaat.Text,
+                DagPrijs = double.Parse(txtDagprijs.Text),
+                Beschikbaar = rbnBeschikbaar.IsChecked ?? false,
+                type = txtType.Text,
+                FiliaalId = ((Filiaal)cmbFiliaal.SelectedItem).Id
+            });
+            MessageBox.Show("Auto toegevoegd!");
+            _context.SaveChanges();
+            this.Close();
         }
 
         private void btnAnnuleren_Click(object sender, RoutedEventArgs e)
         {
-
+            this.Close();
         }
     }
 }
