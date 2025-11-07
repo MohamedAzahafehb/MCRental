@@ -10,12 +10,12 @@
 	EF weet wat ie doet
 
 
+self-made controls:
+	- combobox met checkboxes
+	- combobox van objecten (meerdere velden vb "9100 Sint-Niklaas" of "BMW X3 1-WDJ-696")
 vragen:
- - wat aan te passen aan een reservatie als Klant?
- - hoe correct refereren bij gebruik van AI of voorbeeldproject uit de les?
- - wat als je bij één classe iets nieuw gebruikt met behulp van AI en herbruikt in andere classes, moet dat stukje code dan telkens refereren naar AI?
- - kan ik heel die zoekmenu in 1 control steken? ik heb het twee keer nodig
- - is een combobox met checkboxes als een zelf-ontworpen control een goed idee?
- - ik gebruik een externe api om de tabel "Steden" te seeden en bij het ophalen van data in de rest van de applicatie haal ik op vanuit de DB, is dat genoeg als bonus?
-
+- Autobeheer automatsch updaten na wijziging in de database. ik gebruik nu een hulpmethode refresh()
+	-> Auto : InotifyPropertyChanged implementeren
+- kan ik heel die zoekmenu in 1 control steken? ik heb het twee keer nodig
+ 
 	

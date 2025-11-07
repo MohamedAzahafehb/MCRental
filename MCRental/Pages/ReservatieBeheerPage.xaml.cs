@@ -20,8 +20,11 @@ namespace MCRental_Client.Pages
     /// <summary>
     /// Interaction logic for ReservatieBeheerPage.xaml
     /// </summary>
+    /// 
     public partial class ReservatieBeheerPage : Page
     {
+        // btn ReservatieDetails
+        // nieuw window: reservatie koppelen aan een andere auto, reservatie annuleren
         private List<Reservatie> reservaties = new List<Reservatie>();
         private readonly MCRentalDBContext _context;
         public ReservatieBeheerPage(MCRentalDBContext context)
@@ -33,13 +36,16 @@ namespace MCRental_Client.Pages
                            {
                                Id = reservatie.Id,
                                AutoId = reservatie.AutoId,
+                               Auto = reservatie.Auto,
                                GebruikerId = reservatie.GebruikerId,
+                               Gebruiker = reservatie.Gebruiker,
                                StartDatum = reservatie.StartDatum,
                                EindDatum = reservatie.EindDatum,
                            })
                            .ToList();
 
             dgReservaties.ItemsSource = reservaties;
+
         }
     }
 }

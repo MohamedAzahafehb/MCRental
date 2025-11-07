@@ -1,4 +1,7 @@
-﻿using MCRental_Models;
+﻿using MCRental_Client.Windows;
+using MCRental_Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,22 +24,25 @@ namespace MCRental_Client.Pages
     /// </summary>
     public partial class GebruikersPage : Page
     {
+        // Gebruiker details window: rollen aanpassen
         private List<Gebruiker> gebruikers;
         private readonly MCRentalDBContext _context;
-        public GebruikersPage(MCRentalDBContext context)
+        UserManager<Gebruiker> _userManager;
+        public GebruikersPage(MCRentalDBContext context, UserManager<Gebruiker> userManager)
         {
             InitializeComponent();
-            gebruikers = (from gebruiker in context.Gebruikers
-                          select new Gebruiker
-                          {
-                              Id = gebruiker.Id,
-                              Voornaam = gebruiker.Voornaam,
-                              Achternaam = gebruiker.Achternaam,
-                              UserName = gebruiker.UserName,
-                              Email = gebruiker.Email
-                          })
-                          .ToList();
+            _context = context;
+            _userManager = userManager;
+            gebruikers = _context.Gebruikers
+                .Include(g => g.Stad)
+                .ToList();
             dgGebruikers.ItemsSource = gebruikers;
+        }
+
+        public void btnBewerk_Click(object sender, RoutedEventArgs e)
+        {
+            Gebruiker gebruiker = (sender as Button).DataContext as Gebruiker;
+            new GebruikerDetaliWin(gebruiker, _context, _userManager).ShowDialog();
         }
     }
 }

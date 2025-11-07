@@ -43,6 +43,8 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
+
+                <Button x:Name="btnToevoegen" Content="Auto Toevoegen +" Margin="20,0, 0, 0" Click="btnToevoegen_Click" />
             </StackPanel>
         </Grid>
 

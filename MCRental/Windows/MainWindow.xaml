@@ -24,10 +24,11 @@
                 <MenuItem x:Name="mniProfiel" Header="Profiel" Click="mniProfiel_Click" Visibility="Collapsed"/>
             </Menu>
         </StackPanel>
-        
+
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-            <Label x:Name="lblGebruiker" HorizontalAlignment="Right" Margin="10" Visibility="Collapsed"/>
             <Button x:Name="btnLogin" Content="Login" HorizontalAlignment="Right" Margin="10" Click="btnLogin_Click"/>
+            <Button x:Name="btnAdmin" Content="Admin" Width="100" Margin="10" Click="btnAdmin_Click"/>
+            <Button x:Name="btnKlant" Content="Klant" Width="100" Margin="10" Click="btnKlant_Click"/>
         </StackPanel>
 
         <Frame x:Name="frmMain" Grid.Row="1" NavigationUIVisibility="Hidden"/>

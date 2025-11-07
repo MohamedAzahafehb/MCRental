@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Collections.ObjectModel;
 
 namespace MCRental_Client.Pages
 {
@@ -22,24 +23,24 @@ namespace MCRental_Client.Pages
     /// </summary>
     public partial class AutoBeheerPage : Page
     {
+        /*Wanneer op btn Bewerk:
+        zoekbalk, zoekt in Merk, Model, Nummerplaat
+        filteren op types, beschiknaarheid
+        datagrid observable maken: automatisch updaten bij bewerken
+         */
         private List<string> selectedTypes = new List<string>();
         private List<Auto> autos = new List<Auto>();
+        private readonly MCRentalDBContext _context;
         public AutoBeheerPage(MCRentalDBContext context)
         {
+            _context = context;
             InitializeComponent();
-            autos = (from auto in context.Autos
-                     select new MCRental_Models.Auto
-                     {
-                         Id = auto.Id,
-                         Merk = auto.Merk,
-                         Model = auto.Model,
-                         Nummerplaat = auto.Nummerplaat,
-                         DagPrijs = auto.DagPrijs,
-                         Beschikbaar = auto.Beschikbaar,
-                         type = auto.type,
-                         FiliaalId = auto.FiliaalId
-                     })
-                                   .ToList();
+            RefreshAutos();
+        }
+
+        public void RefreshAutos()
+        {
+            autos = _context.Autos.ToList();
             dgAutos.ItemsSource = autos;
 
             var typesDistinct = autos.Select(a => a.type).Distinct().ToList();
@@ -49,7 +50,8 @@ namespace MCRental_Client.Pages
         private void BewerkButton_Click(object sender, RoutedEventArgs e)
         {
             Auto auto = (sender as Button).DataContext as Auto;
-            new AutoDetailWin(auto).ShowDialog();
+            new AutoDetailWin(auto, _context).ShowDialog();
+            RefreshAutos();
         }
 
         private void TypeCheckBox_Changed(object sender, RoutedEventArgs e)
@@ -81,6 +83,10 @@ namespace MCRental_Client.Pages
 
                 cmbTypes.Text = $"{selectedTypes.Count} geselecteerd";
             }
+        }
+        private void btnToevoegen_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

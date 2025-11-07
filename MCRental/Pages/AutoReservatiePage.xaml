@@ -1,0 +1,69 @@
+﻿<Page x:Class="MCRental_Client.Pages.AutoReservatiePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MCRental_Client.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="AutoReservatiePage">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="10">
+            <Button x:Name="btnTerug" Content="&#x2190; Terug" Width="100" Click="btnTerug_Click" Margin="0,0,20,0"/>
+            <TextBlock Text="Koppel een andere auto aan deze reservatie"
+                   FontSize="22"
+                   FontWeight="Bold"
+                   Margin="0,0,0,15"/>
+        </StackPanel>
+
+        <TextBlock Text="Selecteer een auto uit de lijst hieronder om deze te koppelen aan de reservatie."
+           FontSize="16"
+           FontWeight="SemiBold"
+           Margin="0,0,0,10"
+           Grid.Column="0"
+           Grid.Row="1"
+           Grid.ColumnSpan="2"
+                   />
+
+        <StackPanel Grid.Row="2" Grid.Column="0" Margin="10">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Startdatum"/>
+                <TextBlock x:Name="txtStartdatum"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Einddatum"/>
+                <TextBlock x:Name="txtEinddatum"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Klant"/>
+                <TextBlock x:Name="txtKlant"/>
+            </StackPanel>
+
+        </StackPanel>
+        <ComboBox x:Name="cmbAutos" Grid.Column="1" Height="20" VerticalAlignment="Top" Grid.Row="2">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Merk}" />
+                        <TextBlock Text=" " />
+                        <TextBlock Text="{Binding Model}" />
+                        <TextBlock Text=" " />
+                        <TextBlock Text="{Binding Nummerplaat}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+    </Grid>
+</Page>

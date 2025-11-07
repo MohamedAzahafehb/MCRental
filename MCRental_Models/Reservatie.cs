@@ -20,14 +20,16 @@ namespace MCRental_Models
         //public int KlantId { get; set; }
         [ForeignKey("Gebruiker")]
         public string GebruikerId { get; set; }
-        //public Gebruiker? Klant { get; set; }
-        //[ForeignKey("Auto")]
+        public Gebruiker? Gebruiker { get; set; }
         [ForeignKey("Auto")]
         public int AutoId { get; set; }
         public Auto? Auto { get; set; }
         [Required]
         public DateTime Aanmaking { get; set; } = DateTime.Now;
         public DateTime? Annulatie { get; set; }
+
+        [NotMapped]
+        public List<Auto> OnbeschikbareAutos { get; set; } = new List<Auto>();
 
         //Hans: dfb77b1e-87df-4474-a679-763fe1a8af08
         //Grietje: 9d5f0aa9-190b-407b-b4bc-c97b15503eb3

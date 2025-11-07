@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace MCRental_Models
 {
-    public class Auto
+    public class Auto //: INotifyPropertyChanged
     {
         public int Id { get; set; }
         [Required]
@@ -29,6 +30,8 @@ namespace MCRental_Models
         public Filiaal? Filiaal { get; set; }
 
         public ICollection<Reservatie>? Reservaties { get; set; }
+
+        //public event PropertyChangedEventHandler? PropertyChanged;
 
         public static List<Auto> seedingData()
         {

@@ -20,23 +20,18 @@ namespace MCRental_Client.Windows
     /// </summary>
     public partial class AutoDetailWin : Window
     {
-        private readonly Auto _auto;
-        public AutoDetailWin(Auto auto)
+        /*
+         * prijs aanpassen, merk, model, nummerplaat, type. zonder problemen
+        maar wanneer beschikbaarheid op false wordt gezet wordt er eerst alle reservaties die aan de auto gekoppeld zijn weergegeven,
+        moeten die reservaties aan andere autos gekoppeld worden die op die datum beschikbaarzijn(datum).
+        dan pas kan de auto gedeactiveerd worden
+        */
+        
+        public AutoDetailWin(Auto auto, MCRentalDBContext context)
         {
             InitializeComponent();
-            _auto = auto;
-            LaadAutoDetails();
+            frmMain.Navigate(new Pages.AutoDetailPage(auto, context));
         }
 
-        private void LaadAutoDetails()
-        {
-            lblMerk.Content = _auto.Merk;
-            lblModel.Content = _auto.Model;
-            lblNummerplaat.Content = _auto.Nummerplaat;
-            lblDagprijs.Content = _auto.DagPrijs.ToString("C");
-            lblBeschikbaar.Content = _auto.Beschikbaar ? "Ja" : "Nee";
-            lblType.Content = _auto.type;
-            lblFiliaal.Content = _auto.FiliaalId.ToString();
-        }
     }
 }

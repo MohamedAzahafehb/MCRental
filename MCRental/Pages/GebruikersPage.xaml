@@ -46,15 +46,26 @@
             </StackPanel>
         </Grid>
 
-        <DataGrid x:Name="dgGebruikers" Grid.Row="1" Margin="8">
+        <DataGrid x:Name="dgGebruikers" Grid.Row="1" Margin="8" AutoGenerateColumns="False" IsReadOnly="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Naam" Binding="{Binding Naam}" Width="100"/>
-                <DataGridTextColumn Header="Username" Binding="{Binding UserName}" Width="200"/>
-                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="200"/>
-                <DataGridTemplateColumn Header="Acties" Width="100">
+                <DataGridTemplateColumn Header="Naam" Width="150">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Bewerk"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Achternaam}"/>
+                                <TextBlock Text=" "/>
+                                <TextBlock Text="{Binding Voornaam}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Gebruikersnaam" Binding="{Binding UserName}" Width="200"/>
+                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="200"/>
+                <DataGridTextColumn Header="Rollen" Binding="{Binding Roles}" Width="200"/>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Bewerk" Click="btnBewerk_Click"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

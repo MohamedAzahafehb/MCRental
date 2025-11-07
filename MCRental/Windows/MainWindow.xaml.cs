@@ -61,7 +61,7 @@ namespace MCRental_Client.Windows
         private void mniGebruikers_Click(object sender, RoutedEventArgs e)
         {
             // role = admin vereist
-            frmMain.Navigate(new GebruikersPage(_context));
+            frmMain.Navigate(new GebruikersPage(_context, _userManager));
         }
 
         private void mniFilialenbeheer_Click(object sender, RoutedEventArgs e)
@@ -78,6 +78,30 @@ namespace MCRental_Client.Windows
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
             new LogIn(_userManager, _context).ShowDialog();
+        }
+
+        private async void btnAdmin_Click(object sender, RoutedEventArgs e)
+        {
+            Gebruiker user = await _userManager.FindByNameAsync("mocromed");
+            App.Gebruiker = user;
+
+            App.MainWindow.frmMain.Navigate(new AutoBeheerPage(_context));
+            App.MainWindow.mniAutobeheer.Visibility = Visibility.Visible;
+            App.MainWindow.mniReservatiebeheer.Visibility = Visibility.Visible;
+            App.MainWindow.mniGebruikers.Visibility = Visibility.Visible;
+            App.MainWindow.mniFilialenbeheer.Visibility = Visibility.Visible;
+            App.MainWindow.mniProfiel.Visibility = Visibility.Visible;
+        }
+
+        private async void btnKlant_Click(object sender, RoutedEventArgs e)
+        {
+            Gebruiker user = await _userManager.FindByNameAsync("ayman");
+            App.Gebruiker = user;
+
+            App.MainWindow.mniAuto.Visibility = Visibility.Visible;
+            App.MainWindow.mniReservaties.Visibility = Visibility.Visible;
+            App.MainWindow.mniProfiel.Visibility = Visibility.Visible;
+
         }
     }
 }

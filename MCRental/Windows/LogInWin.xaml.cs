@@ -1,4 +1,5 @@
-﻿using MCRental_Models;
+﻿using MCRental_Client.Pages;
+using MCRental_Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -46,7 +47,6 @@ namespace MCRental_Client.Windows
                             MessageBox.Show($"Welkom {user.Voornaam} {user.Achternaam}!", "Inloggen gelukt", MessageBoxButton.OK, MessageBoxImage.Information);
                             // visibility weg van login en register knop
                             App.MainWindow.btnLogin.Visibility = Visibility.Collapsed;
-                            App.MainWindow.lblGebruiker.Content = $"{user.UserName}";
                             Close();
                         }
                         IdentityUserRole<string>? userRole = _context.UserRoles.FirstOrDefault(ur => ur.UserId == App.Gebruiker.Id);
@@ -56,6 +56,7 @@ namespace MCRental_Client.Windows
                         {
                             if(userRole.RoleId == "Admin")
                             {
+                                App.MainWindow.frmMain.Navigate(new AutoBeheerPage(_context));
                                 App.MainWindow.mniAutobeheer.Visibility = Visibility.Visible;
                                 App.MainWindow.mniReservatiebeheer.Visibility = Visibility.Visible;
                                 App.MainWindow.mniGebruikers.Visibility = Visibility.Visible;

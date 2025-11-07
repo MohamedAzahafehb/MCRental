@@ -21,6 +21,9 @@ namespace MCRental_Client.Pages
     /// </summary>
     public partial class FilialenPage : Page
     {
+        // Filailen details window
+        // rol == Admin? alle velden kunnen aangepast worden en opgeslagen
+        // rol != Admin? alleen details bekijken
         private readonly MCRentalDBContext _context;
         public FilialenPage(MCRentalDBContext context)
         {

@@ -35,12 +35,35 @@
                     </ComboBox>
                 </StackPanel>
             </Grid>
-            <DataGrid x:Name="dgReservaties" Grid.Row="1" Margin="8">
+            <DataGrid x:Name="dgReservaties" Grid.Row="1" Margin="8" AutoGenerateColumns="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ReservatieId" Binding="{Binding Id}" Width="100"/>
-                    <DataGridTextColumn Header="AutoId" Binding="{Binding AutoId}" Width="100"/>
                     <DataGridTextColumn Header="StartDatum" Binding="{Binding StartDatum}" Width="150"/>
                     <DataGridTextColumn Header="EindDatum" Binding="{Binding EindDatum}" Width="150"/>
+                    <DataGridTemplateColumn Header="Klant">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Gebruiker.Achternaam}"/>
+                                    <TextBlock Text=" "/>
+                                    <TextBlock Text="{Binding Gebruiker.Voornaam}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Auto.Merk}"/>
+                                    <TextBlock Text=" "/>
+                                    <TextBlock Text="{Binding Auto.Model}"/>
+                                    <TextBlock Text=" "/>
+                                    <TextBlock Text="{Binding Auto.Nummerplaat}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
