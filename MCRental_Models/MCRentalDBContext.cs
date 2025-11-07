@@ -24,7 +24,7 @@ namespace MCRental_Models
                         .AddUserSecrets<MCRentalDBContext>(optional: true)
                         .Build();
 
-                    var connStr = config.GetConnectionString("TestConnection");
+                    var connStr = config.GetConnectionString("DefaultConnection");
                 try
                 {
                     optionsBuilder.UseSqlServer(connStr);
