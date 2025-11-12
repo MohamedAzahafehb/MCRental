@@ -47,6 +47,11 @@ namespace MCRental_Client.Pages
                 MessageBox.Show("Gelieve alle velden in te vullen.", "Foutmelding", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+            if(eindDatum <= startDatum)
+            {
+                MessageBox.Show("Gelieve correcte data in te geven.", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             NavigationService.Navigate(new AutoOverzichtPage(_userManager, _context, geselecteerdFiliaal, startDatum.Value, eindDatum.Value));
         }
     }

@@ -70,7 +70,7 @@ namespace MCRental_Client.Windows
                                 }
                                 App.MainWindow.btnLogout.Visibility = Visibility.Visible;
                                 App.MainWindow.mniProfiel.Visibility = Visibility.Visible;
-                                App.MainWindow.btnRegistreer.Visibility = Visibility.Visible;
+                                App.MainWindow.btnRegistreer.Visibility = Visibility.Collapsed;
                             }
                         }
                         tbError.Text = "Ongeldige username of wachtwoord.";

@@ -42,6 +42,18 @@ namespace MCRental_Client.Windows
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(txtVoornaam.Text) ||
+                    string.IsNullOrWhiteSpace(txtAchternaam.Text) ||
+                    string.IsNullOrWhiteSpace(txtEmail.Text) ||
+                    string.IsNullOrWhiteSpace(txtAdres.Text) ||
+                    string.IsNullOrWhiteSpace(txtUserName.Text) ||
+                    string.IsNullOrWhiteSpace(txtPhoneNumber.Text) ||
+                    dpGeboortedatum.SelectedDate == null ||
+                    cmbStad.SelectedItem == null)
+                {
+                    throw new Exception("Gelieve alle velden in te vullen!");
+                }
+                
                 var gebruiker = new Gebruiker
                 {
                     Voornaam = txtVoornaam.Text,
@@ -78,7 +90,7 @@ namespace MCRental_Client.Windows
                 }
                 else
                 {
-                    MessageBox.Show(string.Join("\n", result.Errors.Select(e => e.Description)), "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
+                    throw new Exception(string.Join("\n", result.Errors.Select(e => e.Description)));
                 }
             }
             catch (Exception ex)

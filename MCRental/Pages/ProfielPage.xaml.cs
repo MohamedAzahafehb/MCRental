@@ -56,7 +56,7 @@ namespace MCRental_Client.Pages
                 }
 
                 // Bind alle steden aan de combobox
-                cmbStad.ItemsSource = _context.Steden.ToList();
+                cmbStad.ItemsSource = _context.Steden.Take(20).ToList();
                 cmbStad.DisplayMemberPath = "Naam";
                 cmbStad.SelectedValuePath = "Id";
 
