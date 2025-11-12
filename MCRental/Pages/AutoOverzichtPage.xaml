@@ -94,7 +94,7 @@
             </StackPanel>
         </Grid>
 
-        <DataGrid x:Name="dgAutos" Grid.Row="1" Margin="8">
+        <DataGrid x:Name="dgAutos" Grid.Row="1" Margin="8" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Merk" Binding="{Binding Merk}" Width="100"/>
                 <DataGridTextColumn Header="Model" Binding="{Binding Model}" Width="200"/>
@@ -106,7 +106,7 @@
                 <DataGridTemplateColumn Header="Acties" Width="100">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Reserveer" Click="ReserveerButton_Click"/>
+                            <Button Content="Reserveer" Click="ReserveerButton_Click" IsEnabled="True"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

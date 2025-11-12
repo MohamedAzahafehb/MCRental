@@ -39,11 +39,13 @@
                 </ComboBox>
             </StackPanel>
         </Grid>
-        <DataGrid x:Name="dgReservaties" Grid.Row="1" Margin="8">
+        <DataGrid x:Name="dgReservaties" Grid.Row="1" Margin="8" AutoGenerateColumns="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ReservatieId" Binding="{Binding Id}" Width="100"/>
-                    <DataGridTextColumn Header="AutoId" Binding="{Binding AutoId}" Width="100"/>
-                    <DataGridTextColumn Header="StartDatum" Binding="{Binding StartDatum}" Width="150"/>
+                <DataGridTextColumn Header="Merk" Binding="{Binding Auto.Merk}" Width="100"/>
+                <DataGridTextColumn Header="Model" Binding="{Binding Auto.Model}" Width="100"/>
+                <DataGridTextColumn Header="Nummerplaat" Binding="{Binding Auto.Nummerplaat}" Width="100"/>
+                <DataGridTextColumn Header="StartDatum" Binding="{Binding StartDatum}" Width="150"/>
                     <DataGridTextColumn Header="EindDatum" Binding="{Binding EindDatum}" Width="150"/>
                     <DataGridTemplateColumn Header="Acties" Width="100">
                         <DataGridTemplateColumn.CellTemplate>
