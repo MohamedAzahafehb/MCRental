@@ -26,10 +26,28 @@
 
 	<ItemGroup>
 		<Folder Include="Areas\Identity\Data\" />
-		<Folder Include="Resources\" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Include="Translation\Areas\Identity\Pages\Account\Login.en.resx" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Translation\Areas\Identity\Pages\Account\Login.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Login.resx</DependentUpon>
+	  </Compile>
+	  <Compile Update="Translation\Areas\Identity\Pages\Account\LoginModel+InputModel.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>LoginModel+InputModel.resx</DependentUpon>
+	  </Compile>
+	  <Compile Update="Translation\Areas\Identity\Pages\Account\LoginModel.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>LoginModel.resx</DependentUpon>
+	  </Compile>
 	  <Compile Update="Translation\Models\Reservaties.Designer.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>
@@ -65,6 +83,21 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <EmbeddedResource Update="Translation\Areas\Identity\Pages\Account\Login.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Login.Designer.cs</LastGenOutput>
+	    <CustomToolNamespace>MCRentalWeb</CustomToolNamespace>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Translation\Areas\Identity\Pages\Account\LoginModel+InputModel.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>LoginModel+InputModel.Designer.cs</LastGenOutput>
+	    <CustomToolNamespace>MCRentalWeb</CustomToolNamespace>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Translation\Areas\Identity\Pages\Account\LoginModel.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>LoginModel.Designer.cs</LastGenOutput>
+	    <CustomToolNamespace>MCRentalWeb</CustomToolNamespace>
+	  </EmbeddedResource>
 	  <EmbeddedResource Update="Translation\Models\Reservaties.en.resx">
 	    <Generator>PublicResXFileCodeGenerator</Generator>
 	    <CustomToolNamespace>MCRentalWeb</CustomToolNamespace>

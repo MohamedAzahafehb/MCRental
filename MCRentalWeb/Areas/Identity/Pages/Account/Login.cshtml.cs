@@ -2,19 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
+using MCRental_Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Localization;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
-using MCRental_Models;
 
 namespace MCRentalWeb.Areas.Identity.Pages.Account
 {
@@ -22,11 +25,15 @@ namespace MCRentalWeb.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<Gebruiker> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly MCRentalDBContext _context;
+        private readonly IStringLocalizer<LoginModel> _localizer;
 
-        public LoginModel(SignInManager<Gebruiker> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<Gebruiker> signInManager, ILogger<LoginModel> logger, MCRentalDBContext context, IStringLocalizer<LoginModel> localizer)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _context = context;
+            _localizer = localizer;
         }
 
         /// <summary>
@@ -66,6 +73,7 @@ namespace MCRentalWeb.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
+            [Display(Name = "Username")]
             public string UserName { get; set; }
 
             /// <summary>
@@ -73,6 +81,7 @@ namespace MCRentalWeb.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
+            [Display(Name = "Password")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
@@ -112,9 +121,16 @@ namespace MCRentalWeb.Areas.Identity.Pages.Account
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+
+                Gebruiker user = _context.Users.FirstOrDefault(u => u.UserName == Input.UserName);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+                    Response.Cookies.Append(
+                       CookieRequestCultureProvider.DefaultCookieName,
+                       CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(user.LanguageCode)),
+                       new CookieOptions { Expires = DateTimeOffset.UtcNow.AddMonths(1) }
+                       );
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -128,7 +144,7 @@ namespace MCRentalWeb.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, _localizer["Invalid login attempt."]);
                     return Page();
                 }
             }
