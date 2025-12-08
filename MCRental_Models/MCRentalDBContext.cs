@@ -14,6 +14,7 @@ namespace MCRental_Models
         public DbSet<Gebruiker> Gebruikers { get; set; }
         public DbSet<Auto> Autos { get; set; }
         public DbSet<Reservatie> Reservaties { get; set; }
+        public DbSet<Language>  Languages { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             
@@ -46,7 +47,8 @@ namespace MCRental_Models
                 {
                     context.Steden.AddRange(Stad.seedingData());
                     context.SaveChanges();
-                    seedSteden(context);
+                    //seedSteden(context);
+                    Language.seedingData();
                 }
                 if (!context.Filialen.Any())
                 {
@@ -63,6 +65,11 @@ namespace MCRental_Models
                 if (!context.Reservaties.Any())
                 {
                     context.Reservaties.AddRange(Reservatie.seedingData());
+                    context.SaveChanges();
+                }
+                if (!context.Languages.Any())
+                {
+                    context.Languages.AddRange(Language.seedingData());
                     context.SaveChanges();
                 }
             }

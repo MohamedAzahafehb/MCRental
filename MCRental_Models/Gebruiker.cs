@@ -21,6 +21,9 @@ namespace MCRental_Models
         public string Achternaam { get; set; }
         [Required]
         public DateTime GeboorteDatum { get; set; }
+        [ForeignKey("Language")]
+        public string LanguageCode { get; set; } = "nl";
+        public Language? Language { get; set; }
         [Required]
         public string Adres { get; set; }
         [ForeignKey("Stad")]
@@ -37,6 +40,7 @@ namespace MCRental_Models
             GeboorteDatum = new DateTime(1999, 1, 1),
             Adres = "Dummystraat 1",
             StadId = 1,
+            LanguageCode = "-",
             UserName = "Dummy",
             NormalizedUserName = "DUMMY",
             Email = "Dummy@mcrental.be",

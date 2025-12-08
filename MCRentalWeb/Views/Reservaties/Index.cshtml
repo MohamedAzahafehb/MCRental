@@ -1,0 +1,69 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model IEnumerable<MCRental_Models.Reservatie>
+
+@inject IViewLocalizer _localizer
+@inject IHtmlLocalizer<SharedResource> _shared
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>@_shared["Lijst"]</h1>
+
+<p>
+    <a asp-action="Create">@_shared["Create"]</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDatum)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EindDatum)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gebruiker)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Auto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Aanmaking)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Annulatie)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDatum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EindDatum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gebruiker.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Auto.Merk)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Aanmaking)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Annulatie)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">@_shared["Edit"]</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">@_shared["Details"]</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">@_shared["Delete"]</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

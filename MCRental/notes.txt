@@ -1,4 +1,7 @@
-﻿Control maken:
+﻿ERROR:
+does not implement IUserRoleStore<IUser>
+
+Control maken:
  klasse maken inherites van Control
  private Ractangle rect, popup en items
 

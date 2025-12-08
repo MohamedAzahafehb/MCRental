@@ -1,9 +1,123 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="9.0.6" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="9.0.6" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="9.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MCRental_Models\MCRental_Models.csproj" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Areas\Identity\Data\" />
+		<Folder Include="Resources\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Translation\Models\Reservaties.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Reservaties.resx</DependentUpon>
+	  </Compile>
+	  <Compile Update="Translation\SharedResource.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>SharedResource.resx</DependentUpon>
+	  </Compile>
+	  <Compile Update="Translation\Views\Reservaties\Index.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Index.resx</DependentUpon>
+	  </Compile>
+	  <Compile Update="Translation\Views\Shared\_Layout.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>_Layout.resx</DependentUpon>
+	  </Compile>
+	  <Compile Update="Translation\Views\Shared\_LoginPartial.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>_LoginPartial.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Update="Views\Shared\_LoginPartial.cshtml">
+	    <Generator></Generator>
+	    <CustomToolNamespace></CustomToolNamespace>
+	  </Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Translation\Models\Reservaties.en.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <CustomToolNamespace>MCRentalWeb</CustomToolNamespace>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Translation\Models\Reservaties.fr.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <CustomToolNamespace>MCRentalWeb</CustomToolNamespace>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Translation\Models\Reservaties.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Reservaties.Designer.cs</LastGenOutput>
+	    <CustomToolNamespace>MCRentalWeb</CustomToolNamespace>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Translation\SharedResource.en.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <CustomToolNamespace>MCRentalWeb</CustomToolNamespace>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Translation\SharedResource.fr.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <CustomToolNamespace>MCRentalWeb</CustomToolNamespace>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Translation\SharedResource.resx">
+	    <CustomToolNamespace>MCRentalWeb</CustomToolNamespace>
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>SharedResource.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Translation\Views\Reservaties\Index.fr.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <CustomToolNamespace>MCRentalWeb</CustomToolNamespace>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Translation\Views\Reservaties\Index.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Index.Designer.cs</LastGenOutput>
+	    <CustomToolNamespace>MCRentalWeb</CustomToolNamespace>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Translation\Views\Shared\_Layout.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>_Layout.Designer.cs</LastGenOutput>
+	    <CustomToolNamespace>MCRentalWeb</CustomToolNamespace>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Translation\Views\Shared\_LoginPartial.en.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <CustomToolNamespace>MCRentalWeb</CustomToolNamespace>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Translation\Views\Shared\_LoginPartial.fr.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <CustomToolNamespace>MCRentalWeb</CustomToolNamespace>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Translation\Views\Shared\_LoginPartial.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>_LoginPartial.Designer.cs</LastGenOutput>
+	    <CustomToolNamespace>MCRentalWeb</CustomToolNamespace>
+	  </EmbeddedResource>
+	</ItemGroup>
 
 </Project>

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCRental_Models", "MCRental
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCRentalsApp", "MCRentalsApp\MCRentalsApp.csproj", "{BFFBCA72-CFA8-433D-877F-5D77C4DDC4AF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCRentalWeb", "MCRentalWeb\MCRentalWeb.csproj", "{BC7F8D79-F8FB-4B8A-9395-C795DBFD2E34}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{BFFBCA72-CFA8-433D-877F-5D77C4DDC4AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFFBCA72-CFA8-433D-877F-5D77C4DDC4AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BFFBCA72-CFA8-433D-877F-5D77C4DDC4AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC7F8D79-F8FB-4B8A-9395-C795DBFD2E34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC7F8D79-F8FB-4B8A-9395-C795DBFD2E34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC7F8D79-F8FB-4B8A-9395-C795DBFD2E34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC7F8D79-F8FB-4B8A-9395-C795DBFD2E34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,6 +4,7 @@ using MCRental_Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MCRental_Models.Migrations
 {
     [DbContext(typeof(MCRentalDBContext))]
-    partial class MCRentalDBContextModelSnapshot : ModelSnapshot
+    [Migration("20251127172434_Languages")]
+    partial class Languages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -126,10 +129,6 @@ namespace MCRental_Models.Migrations
                     b.Property<DateTime>("GeboorteDatum")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("LanguageCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -171,8 +170,6 @@ namespace MCRental_Models.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("LanguageCode");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -421,19 +418,11 @@ namespace MCRental_Models.Migrations
 
             modelBuilder.Entity("MCRental_Models.Gebruiker", b =>
                 {
-                    b.HasOne("MCRental_Models.Language", "Language")
-                        .WithMany()
-                        .HasForeignKey("LanguageCode")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("MCRental_Models.Stad", "Stad")
                         .WithMany("Gebruikers")
                         .HasForeignKey("StadId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Language");
 
                     b.Navigation("Stad");
                 });

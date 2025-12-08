@@ -1,0 +1,64 @@
+﻿@model MCRental_Models.Auto
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Auto</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Merk" class="control-label"></label>
+                <input asp-for="Merk" class="form-control" />
+                <span asp-validation-for="Merk" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Model" class="control-label"></label>
+                <input asp-for="Model" class="form-control" />
+                <span asp-validation-for="Model" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Nummerplaat" class="control-label"></label>
+                <input asp-for="Nummerplaat" class="form-control" />
+                <span asp-validation-for="Nummerplaat" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DagPrijs" class="control-label"></label>
+                <input asp-for="DagPrijs" class="form-control" />
+                <span asp-validation-for="DagPrijs" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Beschikbaar" /> @Html.DisplayNameFor(model => model.Beschikbaar)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="type" class="control-label"></label>
+                <input asp-for="type" class="form-control" />
+                <span asp-validation-for="type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FiliaalId" class="control-label"></label>
+                <select asp-for="FiliaalId" class="form-control" asp-items="ViewBag.FiliaalId"></select>
+                <span asp-validation-for="FiliaalId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
