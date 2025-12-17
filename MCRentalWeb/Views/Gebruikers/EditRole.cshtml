@@ -1,0 +1,43 @@
+﻿@model MCRental_Models.Gebruiker
+
+@{
+    ViewData["Title"] = "Rol Wijzigen";
+}
+
+<div class="container my-4">
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+            <h1>
+                <i class="bi bi-person-circle text-primary"></i> Rol Wijzigen
+            </h1>
+
+            <hr />
+
+            <form asp-action="EditRole" method="post">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="mb-4">
+                    <label for="Email" class="form-label">Email</label>
+                    <input asp-for="Email" class="form-control" id="Email" readonly />
+                </div>
+
+                <div class="mb-4">
+                    <label for="Role" class="form-label">Rol</label>
+                    <select id="Role" name="Role" class="form-select">
+                        <option value="Admin">Admin</option>
+                        <option value="Klant">Klant</option>
+                    </select>
+                </div>
+
+                <div>
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-save"></i> Opslaan
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Terug
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

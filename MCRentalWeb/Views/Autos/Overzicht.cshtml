@@ -1,0 +1,89 @@
+﻿@using MCRental_Models;
+@model List<Auto>
+
+@{
+    ViewData["Title"] = "Beschikbare Auto's";
+    var filiaal = ViewBag.Filiaal as Filiaal;
+    var pickupDate = (DateTime)ViewBag.PickupDate;
+    var returnDate = (DateTime)ViewBag.ReturnDate;
+    var aantalDagen = (returnDate - pickupDate).Days;
+}
+
+<div class="container my-4">
+
+    <!-- Zoek samenvatting -->
+    <div>
+        <h5> @filiaal?.Naam - @filiaal?.Stad?.Naam</h5>
+        <p class="mb-0">
+            <strong>Ophalen:</strong> @pickupDate.ToString("dddd d MMMM yyyy 'om' HH:mm") <br />
+            <strong>Inleveren:</strong> @returnDate.ToString("dddd d MMMM yyyy 'om' HH:mm") <br />
+            <strong>Duur:</strong> @aantalDagen dag(en)
+        </p>
+    </div>
+
+    <h2 class="mb-4">Beschikbare Auto's (@Model.Count)</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning">
+            <h5>Geen auto's beschikbaar</h5>
+            <p>Er zijn geen auto's beschikbaar voor deze periode.</p>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary">
+                Nieuwe zoekopdracht
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var auto in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">@auto.Merk @auto.Model</h5>
+                            <p class="card-text">
+                                <!-- Belgische Nummerplaat -->
+                                <div class="d-flex justify-content-center mb-3">
+                                    <div class="belgian-license-plate">
+                                        <div class="plate-content">
+                                            <div class="plate-left">
+                                                <div class="eu-stars">
+                                                    @for (int i = 0; i < 12; i++)
+                                                    {
+                                                        <div class="star"></div>
+                                                    }
+                                                </div>
+                                                <div class="country-code">B</div>
+                                            </div>
+                                            <div class="plate-number">@auto.Nummerplaat</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <strong>Type:</strong> @auto.type <br />
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <small class="text-muted">€@auto.DagPrijs / dag</small><br />
+                                    <strong class="text-success">
+                                        €@((auto.DagPrijs * aantalDagen).ToString("F2")) totaal
+                                    </strong>
+                                </div>
+                                <a asp-controller="Autos"
+                                   asp-action="Reserveer"
+                                   asp-route-autoId="@auto.Id"
+                                   asp-route-filiaalId="@filiaal.Id"
+                                   asp-route-pickupDate="@pickupDate.ToString("yyyy-MM-ddTHH:mm")"
+                                   asp-route-returnDate="@returnDate.ToString("yyyy-MM-ddTHH:mm")"
+                                   class="btn btn-warning">
+                                    Reserveer
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

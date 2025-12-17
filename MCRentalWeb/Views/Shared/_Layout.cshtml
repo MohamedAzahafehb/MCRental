@@ -12,31 +12,93 @@
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/nummerplaat.css" />
     <link rel="stylesheet" href="~/MCRentalWeb.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MCRental</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand fw-bold" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-car-front-fill text-warning"></i> MCRental
+                </a>
+
+                <button class="navbar-toggler" type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#mainNavbar">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between" id="mainNavbar">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">@_localizer["Home"]</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Reservaties" asp-action="Index">@_localizer["Reservaties"]</a>
-                        </li>
+
+                        @* Alleen ingelogde gebruikers *@
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            @* ===== KLANT ===== *@
+                            @if (User.IsInRole("Klant"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                       asp-controller="Home"
+                                       asp-action="Index">
+                                        <i class="bi bi-house"></i> Home
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                       asp-controller="Reservaties"
+                                       asp-action="Index">
+                                        <i class="bi bi-calendar-check"></i> Reservaties
+                                    </a>
+                                </li>
+                            }
+
+                            @* ===== ADMIN ===== *@
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                       asp-controller="Autos"
+                                       asp-action="Beheer">
+                                        <i class="bi bi-car-front"></i> Auto’s
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                       asp-controller="Reservaties"
+                                       asp-action="ReservatieBeheer">
+                                        <i class="bi bi-calendar-week"></i> Reservaties
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                       asp-controller="Filialen"
+                                       asp-action="Index">
+                                        <i class="bi bi-building"></i> Filialen
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                       asp-controller="Gebruikers"
+                                       asp-action="Index">
+                                        <i class="bi bi-people"></i> Gebruikers
+                                    </a>
+                                </li>
+                            }
+                        }
                     </ul>
+
                     <partial name="_LoginPartial" />
-                </div> 
+                </div>
             </div>
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -50,6 +112,7 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @Html.RenderUnobtrusiveAjaxScript()
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

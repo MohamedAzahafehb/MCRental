@@ -2,6 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
+using MCRental_Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,15 +20,6 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
-using MCRental_Models;
 
 namespace MCRentalWeb.Areas.Identity.Pages.Account
 {
@@ -26,6 +27,7 @@ namespace MCRentalWeb.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<Gebruiker> _signInManager;
         private readonly UserManager<Gebruiker> _userManager;
+        private readonly MCRentalDBContext _context;
         private readonly IUserStore<Gebruiker> _userStore;
         private readonly IUserEmailStore<Gebruiker> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
@@ -33,6 +35,7 @@ namespace MCRentalWeb.Areas.Identity.Pages.Account
 
         public RegisterModel(
             UserManager<Gebruiker> userManager,
+            MCRentalDBContext context,
             IUserStore<Gebruiker> userStore,
             SignInManager<Gebruiker> signInManager,
             ILogger<RegisterModel> logger,
@@ -40,11 +43,13 @@ namespace MCRentalWeb.Areas.Identity.Pages.Account
         {
             _userManager = userManager;
             _userStore = userStore;
+            _context = context;
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
         }
+
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -71,6 +76,27 @@ namespace MCRentalWeb.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
+            [Required]
+            public string Voornaam { get; set; }
+
+            [Required]
+            public string Achternaam { get; set; }
+
+            [Required]
+            [DataType(DataType.Date)]
+            public DateTime GeboorteDatum { get; set; }
+
+            [Required]
+            public string Adres { get; set; }
+
+            [Required]
+            public int StadId { get; set; }
+
+            [Required]
+            public string UserName { get; set; }
+
+            [Required]
+            public string TelefoonNummer { get; set; }
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -104,6 +130,11 @@ namespace MCRentalWeb.Areas.Identity.Pages.Account
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
+            ViewData["Steden"] = new SelectList(
+                _context.Steden.Take(20).ToList(),
+                "Id",
+                "Naam"
+            );
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
@@ -111,19 +142,48 @@ namespace MCRentalWeb.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            if (ModelState.IsValid)
-            {
-                var user = CreateUser();
 
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+            if (!ModelState.IsValid)
+            {
+                ViewData["Steden"] = new SelectList(
+                    _context.Steden.Take(20).ToList(),
+                    "Id",
+                    "Naam"
+                );
+
+                return Page();
+            }
+
+            //if (ModelState.IsValid)
+            //{
+                var user = new Gebruiker
+                {
+                    Voornaam = Input.Voornaam,
+                    Achternaam = Input.Achternaam,
+                    GeboorteDatum = Input.GeboorteDatum,
+                    Adres = Input.Adres,
+                    StadId = Input.StadId,
+                    PhoneNumber = Input.TelefoonNummer
+                };
+
+                await _userStore.SetUserNameAsync(user, Input.UserName, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    var userId = await _userManager.GetUserIdAsync(user);
+                    _context.Add(new IdentityUserRole<string>
+                    {
+                        UserId = user.Id,
+                        RoleId = "Klant"
+                    });
+                    _context.SaveChanges();
+
+                var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
@@ -145,28 +205,15 @@ namespace MCRentalWeb.Areas.Identity.Pages.Account
                         return LocalRedirect(returnUrl);
                     }
                 }
+                
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
-            }
+            //}
 
             // If we got this far, something failed, redisplay form
             return Page();
-        }
-
-        private Gebruiker CreateUser()
-        {
-            try
-            {
-                return Activator.CreateInstance<Gebruiker>();
-            }
-            catch
-            {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(Gebruiker)}'. " +
-                    $"Ensure that '{nameof(Gebruiker)}' is not an abstract class and has a parameterless constructor, or alternatively " +
-                    $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
-            }
         }
 
         private IUserEmailStore<Gebruiker> GetEmailStore()

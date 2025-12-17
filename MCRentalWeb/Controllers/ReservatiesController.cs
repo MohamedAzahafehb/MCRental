@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using MCRental_Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MCRental_Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace MCRentalWeb.Controllers
 {
@@ -18,10 +19,23 @@ namespace MCRentalWeb.Controllers
             _context = context;
         }
 
+        public IActionResult ReservatieBeheer()
+        {
+            var reservaties = _context.Reservaties
+                .Include(r => r.Auto)
+                .Include(r => r.Gebruiker)
+                .ToList();
+            return View(reservaties);
+        }
+
         // GET: Reservaties
         public async Task<IActionResult> Index()
         {
-            var mCRentalDBContext = _context.Reservaties.Include(r => r.Auto).Include(r => r.Gebruiker);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var mCRentalDBContext = _context.Reservaties
+                .Where(r => r.GebruikerId == userId)
+                .Include(r => r.Auto)
+                .Include(r => r.Gebruiker);
             return View(await mCRentalDBContext.ToListAsync());
         }
 

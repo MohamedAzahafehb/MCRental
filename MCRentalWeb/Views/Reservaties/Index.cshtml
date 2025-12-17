@@ -1,69 +1,317 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
 @model IEnumerable<MCRental_Models.Reservatie>
-
 @inject IViewLocalizer _localizer
 @inject IHtmlLocalizer<SharedResource> _shared
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Reservaties Beheer";
 }
 
-<h1>@_shared["Lijst"]</h1>
+<div class="container-fluid my-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="display-5 fw-bold">
+                <i class="bi bi-calendar-check text-warning"></i>
+                Reservaties Overzicht
+            </h1>
+            <p class="text-muted">Beheer en bekijk alle reservaties</p>
+        </div>
+        <div class="col-md-4 text-end">
+            <a asp-action="Create" class="btn btn-warning btn-lg">
+                <i class="bi bi-plus-circle"></i> @_shared["Create"]
+            </a>
+        </div>
+    </div>
 
-<p>
-    <a asp-action="Create">@_shared["Create"]</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDatum)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EindDatum)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Gebruiker)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Auto)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Aanmaking)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Annulatie)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDatum)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EindDatum)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Gebruiker.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Auto.Merk)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Aanmaking)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Annulatie)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">@_shared["Edit"]</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">@_shared["Details"]</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">@_shared["Delete"]</a>
-            </td>
-        </tr>
+    <!-- Filters & Stats -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <h3 class="text-primary mb-0">@Model.Count()</h3>
+                    <small class="text-muted">Totaal Reservaties</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <h3 class="text-success mb-0">@Model.Count(r => r.StartDatum <= DateTime.Now && r.EindDatum >= DateTime.Now && r.Annulatie == null)</h3>
+                    <small class="text-muted">Actieve Reservaties</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <h3 class="text-warning mb-0">@Model.Count(r => r.StartDatum > DateTime.Now && r.Annulatie == null)</h3>
+                    <small class="text-muted">Aankomende</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <h3 class="text-danger mb-0">@Model.Count(r => r.Annulatie != null)</h3>
+                    <small class="text-muted">Geannuleerd</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search & Filter -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <div class="row align-items-end">
+                <div class="col-md-4 mb-2">
+                    <label class="form-label small text-muted">Zoeken</label>
+                    <input type="text" id="searchInput" class="form-control" placeholder="Zoek op naam, auto, kenteken...">
+                </div>
+                <div class="col-md-3 mb-2">
+                    <label class="form-label small text-muted">Status</label>
+                    <select id="statusFilter" class="form-select">
+                        <option value="">Alle statussen</option>
+                        <option value="actief">Actief</option>
+                        <option value="gepland">Gepland</option>
+                        <option value="voltooid">Voltooid</option>
+                        <option value="geannuleerd">Geannuleerd</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <label class="form-label small text-muted">Sorteren op</label>
+                    <select id="sortSelect" class="form-select">
+                        <option value="date-desc">Nieuwste eerst</option>
+                        <option value="date-asc">Oudste eerst</option>
+                        <option value="start-desc">Start datum ↓</option>
+                        <option value="start-asc">Start datum ↑</option>
+                    </select>
+                </div>
+                <div class="col-md-2 mb-2">
+                    <button onclick="resetFilters()" class="btn btn-outline-secondary w-100">
+                        <i class="bi bi-arrow-clockwise"></i> Reset
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reservaties List -->
+    <div class="row" id="reservatiesList">
+        @foreach (var item in Model.OrderByDescending(r => r.Aanmaking))
+        {
+            var aantalDagen = (item.EindDatum - item.StartDatum).Days;
+            var isActief = item.StartDatum <= DateTime.Now && item.EindDatum >= DateTime.Now && item.Annulatie == null;
+            var isGepland = item.StartDatum > DateTime.Now && item.Annulatie == null;
+            var isVoltooid = item.EindDatum < DateTime.Now && item.Annulatie == null;
+            var isGeannuleerd = item.Annulatie != null;
+
+            var statusClass = isGeannuleerd ? "danger" : isActief ? "success" : isGepland ? "warning" : "secondary";
+            var statusText = isGeannuleerd ? "Geannuleerd" : isActief ? "Actief" : isGepland ? "Gepland" : "Voltooid";
+            var statusIcon = isGeannuleerd ? "x-circle" : isActief ? "check-circle" : isGepland ? "clock" : "check2";
+
+            <div class="col-lg-6 mb-4 reservatie-card"
+                 data-status="@statusText.ToLower()"
+                 data-search="@item.Gebruiker?.UserName @item.Auto?.Merk @item.Auto?.Model @item.Auto?.Nummerplaat"
+                 data-start="@item.StartDatum.Ticks">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <h5 class="card-title mb-1">
+                                    <i class="bi bi-car-front text-warning"></i>
+                                    @item.Auto?.Merk @item.Auto?.Model
+                                </h5>
+                                <small class="text-muted">
+                                    Reservatie #@item.Id.ToString("D6")
+                                </small>
+                            </div>
+                            <span class="badge bg-@statusClass">
+                                <i class="bi bi-@statusIcon"></i> @statusText
+                            </span>
+                        </div>
+
+                        <!-- Nummerplaat -->
+                        @if (!string.IsNullOrEmpty(item.Auto?.Nummerplaat))
+                        {
+                            <div class="d-flex justify-content-center mb-3">
+                                <div class="belgian-license-plate-small">
+                                    <div class="plate-content">
+                                        <div class="plate-left">
+                                            <div class="eu-stars">
+                                                @for (int i = 0; i < 12; i++)
+                                                {
+                                                    <div class="star"></div>
+                                                }
+                                            </div>
+                                            <div class="country-code">B</div>
+                                        </div>
+                                        <div class="plate-number">@item.Auto.Nummerplaat</div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-6">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-person-circle text-primary me-2"></i>
+                                    <div>
+                                        <small class="text-muted d-block">Klant</small>
+                                        <strong>@item.Gebruiker?.UserName</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-clock-history text-primary me-2"></i>
+                                    <div>
+                                        <small class="text-muted d-block">Duur</small>
+                                        <strong>@aantalDagen dag(en)</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-6">
+                                <small class="text-muted d-block">
+                                    <i class="bi bi-calendar-plus"></i> Ophalen
+                                </small>
+                                <strong>@item.StartDatum.ToString("dd MMM yyyy")</strong><br />
+                                <small class="text-muted">@item.StartDatum.ToString("HH:mm")</small>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted d-block">
+                                    <i class="bi bi-calendar-minus"></i> Inleveren
+                                </small>
+                                <strong>@item.EindDatum.ToString("dd MMM yyyy")</strong><br />
+                                <small class="text-muted">@item.EindDatum.ToString("HH:mm")</small>
+                            </div>
+                        </div>
+
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <small class="text-muted d-block">Aangemaakt</small>
+                                <small>@item.Aanmaking.ToString("dd/MM/yyyy HH:mm")</small>
+                            </div>
+                            @if (item.Annulatie != null)
+                            {
+                                <div class="col-6">
+                                    <small class="text-muted d-block">Geannuleerd</small>
+                                    <small class="text-danger">@item.Annulatie?.ToString("dd/MM/yyyy HH:mm")</small>
+                                </div>
+                            }
+                        </div>
+
+                        <hr class="my-3" />
+
+                        <!-- Actions -->
+                        <div class="d-flex gap-2">
+                            <a asp-action="Details" asp-route-id="@item.Id"
+                               class="btn btn-sm btn-outline-primary flex-fill">
+                                <i class="bi bi-eye"></i> @_shared["Details"]
+                            </a>
+                            <a asp-action="Edit" asp-route-id="@item.Id"
+                               class="btn btn-sm btn-outline-warning">
+                                <i class="bi bi-pencil"></i> @_shared["Edit"]
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.Id"
+                               class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i> @_shared["Delete"]
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5">
+            <i class="bi bi-inbox text-muted" style="font-size: 4rem;"></i>
+            <h3 class="text-muted mt-3">Geen reservaties gevonden</h3>
+            <p class="text-muted">Er zijn nog geen reservaties aangemaakt.</p>
+            <a asp-action="Create" class="btn btn-warning">
+                <i class="bi bi-plus-circle"></i> Eerste reservatie maken
+            </a>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <style>
+        /* Hover effect voor cards */
+        .hover-lift {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+            .hover-lift:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
+            }
+    </style>
+
+    <script>
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        const statusFilter = document.getElementById('statusFilter');
+        const sortSelect = document.getElementById('sortSelect');
+
+        function filterCards() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const selectedStatus = statusFilter.value.toLowerCase();
+            const cards = document.querySelectorAll('.reservatie-card');
+
+            cards.forEach(card => {
+                const searchData = card.dataset.search.toLowerCase();
+                const cardStatus = card.dataset.status;
+
+                const matchesSearch = searchData.includes(searchTerm);
+                const matchesStatus = !selectedStatus || cardStatus === selectedStatus;
+
+                if (matchesSearch && matchesStatus) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function sortCards() {
+            const sortValue = sortSelect.value;
+            const container = document.getElementById('reservatiesList');
+            const cards = Array.from(document.querySelectorAll('.reservatie-card'));
+
+            cards.sort((a, b) => {
+                switch(sortValue) {
+                    case 'date-desc':
+                        return b.dataset.start - a.dataset.start;
+                    case 'date-asc':
+                        return a.dataset.start - b.dataset.start;
+                    case 'start-desc':
+                        return b.dataset.start - a.dataset.start;
+                    case 'start-asc':
+                        return a.dataset.start - b.dataset.start;
+                    default:
+                        return 0;
+                }
+            });
+
+            cards.forEach(card => container.appendChild(card));
+        }
+
+        function resetFilters() {
+            searchInput.value = '';
+            statusFilter.value = '';
+            sortSelect.value = 'date-desc';
+            filterCards();
+            sortCards();
+        }
+
+        searchInput.addEventListener('input', filterCards);
+        statusFilter.addEventListener('change', filterCards);
+        sortSelect.addEventListener('change', sortCards);
+    </script>
 }
-    </tbody>
-</table>

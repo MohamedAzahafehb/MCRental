@@ -131,6 +131,13 @@ namespace MCRentalWeb.Areas.Identity.Pages.Account
                        CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(user.LanguageCode)),
                        new CookieOptions { Expires = DateTimeOffset.UtcNow.AddMonths(1) }
                        );
+                    IdentityUserRole<string>? userRole = _context.UserRoles.FirstOrDefault(ur => ur.UserId == user.Id);
+                    if (userRole != null) {
+                        if (userRole.RoleId == "Admin")
+                        {
+                            returnUrl = "/Autos/Beheer";
+                        }
+                    }
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

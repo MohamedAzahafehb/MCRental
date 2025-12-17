@@ -1,11 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using MCRental_Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MCRental_Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace MCRentalWeb.Controllers
 {
@@ -16,6 +18,54 @@ namespace MCRentalWeb.Controllers
         public AutosController(MCRentalDBContext context)
         {
             _context = context;
+        }
+
+        public IActionResult Overzicht(int filiaalId, DateTime pickupDate, DateTime returnDate)
+        {
+            // Validatie
+            if (filiaalId <= 0 || pickupDate <= DateTime.Now)
+            {
+                TempData["Error"] = "Ongeldige zoekparameters";
+                return RedirectToAction("Index", "Home");
+            }
+
+            // Haal beschikbare auto's op
+            var beschikbareAutos = _context.Autos
+                .Where(a => a.FiliaalId == filiaalId)
+                .ToList();
+
+            ViewBag.Filiaal = _context.Filialen
+                .Include(f => f.Stad)
+                .FirstOrDefault(f => f.Id == filiaalId);
+            ViewBag.PickupDate = pickupDate;
+            ViewBag.ReturnDate = returnDate;
+
+            return View(beschikbareAutos);
+        }
+
+        public IActionResult Beheer()
+        {
+            var autos = _context.Autos
+                .Include(a => a.Filiaal)
+                .ToList();
+            return View(autos);
+        }
+
+        public IActionResult Reserveer(int autoId, DateTime pickupDate, DateTime returnDate)
+        {
+            var auto = _context.Autos
+                .Include(a => a.Filiaal)
+                    .ThenInclude(f => f.Stad)
+                .FirstOrDefault(a => a.Id == autoId);
+            if (auto == null)
+            {
+                TempData["Error"] = "Auto niet gevonden";
+                return RedirectToAction("Overzicht", "Autos");
+            }
+            ViewBag.PickupDate = pickupDate;
+            ViewBag.ReturnDate = returnDate;
+            ViewBag.Filiaal = auto.Filiaal;
+            return View(auto);
         }
 
         // GET: Autos
@@ -42,6 +92,78 @@ namespace MCRentalWeb.Controllers
             }
 
             return View(auto);
+        }
+
+        // Bevestig reservatie - WEL [Authorize] hier!
+        [HttpPost]
+        [Authorize] // Dit zorgt voor redirect naar login als niet ingelogd
+        public IActionResult BevestigReservatie(int autoId, DateTime pickupDate, DateTime returnDate)
+        {
+            try
+            {
+                // Haal ingelogde gebruiker ID op
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                if (string.IsNullOrEmpty(userId))
+                {
+                    // Dit zou niet moeten gebeuren door [Authorize], maar veiligheidscheck
+                    return RedirectToAction("Login", "Account", new
+                    {
+                        returnUrl = Url.Action("Reserveer", new { autoId, pickupDate, returnDate })
+                    });
+                }
+
+                var reservatie = new Reservatie
+                {
+                    AutoId = autoId,
+                    GebruikerId = userId,
+                    StartDatum = pickupDate,
+                    EindDatum = returnDate,
+                    Aanmaking = DateTime.Now
+                };
+
+                _context.Reservaties.Add(reservatie);
+                _context.SaveChanges();
+
+                TempData["Success"] = "Reservatie succesvol aangemaakt!";
+                return RedirectToAction("Bevestiging", new { id = reservatie.Id });
+            }
+            catch (Exception ex)
+            {
+                // Log error
+                Console.WriteLine($"Error in BevestigReservatie: {ex.Message}");
+
+                TempData["Error"] = "Er ging iets fout bij het maken van de reservatie. Probeer opnieuw.";
+                return RedirectToAction("Reserveer", new { autoId, pickupDate, returnDate });
+            }
+        }
+
+        // Bevestigingspagina
+        [Authorize]
+        public IActionResult Bevestiging(int id)
+        {
+            var reservatie = _context.Reservaties
+                .Include(r => r.Auto)
+                    .ThenInclude(a => a.Filiaal)
+                        .ThenInclude(f => f.Stad)
+                .Include(r => r.Gebruiker)
+                .FirstOrDefault(r => r.Id == id);
+
+            if (reservatie == null)
+            {
+                TempData["Error"] = "Reservatie niet gevonden";
+                return RedirectToAction("Index", "Home");
+            }
+
+            // Check of deze reservatie van de ingelogde gebruiker is
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (reservatie.GebruikerId != userId)
+            {
+                TempData["Error"] = "Je hebt geen toegang tot deze reservatie";
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(reservatie);
         }
 
         // GET: Autos/Create

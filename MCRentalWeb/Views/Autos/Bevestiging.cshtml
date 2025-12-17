@@ -1,0 +1,136 @@
+﻿@using MCRental_Models;
+@model Reservatie
+
+@{
+    ViewData["Title"] = "Reservatie Bevestigd";
+    var aantalDagen = (Model.EindDatum - Model.StartDatum).Days;
+    var totaalPrijs = Model.Auto.DagPrijs * aantalDagen; // Met BTW
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <!-- Success Message -->
+            <div class="card shadow-lg border-success mb-4">
+                <div class="card-body text-center py-5">
+                    <div class="mb-4">
+                        <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
+                    </div>
+                    <h1 class="display-5 fw-bold text-success mb-3">
+                        Reservatie Bevestigd!
+                    </h1>
+                    <p class="lead text-muted mb-4">
+                        Je reservatie is succesvol aangemaakt. We hebben een bevestigingsmail gestuurd naar <strong>@Model.Gebruiker?.Email</strong>
+                    </p>
+                    <div class="alert alert-info d-inline-block">
+                        <h5 class="mb-0">
+                            <i class="bi bi-ticket-perforated"></i>
+                            Reservatienummer: <strong>MCR-@Model.Id.ToString("D6")</strong>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reservatie Details -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-warning">
+                    <h4 class="mb-0">
+                        <i class="bi bi-file-text"></i> Reservatie Details
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <h5>Auto</h5>
+                            <p class="mb-1"><strong>@Model.Auto?.Merk @Model.Auto?.Model</strong></p>
+                            <p class="text-muted mb-0">Kenteken: @Model.Auto?.Nummerplaat</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Prijs</h5>
+                            <p class="mb-0">
+                                <span class="h4 text-success">€@totaalPrijs.ToString("F2")</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <h6 class="text-warning">
+                                <i class="bi bi-calendar-check"></i> Ophalen
+                            </h6>
+                            <p class="mb-1">
+                                @Model.StartDatum.ToString("dddd d MMMM yyyy")<br />
+                                <span class="badge bg-primary">@Model.StartDatum.ToString("HH:mm")</span>
+                            </p>
+                            <p class="text-muted small mb-0">
+                                <i class="bi bi-geo-alt"></i>
+                                @Model.Auto?.Filiaal?.Naam<br />
+                                @Model.Auto?.Filiaal?.Adres
+                            </p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="text-warning">
+                                <i class="bi bi-calendar-x"></i> Inleveren
+                            </h6>
+                            <p class="mb-1">
+                                @Model.EindDatum.ToString("dddd d MMMM yyyy")<br />
+                                <span class="badge bg-primary">@Model.EindDatum.ToString("HH:mm")</span>
+                            </p>
+                            <p class="text-muted small mb-0">
+                                <i class="bi bi-clock"></i> Totaal: @aantalDagen dag(en)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Wat nu? -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">
+                        <i class="bi bi-question-circle"></i> Wat moet ik meenemen?
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle text-success"></i>
+                            Geldig rijbewijs (min. 1 jaar oud)
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle text-success"></i>
+                            Identiteitskaart of paspoort
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle text-success"></i>
+                            Creditcard voor borg (€500)
+                        </li>
+                        <li class="mb-0">
+                            <i class="bi bi-check-circle text-success"></i>
+                            Deze bevestiging (print of digitaal)
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Acties -->
+            <div class="d-grid gap-2 d-md-flex justify-content-md-between">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="bi bi-house"></i> Terug naar home
+                </a>
+                <div class="btn-group">
+                    <button onclick="window.print()" class="btn btn-outline-primary">
+                        <i class="bi bi-printer"></i> Print bevestiging
+                    </button>
+                    <a asp-controller="Reservaties" asp-action="Index" class="btn btn-warning">
+                        <i class="bi bi-list-ul"></i> Mijn reservaties
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

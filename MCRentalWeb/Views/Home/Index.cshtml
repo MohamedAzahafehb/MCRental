@@ -2,8 +2,88 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    <a class="nav-link text-dark" asp-area="" asp-controller="Autos" asp-action="Index">Autos</a>
+<div class="container bg-white rounded-3 shadow p-4 position-relative">
+    <form id="searchForm" asp-controller="Autos" asp-action="Overzicht" method="get">
+        <div class="row gy-3 align-items-end">
+            <div class="col-md-4">
+                <label for="pickupLocation" class="form-label fw-bold">Ophalen en inleveren</label>
+                <select class="form-select" id="pickupLocation" name="filiaalId" required>
+                    <option value="">Selecteer een filiaal...</option>
+                    @if (ViewBag.Filialen != null)
+                    {
+                        @foreach (var filiaal in ViewBag.Filialen)
+                        {
+                            <option value="@filiaal.Id">@filiaal.Naam</option>
+                        }
+                    }
+                </select>
+                <div class="invalid-feedback">
+                    Selecteer een ophaallocatie.
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label for="pickupDate" class="form-label fw-bold">Ophaaldatum</label>
+                <input type="datetime-local" class="form-control" id="pickupDate" name="pickupDate" required />
+                <div class="invalid-feedback">
+                    Selecteer een geldige ophaaldatum.
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label for="returnDate" class="form-label fw-bold">Inleverdatum</label>
+                <input type="datetime-local" class="form-control" id="returnDate" name="returnDate" required />
+                <div class="invalid-feedback">
+                    Inleverdatum moet minimaal 1 dag na ophaaldatum liggen.
+                </div>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-warning w-100 fw-bold">Auto's weergeven</button>
+            </div>
+        </div>
+    </form>
 </div>
+
+<div class="bg-warning text-center py-5">
+    <h1 class="fw-bold text-dark display-5 text-uppercase m-0">
+        HUUR PREMIUM AUTO'S.<br />
+        VOOR BETAALBARE PRIJZEN.
+    </h1>
+</div>
+
+
+@section Scripts {
+    <script>
+        // Zet minimum datum op vandaag
+        const now = new Date();
+        const minDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+
+        const pickupInput = document.getElementById('pickupDate');
+        const returnInput = document.getElementById('returnDate');
+
+        // Stel minimum datums in
+        pickupInput.min = minDateTime;
+        returnInput.min = minDateTime;
+
+        // Stel standaard waarden in (nu + 1 uur voor pickup, nu + 25 uur voor return)
+        const defaultPickup = new Date(now.getTime() + 60 * 60 * 1000);
+        const defaultReturn = new Date(now.getTime() + 25 * 60 * 60 * 1000);
+
+        pickupInput.value = new Date(defaultPickup.getTime() - defaultPickup.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+        returnInput.value = new Date(defaultReturn.getTime() - defaultReturn.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+
+        // Update return minimum wanneer pickup verandert
+        pickupInput.addEventListener('change', function() {
+            const pickupDate = new Date(this.value);
+            // Minimaal 1 dag (24 uur) later
+            const minReturn = new Date(pickupDate.getTime() + 24 * 60 * 60 * 1000);
+            returnInput.min = new Date(minReturn.getTime() - minReturn.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+
+            // Als return datum eerder is dan nieuwe minimum, update het
+            if (new Date(returnInput.value) < minReturn) {
+                returnInput.value = new Date(minReturn.getTime() - minReturn.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+            }
+        });
+
+        form.submit()
+        });
+    </script>
+}

@@ -1,0 +1,41 @@
+﻿@model MCRental_Models.Gebruiker
+
+@{
+    ViewData["Title"] = "Gebruiker Verwijderen";
+}
+
+<div class="container my-4">
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+            <h1 class="text-danger">
+                <i class="bi bi-person-x-fill"></i> Verwijder Gebruiker
+            </h1>
+
+            <p>Weet je zeker dat je deze gebruiker wilt verwijderen?</p>
+
+            <dl class="row">
+                <dt class="col-sm-3">Voornaam</dt>
+                <dd class="col-sm-9">@Model.Voornaam</dd>
+
+                <dt class="col-sm-3">Achternaam</dt>
+                <dd class="col-sm-9">@Model.Achternaam</dd>
+
+                <dt class="col-sm-3">Email</dt>
+                <dd class="col-sm-9">@Model.Email</dd>
+            </dl>
+
+            <form asp-action="Delete" method="post">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash"></i> Verwijderen
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Annuleren
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

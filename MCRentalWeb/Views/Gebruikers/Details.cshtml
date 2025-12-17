@@ -1,0 +1,42 @@
+﻿@model MCRental_Models.Gebruiker
+
+@{
+    ViewData["Title"] = "Gebruiker Details";
+}
+
+<div class="container my-4">
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+            <h1>
+                <i class="bi bi-person-circle text-info"></i> @Model.Voornaam @Model.Achternaam
+            </h1>
+
+            <hr />
+
+            <dl class="row">
+                <dt class="col-sm-3">Email</dt>
+                <dd class="col-sm-9">@Model.Email</dd>
+
+                <dt class="col-sm-3">Adres</dt>
+                <dd class="col-sm-9">@Model.Adres</dd>
+
+                <dt class="col-sm-3">Stad</dt>
+                <dd class="col-sm-9">@Model.Stad?.Naam</dd>
+
+                <dt class="col-sm-3">Taal</dt>
+                <dd class="col-sm-9">@Model.LanguageCode.ToUpper()</dd>
+            </dl>
+
+            <hr />
+
+            <div class="d-flex gap-2">
+                <a asp-action="EditRole" asp-route-id="@Model.Id" class="btn btn-primary">
+                    <i class="bi bi-pencil"></i> Rol Wijzigen
+                </a>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Terug
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

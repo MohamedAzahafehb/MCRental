@@ -1,0 +1,36 @@
+﻿@model MCRental_Models.Reservatie
+@{
+    Layout = null;
+}
+
+@using (Html.AjaxBeginForm("EditRes", "Reservaties", new AjaxOptions{HttpMethod = "post", InsertionMode = InsertionMode.Replace, UpdateTargetId = Model.Id.ToString()}))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Id)
+
+    <tr id="#@Model.Id.ToString()">
+
+        <td>
+            @Html.DisplayFor(model => model.StartDatum)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.EindDatum)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.Gebruiker.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.Auto.Merk)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.Aanmaking)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.Annulatie)
+        </td>
+        <td>
+            <input type="submit" value="Edit" class="btn btn-primary" />
+        </td>
+    </tr>
+}
+

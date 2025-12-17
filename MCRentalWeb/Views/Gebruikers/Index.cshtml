@@ -1,0 +1,63 @@
+﻿@model IEnumerable<MCRental_Models.Gebruiker>
+
+@{
+    ViewData["Title"] = "Gebruikers Beheer";
+    var totalUsers = Model.Count();
+}
+
+<div class="container-fluid my-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="display-5 fw-bold">
+                <i class="bi bi-people-fill text-primary"></i>
+                Gebruikers Beheer
+            </h1>
+            <p class="text-muted">Beheer alle gebruikers van het systeem.</p>
+        </div>
+        <div class="col-md-4 text-end">
+            <span class="text-muted"><i class="bi bi-person"></i> Totaal Gebruikers: </span>
+            <span class="badge bg-primary">@totalUsers</span>
+        </div>
+    </div>
+
+    <!-- Users Table -->
+    <div class="card border-0 shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Voornaam</th>
+                        <th>Achternaam</th>
+                        <th>Email</th>
+                        <th>Adres</th>
+                        <th>Stad</th>
+                        <th class="text-center">Acties</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var gebruiker in Model.OrderBy(u => u.Voornaam))
+                    {
+                        <tr>
+                            <td>@gebruiker.Voornaam</td>
+                            <td>@gebruiker.Achternaam</td>
+                            <td>@gebruiker.Email</td>
+                            <td>@gebruiker.Adres</td>
+                            <td>@(gebruiker.Stad?.Naam ?? "Onbekend")</td>
+                            <td class="text-center">
+                                <div class="btn-group btn-group-sm">
+                                    <a asp-action="Details" asp-route-id="@gebruiker.Id" class="btn btn-outline-info">
+                                        <i class="bi bi-eye"></i> Details
+                                    </a>
+                                    <a asp-action="EditRole" asp-route-id="@gebruiker.Id" class="btn btn-outline-primary">
+                                        <i class="bi bi-pencil"></i> Rol Wijzigen
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

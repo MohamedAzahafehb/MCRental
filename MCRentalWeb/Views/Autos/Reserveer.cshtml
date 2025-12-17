@@ -1,0 +1,191 @@
+﻿@using MCRental_Models
+@model Auto
+
+@{
+    ViewData["Title"] = "Reservatie Maken";
+    var pickupDate = (DateTime)ViewBag.PickupDate;
+    var returnDate = (DateTime)ViewBag.ReturnDate;
+    var filiaal = ViewBag.Filiaal as Filiaal;
+    var aantalDagen = (returnDate - pickupDate).Days;
+    var totaalPrijs = Model.DagPrijs * aantalDagen;
+}
+
+<div class="container my-5">
+    <div class="row">
+        <!-- Links: Auto Details -->
+        <div class="col-lg-5 mb-4">
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+                    <h3 class="card-title mb-3">@Model.Merk @Model.Model</h3>
+
+                    <!-- Belgische Nummerplaat -->
+                    <div class="d-flex justify-content-center mb-3">
+                        <div class="belgian-license-plate">
+                            <div class="plate-content">
+                                <div class="plate-left">
+                                    <div class="eu-stars">
+                                        @for (int i = 0; i < 12; i++)
+                                        {
+                                            <div class="star"></div>
+                                        }
+                                    </div>
+                                    <div class="country-code">B</div>
+                                </div>
+                                <div class="plate-number">@Model.Nummerplaat</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="row mb-2">
+                        <div class="col-6"><strong>Type:</strong></div>
+                        <div class="col-6">@Model.type</div>
+                    </div>
+
+                    <hr />
+
+                    <h5 class="text-warning mb-3">
+                        <i class="bi bi-geo-alt-fill"></i> Ophaallocatie
+                    </h5>
+                    @if (filiaal != null)
+                    {
+                        <p class="mb-1">
+                            <strong>@filiaal.Naam</strong><br />
+                            @filiaal.Adres<br />
+                            @filiaal.Stad?.Naam<br />
+                            <small class="text-muted">
+                                <i class="bi bi-telephone"></i> @filiaal.Telefoon
+                            </small>
+                        </p>
+                    }
+
+                    <hr />
+
+                    <h5 class="text-warning mb-3">
+                        <i class="bi bi-calendar-check"></i> Huurperiode
+                    </h5>
+                    <div class="mb-2">
+                        <strong>Ophalen:</strong><br />
+                        <span class="text-muted">
+                            @pickupDate.ToString("dddd d MMMM yyyy")
+                        </span><br />
+                        <span class="badge bg-primary">@pickupDate.ToString("HH:mm")</span>
+                    </div>
+                    <div class="mb-2">
+                        <strong>Inleveren:</strong><br />
+                        <span class="text-muted">
+                            @returnDate.ToString("dddd d MMMM yyyy")
+                        </span><br />
+                        <span class="badge bg-primary">@returnDate.ToString("HH:mm")</span>
+                    </div>
+                    <div class="alert alert-info mt-3 mb-0">
+                        <i class="bi bi-clock"></i> <strong>Totale huurduur:</strong> @aantalDagen dag(en)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rechts: Reservatie Samenvatting & Bevestiging -->
+        <div class="col-lg-7">
+            <div class="card shadow-sm">
+                <div class="card-header bg-warning">
+                    <h4 class="mb-0">
+                        <i class="bi bi-clipboard-check"></i> Reservatie Samenvatting
+                    </h4>
+                </div>
+                <div class="card-body">
+
+                    <!-- Prijs Breakdown -->
+                    <div class="mb-4">
+                        <h5 class="mb-3">Prijsoverzicht</h5>
+                        <div class="table-responsive">
+                            <table class="table table-borderless">
+                                <tbody>
+                                    <tr>
+                                        <td>Auto huur</td>
+                                        <td class="text-end">€@Model.DagPrijs.ToString("F2") / dag</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Aantal dagen</td>
+                                        <td class="text-end">x @aantalDagen</td>
+                                    </tr>
+                                    <tr class="border-top">
+                                        <td><strong>Subtotaal</strong></td>
+                                        <td class="text-end"><strong>€@totaalPrijs.ToString("F2")</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <!-- Belangrijke Informatie -->
+                    <div class="alert alert-warning mb-4">
+                        <h6 class="alert-heading">
+                            <i class="bi bi-info-circle"></i> Belangrijk om te weten
+                        </h6>
+                        <ul class="mb-0 small">
+                            <li>Minimumleeftijd: 21 jaar</li>
+                            <li>Geldig rijbewijs vereist (min. 1 jaar)</li>
+                            <li>Borg: €500 (wordt geblokkeerd op creditcard)</li>
+                            <li>Gratis annulering tot 24u voor ophaling</li>
+                            <li>Volle tank bij ophaling en inlevering</li>
+                        </ul>
+                    </div>
+
+                    <!-- Bevestig Knop -->
+                    <form asp-controller="Autos" asp-action="BevestigReservatie" method="post" id="reserveerForm">
+                        <input type="hidden" name="autoId" value="@Model.Id" />
+                        <input type="hidden" name="pickupDate" value="@pickupDate.ToString("yyyy-MM-ddTHH:mm")" />
+                        <input type="hidden" name="returnDate" value="@returnDate.ToString("yyyy-MM-ddTHH:mm")" />
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-warning btn-lg" id="bevestigBtn">
+                                <i class="bi bi-check-circle-fill"></i> Reservatie Bevestigen
+                            </button>
+                            <a asp-controller="Autos" asp-action="Overzicht"
+                               asp-route-filiaalId="@Model.FiliaalId"
+                               asp-route-pickupDate="@pickupDate.ToString("yyyy-MM-ddTHH:mm")"
+                               asp-route-returnDate="@returnDate.ToString("yyyy-MM-ddTHH:mm")"
+                               class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left"></i> Terug naar overzicht
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Extra Info Card -->
+            <div class="card shadow-sm mt-3">
+                <div class="card-body">
+                    <h6 class="mb-3">
+                        <i class="bi bi-shield-check"></i> Veilig Reserveren
+                    </h6>
+                    <div class="row text-center">
+                        <div class="col-4">
+                            <i class="bi bi-lock-fill text-success" style="font-size: 2rem;"></i>
+                            <p class="small mb-0 mt-2">Veilige Betaling</p>
+                        </div>
+                        <div class="col-4">
+                            <i class="bi bi-headset text-success" style="font-size: 2rem;"></i>
+                            <p class="small mb-0 mt-2">24/7 Support</p>
+                        </div>
+                        <div class="col-4">
+                            <i class="bi bi-star-fill text-success" style="font-size: 2rem;"></i>
+                            <p class="small mb-0 mt-2">Top Beoordeeld</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <style>
+        
+    </style>
+}

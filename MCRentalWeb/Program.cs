@@ -3,13 +3,24 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using AspNetCore.Unobtrusive.Ajax;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("MCRentalDBContextConnection") ?? throw new InvalidOperationException("Connection string 'MCRentalDBContextConnection' not found.");;
 
 builder.Services.AddDbContext<MCRental_Models.MCRentalDBContext>();
 
-builder.Services.AddDefaultIdentity<Gebruiker>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<Gebruiker>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = false;
+
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 0;
+})
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<MCRentalDBContext>();
 
@@ -19,6 +30,8 @@ builder.Services.AddControllersWithViews();
 //config restful API
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "MCRental_Web", Version = "v1" }); });
+
+builder.Services.AddUnobtrusiveAjax();
 
 builder.Services.AddLocalization(builder => { builder.ResourcesPath = "Translation"; });
 builder.Services.AddMvc()
@@ -64,6 +77,7 @@ if (!app.Environment.IsDevelopment())
     }
 
 app.UseHttpsRedirection();
+app.UseUnobtrusiveAjax();
 app.UseRouting();
 
 app.UseAuthorization();
@@ -79,5 +93,10 @@ app.UseEndpoints(ep => ep.MapControllers());
 
 app.MapRazorPages();
 
+app.UseMiddleware<MCRentalWeb.Middleware.MijnMiddleware>();
 
 app.Run();
+
+
+//Email server??
+//Emailgit = nugget?

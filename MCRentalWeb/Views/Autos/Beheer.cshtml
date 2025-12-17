@@ -1,0 +1,481 @@
+﻿@model IEnumerable<MCRental_Models.Auto>
+
+@{
+    ViewData["Title"] = "Auto Beheer";
+    var beschikbareAutos = Model.Count(a => a.Beschikbaar);
+    var nietBeschikbareAutos = Model.Count(a => !a.Beschikbaar);
+}
+
+<div class="container-fluid my-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="display-5 fw-bold">
+                <i class="bi bi-car-front-fill text-warning"></i>
+                Auto Beheer
+            </h1>
+            <p class="text-muted">Beheer het wagenpark van MCRental</p>
+        </div>
+        <div class="col-md-4 text-end">
+            <a asp-action="Create" class="btn btn-warning btn-lg">
+                <i class="bi bi-plus-circle"></i> Nieuwe Auto Toevoegen
+            </a>
+        </div>
+    </div>
+
+    <!-- Stats Dashboard -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm bg-primary text-white">
+                <div class="card-body text-center">
+                    <i class="bi bi-car-front" style="font-size: 2.5rem;"></i>
+                    <h2 class="mt-2 mb-0">@Model.Count()</h2>
+                    <small>Totaal Auto's</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm bg-success text-white">
+                <div class="card-body text-center">
+                    <i class="bi bi-check-circle" style="font-size: 2.5rem;"></i>
+                    <h2 class="mt-2 mb-0">@beschikbareAutos</h2>
+                    <small>Beschikbaar</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm bg-danger text-white">
+                <div class="card-body text-center">
+                    <i class="bi bi-x-circle" style="font-size: 2.5rem;"></i>
+                    <h2 class="mt-2 mb-0">@nietBeschikbareAutos</h2>
+                    <small>Niet Beschikbaar</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm bg-warning text-white">
+                <div class="card-body text-center">
+                    <i class="bi bi-cash-stack" style="font-size: 2.5rem;"></i>
+                    <h2 class="mt-2 mb-0">€@Model.Average(a => a.DagPrijs).ToString("F0")</h2>
+                    <small>Gem. Dagprijs</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters & Search -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <div class="row align-items-end">
+                <div class="col-md-3 mb-2">
+                    <label class="form-label small text-muted">Zoeken</label>
+                    <input type="text" id="searchInput" class="form-control" placeholder="Merk, model, nummerplaat...">
+                </div>
+                <div class="col-md-2 mb-2">
+                    <label class="form-label small text-muted">Status</label>
+                    <select id="statusFilter" class="form-select">
+                        <option value="">Alle</option>
+                        <option value="beschikbaar">Beschikbaar</option>
+                        <option value="niet-beschikbaar">Niet Beschikbaar</option>
+                    </select>
+                </div>
+                <div class="col-md-2 mb-2">
+                    <label class="form-label small text-muted">Type</label>
+                    <select id="typeFilter" class="form-select">
+                        <option value="">Alle types</option>
+                        @foreach (var type in Model.Select(a => a.type).Distinct().OrderBy(t => t))
+                        {
+                            <option value="@type">@type</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2 mb-2">
+                    <label class="form-label small text-muted">Filiaal</label>
+                    <select id="filiaalFilter" class="form-select">
+                        <option value="">Alle filialen</option>
+                        @foreach (var filiaal in Model.Select(a => a.Filiaal).Distinct().Where(f => f != null).OrderBy(f => f.Naam))
+                        {
+                            <option value="@filiaal.Naam">@filiaal.Naam</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2 mb-2">
+                    <label class="form-label small text-muted">Sorteren</label>
+                    <select id="sortSelect" class="form-select">
+                        <option value="merk">Merk A-Z</option>
+                        <option value="prijs-asc">Prijs Laag-Hoog</option>
+                        <option value="prijs-desc">Prijs Hoog-Laag</option>
+                        <option value="recent">Nieuwste eerst</option>
+                    </select>
+                </div>
+                <div class="col-md-1 mb-2">
+                    <button onclick="resetFilters()" class="btn btn-outline-secondary w-100">
+                        <i class="bi bi-arrow-clockwise"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Toggle -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-outline-secondary active" id="cardViewBtn" onclick="switchView('card')">
+                <i class="bi bi-grid-3x3-gap"></i> Cards
+            </button>
+            <button type="button" class="btn btn-outline-secondary" id="tableViewBtn" onclick="switchView('table')">
+                <i class="bi bi-table"></i> Tabel
+            </button>
+        </div>
+        <div>
+            <span class="text-muted" id="resultCount">@Model.Count() auto's</span>
+        </div>
+    </div>
+
+    <!-- Card View -->
+    <div class="row" id="cardView">
+        @foreach (var auto in Model.OrderBy(a => a.Merk).ThenBy(a => a.Model))
+        {
+            <div class="col-lg-4 col-md-6 mb-4 auto-card"
+                 data-merk="@auto.Merk"
+                 data-model="@auto.Model"
+                 data-nummerplaat="@auto.Nummerplaat"
+                 data-status="@(auto.Beschikbaar ? "beschikbaar" : "niet-beschikbaar")"
+                 data-type="@auto.type"
+                 data-filiaal="@auto.Filiaal?.Naam"
+                 data-prijs="@auto.DagPrijs"
+                 data-id="@auto.Id">
+                <div class="card h-100 border-0 shadow-sm hover-lift @(auto.Beschikbaar ? "" : "opacity-75")">
+                    <!-- Status Badge -->
+                    <div class="position-absolute top-0 end-0 m-3" style="z-index: 10;">
+                        @if (auto.Beschikbaar)
+                        {
+                            <span class="badge bg-success">
+                                <i class="bi bi-check-circle"></i> Beschikbaar
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">
+                                <i class="bi bi-x-circle"></i> Niet Beschikbaar
+                            </span>
+                        }
+                    </div>
+
+                    
+                    <div class="card-body">
+                        <h5 class="card-title mb-2">@auto.Merk @auto.Model</h5>
+
+                        <!-- Nummerplaat -->
+                        <div class="d-flex justify-content-center mb-3">
+                            <div class="belgian-license-plate-small">
+                                <div class="plate-content">
+                                    <div class="plate-left">
+                                        <div class="eu-stars">
+                                            @for (int i = 0; i < 12; i++)
+                                            {
+                                                <div class="star"></div>
+                                            }
+                                        </div>
+                                        <div class="country-code">B</div>
+                                    </div>
+                                    <div class="plate-number">@auto.Nummerplaat</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted"><i class="bi bi-tag"></i> Type:</span>
+                                <strong>@auto.type</strong>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted"><i class="bi bi-building"></i> Filiaal:</span>
+                                <strong>@(auto.Filiaal?.Naam ?? "Onbekend")</strong>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted"><i class="bi bi-cash"></i> Dagprijs:</span>
+                                <strong class="text-success">€@auto.DagPrijs.ToString("F2")</strong>
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <!-- Action Buttons -->
+                        <div class="d-flex gap-2">
+                            <button onclick="toggleBeschikbaarheid(@auto.Id, @auto.Beschikbaar.ToString().ToLower())"
+                                    class="btn btn-sm @(auto.Beschikbaar ? "btn-warning" : "btn-success") flex-fill"
+                                    id="toggleBtn_@auto.Id">
+                                <i class="bi bi-@(auto.Beschikbaar ? "pause" : "play")-circle"></i>
+                                @(auto.Beschikbaar ? "Deactiveren" : "Activeren")
+                            </button>
+                        </div>
+                        <div class="d-flex gap-2 mt-2">
+                            <a asp-action="Edit" asp-route-id="@auto.Id"
+                               class="btn btn-sm btn-outline-primary flex-fill">
+                                <i class="bi bi-pencil"></i> Bewerken
+                            </a>
+                            <a asp-action="Details" asp-route-id="@auto.Id"
+                               class="btn btn-sm btn-outline-info">
+                                <i class="bi bi-eye"></i> Details
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@auto.Id"
+                               class="btn btn-sm btn-outline-danger"
+                               onclick="return confirm('Weet je zeker dat je deze auto wilt verwijderen?')">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Table View (Hidden by default) -->
+    <div id="tableView" style="display: none;">
+        <div class="card border-0 shadow-sm">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Nummerplaat</th>
+                            <th>Merk & Model</th>
+                            <th>Type</th>
+                            <th>Filiaal</th>
+                            <th>Dagprijs</th>
+                            <th>Status</th>
+                            <th class="text-center">Acties</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        @foreach (var auto in Model.OrderBy(a => a.Merk))
+                        {
+                            <tr class="auto-row"
+                                data-merk="@auto.Merk"
+                                data-model="@auto.Model"
+                                data-nummerplaat="@auto.Nummerplaat"
+                                data-status="@(auto.Beschikbaar ? "beschikbaar" : "niet-beschikbaar")"
+                                data-type="@auto.type"
+                                data-filiaal="@auto.Filiaal?.Naam"
+                                data-prijs="@auto.DagPrijs"
+                                data-id="@auto.Id">
+                                <td>
+                                    <span class="badge bg-light text-dark border">@auto.Nummerplaat</span>
+                                </td>
+                                <td>
+                                    <strong>@auto.Merk @auto.Model</strong>
+                                </td>
+                                <td>@auto.type</td>
+                                <td>@(auto.Filiaal?.Naam ?? "-")</td>
+                                <td><strong class="text-success">€@auto.DagPrijs.ToString("F2")</strong></td>
+                                <td>
+                                    @if (auto.Beschikbaar)
+                                    {
+                                        <span class="badge bg-success">
+                                            <i class="bi bi-check-circle"></i> Beschikbaar
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">
+                                            <i class="bi bi-x-circle"></i> Niet Beschikbaar
+                                        </span>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group btn-group-sm">
+                                        <button onclick="toggleBeschikbaarheid(@auto.Id, @auto.Beschikbaar.ToString().ToLower())"
+                                                class="btn @(auto.Beschikbaar ? "btn-warning" : "btn-success")"
+                                                id="toggleBtnTable_@auto.Id"
+                                                title="@(auto.Beschikbaar ? "Deactiveren" : "Activeren")">
+                                            <i class="bi bi-@(auto.Beschikbaar ? "pause" : "play")-circle"></i>
+                                        </button>
+                                        <a asp-action="Edit" asp-route-id="@auto.Id"
+                                           class="btn btn-outline-primary" title="Bewerken">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <a asp-action="Details" asp-route-id="@auto.Id"
+                                           class="btn btn-outline-info" title="Details">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@auto.Id"
+                                           class="btn btn-outline-danger" title="Verwijderen"
+                                           onclick="return confirm('Weet je zeker dat je deze auto wilt verwijderen?')">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5">
+            <i class="bi bi-car-front text-muted" style="font-size: 5rem;"></i>
+            <h3 class="text-muted mt-4">Geen auto's gevonden</h3>
+            <p class="text-muted">Begin met het toevoegen van auto's aan je wagenpark.</p>
+            <a asp-action="Create" class="btn btn-warning btn-lg">
+                <i class="bi bi-plus-circle"></i> Eerste Auto Toevoegen
+            </a>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <style>
+        .hover-lift {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+            .hover-lift:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 0.5rem 1.5rem rgba(0,0,0,0.15) !important;
+            }
+
+        .table th {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+    </style>
+
+    <script>
+        // Toggle Beschikbaarheid
+        function toggleBeschikbaarheid(autoId, currentStatus) {
+            if (!confirm('Weet je zeker dat je de beschikbaarheid wilt wijzigen?')) {
+                return;
+            }
+
+            fetch('@Url.Action("ToggleBeschikbaarheid", "Auto")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value
+                },
+                body: JSON.stringify({ autoId: autoId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert('Er ging iets fout: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Er ging iets fout bij het wijzigen van de beschikbaarheid.');
+            });
+        }
+
+        // Search & Filter
+        const searchInput = document.getElementById('searchInput');
+        const statusFilter = document.getElementById('statusFilter');
+        const typeFilter = document.getElementById('typeFilter');
+        const filiaalFilter = document.getElementById('filiaalFilter');
+        const sortSelect = document.getElementById('sortSelect');
+
+        function filterItems() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const selectedStatus = statusFilter.value;
+            const selectedType = typeFilter.value;
+            const selectedFiliaal = filiaalFilter.value;
+
+            const items = document.querySelectorAll('.auto-card, .auto-row');
+            let visibleCount = 0;
+
+            items.forEach(item => {
+                const merk = item.dataset.merk.toLowerCase();
+                const model = item.dataset.model.toLowerCase();
+                const nummerplaat = item.dataset.nummerplaat.toLowerCase();
+                const status = item.dataset.status;
+                const type = item.dataset.type;
+                const filiaal = item.dataset.filiaal;
+
+                const matchesSearch = merk.includes(searchTerm) ||
+                                    model.includes(searchTerm) ||
+                                    nummerplaat.includes(searchTerm);
+                const matchesStatus = !selectedStatus || status === selectedStatus;
+                const matchesType = !selectedType || type === selectedType;
+                const matchesFiliaal = !selectedFiliaal || filiaal === selectedFiliaal;
+
+                if (matchesSearch && matchesStatus && matchesType && matchesFiliaal) {
+                    item.style.display = '';
+                    visibleCount++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            document.getElementById('resultCount').textContent = `${visibleCount} auto's`;
+        }
+
+        function sortItems() {
+            const sortValue = sortSelect.value;
+            const cardContainer = document.getElementById('cardView');
+            const tableBody = document.getElementById('tableBody');
+
+            const cards = Array.from(document.querySelectorAll('.auto-card'));
+            const rows = Array.from(document.querySelectorAll('.auto-row'));
+
+            const sortFn = (a, b) => {
+                switch(sortValue) {
+                    case 'merk':
+                        return a.dataset.merk.localeCompare(b.dataset.merk);
+                    case 'prijs-asc':
+                        return parseFloat(a.dataset.prijs) - parseFloat(b.dataset.prijs);
+                    case 'prijs-desc':
+                        return parseFloat(b.dataset.prijs) - parseFloat(a.dataset.prijs);
+                    case 'recent':
+                        return parseInt(b.dataset.id) - parseInt(a.dataset.id);
+                    default:
+                        return 0;
+                }
+            };
+
+            cards.sort(sortFn).forEach(card => cardContainer.appendChild(card));
+            rows.sort(sortFn).forEach(row => tableBody.appendChild(row));
+        }
+
+        function resetFilters() {
+            searchInput.value = '';
+            statusFilter.value = '';
+            typeFilter.value = '';
+            filiaalFilter.value = '';
+            sortSelect.value = 'merk';
+            filterItems();
+            sortItems();
+        }
+
+        function switchView(view) {
+            const cardView = document.getElementById('cardView');
+            const tableView = document.getElementById('tableView');
+            const cardBtn = document.getElementById('cardViewBtn');
+            const tableBtn = document.getElementById('tableViewBtn');
+
+            if (view === 'card') {
+                cardView.style.display = 'flex';
+                tableView.style.display = 'none';
+                cardBtn.classList.add('active');
+                tableBtn.classList.remove('active');
+            } else {
+                cardView.style.display = 'none';
+                tableView.style.display = 'block';
+                tableBtn.classList.add('active');
+                cardBtn.classList.remove('active');
+            }
+        }
+
+        searchInput.addEventListener('input', filterItems);
+        statusFilter.addEventListener('change', filterItems);
+        typeFilter.addEventListener('change', filterItems);
+        filiaalFilter.addEventListener('change', filterItems);
+        sortSelect.addEventListener('change', sortItems);
+    </script>
+}

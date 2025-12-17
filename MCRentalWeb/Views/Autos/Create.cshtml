@@ -1,62 +1,134 @@
 ﻿@model MCRental_Models.Auto
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Nieuwe Auto Toevoegen";
 }
 
-<h1>Create</h1>
+<div class="container my-5">
 
-<h4>Auto</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Merk" class="control-label"></label>
-                <input asp-for="Merk" class="form-control" />
-                <span asp-validation-for="Merk" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Model" class="control-label"></label>
-                <input asp-for="Model" class="form-control" />
-                <span asp-validation-for="Model" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Nummerplaat" class="control-label"></label>
-                <input asp-for="Nummerplaat" class="form-control" />
-                <span asp-validation-for="Nummerplaat" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DagPrijs" class="control-label"></label>
-                <input asp-for="DagPrijs" class="form-control" />
-                <span asp-validation-for="DagPrijs" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Beschikbaar" /> @Html.DisplayNameFor(model => model.Beschikbaar)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="type" class="control-label"></label>
-                <input asp-for="type" class="form-control" />
-                <span asp-validation-for="type" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FiliaalId" class="control-label"></label>
-                <select asp-for="FiliaalId" class ="form-control" asp-items="ViewBag.FiliaalId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="display-6 fw-bold">
+                <i class="bi bi-car-front-fill text-warning"></i>
+                Nieuwe Auto Toevoegen
+            </h1>
+            <p class="text-muted">
+                Voeg een nieuwe auto toe aan het wagenpark
+            </p>
+        </div>
+        <div class="col-md-4 text-end">
+            <a asp-action="Index" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Terug naar overzicht
+            </a>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+    <form asp-action="Create" method="post">
+
+        <div class="row">
+            <!-- Linker kolom -->
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">
+                            <i class="bi bi-info-circle"></i> Auto informatie
+                        </h5>
+                    </div>
+                    <div class="card-body">
+
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Merk" class="form-label"></label>
+                                <input asp-for="Merk" class="form-control" placeholder="bv. BMW" />
+                                <span asp-validation-for="Merk" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Model" class="form-label"></label>
+                                <input asp-for="Model" class="form-control" placeholder="bv. X5" />
+                                <span asp-validation-for="Model" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Nummerplaat" class="form-label"></label>
+                                <input asp-for="Nummerplaat" class="form-control" placeholder="1-ABC-123" />
+                                <span asp-validation-for="Nummerplaat" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="type" class="form-label"></label>
+                                <input asp-for="type" class="form-control" placeholder="SUV, Sedan, Break..." />
+                                <span asp-validation-for="type" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rechter kolom -->
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">
+                            <i class="bi bi-cash-stack"></i> Prijs & Status
+                        </h5>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="mb-3">
+                            <label asp-for="DagPrijs" class="form-label"></label>
+                            <div class="input-group">
+                                <span class="input-group-text">€</span>
+                                <input asp-for="DagPrijs" class="form-control" />
+                            </div>
+                            <span asp-validation-for="DagPrijs" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="FiliaalId" class="form-label"></label>
+                            <select asp-for="FiliaalId"
+                                    class="form-select"
+                                    asp-items="ViewBag.FiliaalId">
+                                <option value="">-- Selecteer filiaal --</option>
+                            </select>
+                        </div>
+
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input"
+                                   asp-for="Beschikbaar"
+                                   checked />
+                            <label class="form-check-label" asp-for="Beschikbaar">
+                                Beschikbaar
+                            </label>
+                        </div>
+
+                        <hr />
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-warning btn-lg">
+                                <i class="bi bi-check-circle"></i> Auto Opslaan
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                Annuleren
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
