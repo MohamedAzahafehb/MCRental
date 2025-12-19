@@ -11,45 +11,27 @@ namespace MCRental_Models
     {
         public static List<Language> Languages = new List<Language>();
         public static Language Dummy = null;
+
         [Key]
         public String Code {  get; set; }
         public String Name { get; set; }
         public bool isSystemLanguage { get; set; }
         public DateTime isActive { get; set; }
 
-        public static List<Language> seedingData()
+        public static List<Language> seedingData(MCRentalDBContext context)
         {
-            Languages = new List<Language>
+            if (!context.Languages.Any())
             {
-                new Language
-                {
-                    Code = "-",
-                    Name = "dummy",
-                    isSystemLanguage = false,
-                    isActive = DateTime.MaxValue
-                },
-                new Language
-                {
-                    Code = "fr",
-                    Name = "francais",
-                    isSystemLanguage = true,
-                    isActive = DateTime.Now
-                },
-                new Language
-                {
-                    Code = "nl",
-                    Name = "nederlands",
-                    isSystemLanguage = true,
-                    isActive = DateTime.Now
-                },
-                new Language
-                {
-                    Code = "en",
-                    Name = "english",
-                    isSystemLanguage = true,
-                    isActive = DateTime.Now
-                },
-            };
+                context.Languages.AddRange(
+                    new Language { Code = "- ", Name = "?", isSystemLanguage = false, isActive = DateTime.UtcNow },
+                    new Language { Code = "en", Name = "English", isSystemLanguage = true, isActive = DateTime.UtcNow },
+                    new Language { Code = "nl", Name = "Nederlands", isSystemLanguage = true, isActive = DateTime.UtcNow },
+                    new Language { Code = "fr", Name = "français", isSystemLanguage = true, isActive = DateTime.UtcNow }
+                );
+                context.SaveChanges();
+            }
+            Languages = context.Languages.Where(l => l.isActive < DateTime.Now).OrderBy(l => l.Name).ToList();
+            Dummy = Languages.FirstOrDefault(l => l.Code == "-");
 
             return Languages;
         }

@@ -42,28 +42,42 @@ namespace MCRental_Models
                 {
                     StartDatum = new DateTime(2024, 7, 1),
                     EindDatum = new DateTime(2024, 7, 10),
-                    GebruikerId = "1",
+                    GebruikerId = "2",
                     AutoId = 2
                 },
                 new Reservatie
                 {
                     StartDatum = new DateTime(2024, 8, 5),
                     EindDatum = new DateTime(2024, 8, 15),
-                    GebruikerId = "1",
+                    GebruikerId = "2",
                     AutoId = 4
                 },
                 new Reservatie
                 {
                     StartDatum = new DateTime(2024, 9, 10),
                     EindDatum = new DateTime(2024, 9, 20),
-                    GebruikerId = "1",
+                    GebruikerId = "2",
                     AutoId = 5
                 },
                 new Reservatie
                 {
                     StartDatum = new DateTime(2024, 10, 10),
                     EindDatum = new DateTime(2024, 10, 20),
-                    GebruikerId = "1",
+                    GebruikerId = "2",
+                    AutoId = 1
+                },
+                new Reservatie
+                {
+                    StartDatum = new DateTime(2024, 11, 1),
+                    EindDatum = new DateTime(2024, 11, 10),
+                    GebruikerId = "5",
+                    AutoId = 3
+                },
+                new Reservatie
+                {
+                    StartDatum = new DateTime(2024, 12, 15),
+                    EindDatum = new DateTime(2024, 12, 25),
+                    GebruikerId = "4",
                     AutoId = 5
                 }
             };

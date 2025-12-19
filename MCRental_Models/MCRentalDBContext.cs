@@ -25,7 +25,7 @@ namespace MCRental_Models
                         .AddUserSecrets<MCRentalDBContext>(optional: true)
                         .Build();
 
-                    var connStr = config.GetConnectionString("DefaultConnection");
+                    var connStr = config.GetConnectionString("TestConnection");
                 try
                 {
                     optionsBuilder.UseSqlServer(connStr);
@@ -39,23 +39,29 @@ namespace MCRental_Models
             
         
 
-        public static void seeder(MCRentalDBContext context)
+        public static async Task seeder(MCRentalDBContext context)
         {
             try
             {
+                Console.WriteLine("seedingg...");
                 if (true)
+                {
+                    //context.Steden.AddRange(Stad.seedingData());
+                    //context.SaveChanges();
+                    //seedSteden(context);
+                }
+                if (!context.Steden.Any())
                 {
                     context.Steden.AddRange(Stad.seedingData());
                     context.SaveChanges();
-                    //seedSteden(context);
-                    Language.seedingData();
                 }
                 if (!context.Filialen.Any())
                 {
                     context.Filialen.AddRange(Filiaal.seedingData());
                     context.SaveChanges();
                 }
-                Gebruiker.Seeder();
+                Language.seedingData(context);
+                await Gebruiker.Seeder(context);
                 context.SaveChanges();
                 if (!context.Autos.Any())
                 {
@@ -67,15 +73,10 @@ namespace MCRental_Models
                     context.Reservaties.AddRange(Reservatie.seedingData());
                     context.SaveChanges();
                 }
-                if (!context.Languages.Any())
-                {
-                    context.Languages.AddRange(Language.seedingData());
-                    context.SaveChanges();
-                }
             }
             catch (Exception ex)
             {
-                throw new Exception("Er is een fout opgetreden bij het seeden van de Database: " + ex.Message);
+                throw new Exception("Er is een fout opgetreden bij het seeden van de Database: " + ex.InnerException.Message);
             }
         }
 

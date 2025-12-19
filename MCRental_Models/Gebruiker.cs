@@ -32,30 +32,29 @@ namespace MCRental_Models
         public ICollection<Reservatie>? Reservaties { get; set; }
 
 
-        public static Gebruiker dummy = new Gebruiker
-        {
-            Id = "1",
-            Voornaam = "Dummy",
-            Achternaam = "Dumpfries",
-            GeboorteDatum = new DateTime(1999, 1, 1),
-            Adres = "Dummystraat 1",
-            StadId = 1,
-            LanguageCode = "-",
-            UserName = "Dummy",
-            NormalizedUserName = "DUMMY",
-            Email = "Dummy@mcrental.be",
-            EmailConfirmed = true,
-            PhoneNumber = "0000000000"
-        };
+        //public static Gebruiker dummy = new Gebruiker
+        //{
+        //    Id = "1",
+        //    Voornaam = "Dummy",
+        //    Achternaam = "Dumpfries",
+        //    GeboorteDatum = new DateTime(1999, 1, 1),
+        //    Adres = "Dummystraat 1",
+        //    StadId = 1,
+        //    LanguageCode = "-",
+        //    UserName = "Dummy",
+        //    NormalizedUserName = "DUMMY",
+        //    Email = "Dummy@mcrental.be",
+        //    EmailConfirmed = true,
+        //    PhoneNumber = "0000000000"
+        //};
 
         public override string ToString()
         {
             return $"{Voornaam} {Achternaam}";
         }
 
-        public static async Task Seeder()
+        public static async Task Seeder(MCRentalDBContext context)
         {
-            MCRentalDBContext context = new MCRentalDBContext();
 
             // Voeg de nodige rollen toe
             if (!context.Roles.Any())
@@ -70,10 +69,12 @@ namespace MCRental_Models
 
             if (!context.Users.Any())
             {
-                context.Add(dummy);
-                context.SaveChanges();
+
+                //context.Add(dummy);
+                //context.SaveChanges();
                 Gebruiker hans = new Gebruiker
                 {
+                    Id="2",
                     Voornaam = "Hans",
                     Achternaam = "De Beer",
                     GeboorteDatum = new DateTime(1990, 6, 15),
@@ -84,9 +85,9 @@ namespace MCRental_Models
                     EmailConfirmed = true,
                     PhoneNumber = "0123456789"
                 };
-                Console.WriteLine("Creating users...");
                 Gebruiker admin = new Gebruiker
                 {
+                    Id="3",
                     Voornaam = "Admin",
                     Achternaam = "Istrator",
                     GeboorteDatum = new DateTime(1985, 3, 20),
@@ -99,6 +100,7 @@ namespace MCRental_Models
                 };
                 Gebruiker grietje = new Gebruiker
                 {
+                    Id="4",
                     Voornaam = "Grietje",
                     Achternaam = "Peeters",
                     GeboorteDatum = new DateTime(1995, 11, 30),
@@ -111,6 +113,7 @@ namespace MCRental_Models
                 };
                 Gebruiker jans = new Gebruiker
                 {
+                    Id="5",
                     Voornaam = "JanS",
                     Achternaam = "Smet",
                     GeboorteDatum = new DateTime(1978, 9, 5),
@@ -121,7 +124,7 @@ namespace MCRental_Models
                     EmailConfirmed = true,
                     PhoneNumber = "0223344556"
                 };
-
+                context.SaveChanges();
                 // Seeding halverwege mislukt, niet alle gebruikers aanwezig + geen rollen toegewezen
 
                 UserManager<Gebruiker> userManager = new UserManager<Gebruiker>(
@@ -129,23 +132,25 @@ namespace MCRental_Models
                     null, new PasswordHasher<Gebruiker>(),
                     null, null, null, null, null, null);
 
+                Console.WriteLine("Adding users to database...");
+
                 await userManager.CreateAsync(hans, "12345678");
-                await userManager.CreateAsync(admin, "12345678");
-                await userManager.CreateAsync(grietje, "12345678");
-                await userManager.CreateAsync(jans, "12345678");
-
-                while (context.Users.Count() < 4)
-                {
-                    await Task.Delay(100);
-                }
-
                 await userManager.AddToRoleAsync(hans, "Klant");
+                await userManager.CreateAsync(admin, "12345678");
                 await userManager.AddToRoleAsync(admin, "Admin");
+                await userManager.CreateAsync(grietje, "12345678");
                 await userManager.AddToRoleAsync(grietje, "Klant");
+                await userManager.CreateAsync(jans, "12345678");
                 await userManager.AddToRoleAsync(jans, "Klant");
+
+                //while (context.Users.Count() < 4)
+                //{
+                //    await Task.Delay(100);
+                //}
+
             }
 
-            dummy = context.Users.First(u => u.UserName == "Dummy");
+            //dummy = context.Users.First(u => u.UserName == "Dummy");
         }
         }
 }

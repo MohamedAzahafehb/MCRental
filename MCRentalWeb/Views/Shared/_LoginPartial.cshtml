@@ -23,14 +23,11 @@
     {
         string languageCode = "nl";
         string cookieCulture = Context.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
-        if(cookieCulture != null)
+        
+        if(cookieCulture != null && cookieCulture.Length >= 4)
         {
             languageCode = cookieCulture.Substring(2, 2);
-        } 
-
-        <script>
-            console.log("Language code : " + '@Language.Languages[0]');
-        </script>
+        }
 
         var thisPage = string.IsNullOrEmpty(Context.Request.Path) ? "~/index.html" : $"~{Context.Request.Path.Value}";
 

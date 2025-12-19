@@ -46,12 +46,12 @@ using (var scope = app.Services.CreateScope())
     try
     {
         MCRental_Models.MCRentalDBContext context = services.GetRequiredService<MCRental_Models.MCRentalDBContext>();
-        MCRental_Models.MCRentalDBContext.seeder(context);
+        await MCRental_Models.MCRentalDBContext.seeder(context);
     }
     catch (Exception e)
     {
         var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(e, "Er is een fout bij het seeden van de database.");
+        logger.LogError(e.Message, "Er is een fout bij het seeden van de database.");
     }
 }
 
