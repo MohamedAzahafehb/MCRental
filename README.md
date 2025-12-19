@@ -1,3 +1,29 @@
+# MCRental
+## ASP.NET (webapplicatie)
+
+Voor het opstarten en testen van de webapplicatie is er verijst:
+- dotnet versie 9
+- Visual Studio
+- Microsoft SQL Server
+
+Eerst moet deze github repo gecloned worden en geopend worden met Visual Studio. Build vervolgens de hele solution. Zodra dit gebeurt is, klikt u met de rechtermuisklik op het project `MCRental_Models` en dan kiest u voor `Manage user secrets`.
+Dan wordt er een bestand `secrets.json` geopend waar u uw ConnectionString kan zetten zodat u connectie kan maken met de database. De json file moet het volgende formaat hebben:
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=[server]; Database=[Database naam]; User Id=[gebruikersnaam]; password=[wachtwoord]; MultipleActiveResultSets=true;TrustServerCertificate=True;"
+    }
+}
+```
+
+Indien u de applicatie eerst wil testen op een locale databank. Gelieve de ConnectionString dan aan te passen en de Migrations uit te voeren:
+- In Visual Studio klikt u bovenaan op de tab `Tools` > `NuGet Package Manager` > `Package Manager Console`
+- Dan wordt Console geopend. Selecteer als `Default project`: `MCRental_Models` en voer het volgende commando uit:
+    ```bash
+    PM> update-database
+    ```
+Nu zijn de Migraties succesvol toegepast en kunt u de web applicatie runnen, de seeding gebeurt automatisch.
+## WPF
 Documentatie
 Beschrijving
 De bedoeling van dit project is het ontwikkelen van een desktopapplicatie in .NET (WPF) voor het beheer van een autoverhuurbedrijf.
